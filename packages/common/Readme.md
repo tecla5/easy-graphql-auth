@@ -55,6 +55,11 @@ const myLock = new Lock({
 - `createProfileReceivedCb(authResult)`
 - `handleProfile({authResult, profile})`
 
+### End of flow callback hooks
+
+- `signedInFailure(err)` on signin failure
+- `signedInOk({profile})` on signin success
+
 ### UI functions
 
 - `showLogin()` - display Auth0 modal login

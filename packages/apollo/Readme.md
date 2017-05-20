@@ -20,7 +20,7 @@ const {
   jwtUtil
 } = require('@graphcool/gc-auth0-apollo')
 
-const config = require('./config)
+const config = require('./config')
 const myClient = client(config)
 
 const lock = createLock(config)
@@ -34,6 +34,18 @@ $('#login').click(() => {
     .showLock()
     .subscribeAuthenticated()
 })
+```
+
+You can then hook into the Auth0 event flow from your view components.
+Example from React demo app:
+
+```js
+this.lock.signedInOk = ({profile}) {
+  this.setState({
+    isLoggedIn: true,
+    profile,
+  })
+}
 ```
 
 ## Cusrtomization

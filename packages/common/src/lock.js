@@ -88,9 +88,9 @@ class Lock {
     })
   }
 
-  subscribeAuthenticated() {
+  subscribeAuthenticated(cb) {
     this.log('config');
-    this.lock.on('authenticated', this.onAuthenticated)
+    this.lock.on('authenticated', cb || this.onAuthenticated)
     return this
   }
 
@@ -146,9 +146,25 @@ class Lock {
       })
       const signinToken = signinResult.data.signinUser.token
       this.storeGraphCoolToken(signinToken)
+      this.signedInOk({
+        profile
+      })
     } catch (err) {
+      this.signedInFailure(err)
       this.handleSigninError(err)
     }
+  }
+
+  signedInFailure(err) {
+    this.log('signedInFailure', err)
+  }
+
+  signedInOk({
+    profile
+  }) {
+    this.log('signedInOk', {
+      profile
+    })
   }
 
   handleError(err) {

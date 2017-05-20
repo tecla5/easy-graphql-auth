@@ -18,7 +18,7 @@ const {
   GCAuth0Connector
 } = require('@graphcool/gc-auth0-lokka')
 
-const config = require('./config)
+const config = require('./config')
 const myClient = client(config)
 const lock = createLock(config)
 ```
