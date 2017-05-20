@@ -7,14 +7,27 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {isLoggedIn: false};
+    this.state = {
+      isLoggedIn: false
+    };
+
     this.doLogin = this.doLogin.bind(this);
+    this.doLogout = this.doLogout.bind(this);
 
     this.lock.signedInOk = ({profile}) => {
       this.setState({
         isLoggedIn: true,
         profile,
       })
+      // hide login button
+    }
+
+    this.lock.loggedOut = () => {
+      this.setState({
+        isLoggedIn: false,
+        profile: {}
+      })
+      // hide logout button
     }
   }
 
@@ -30,7 +43,10 @@ class App extends Component {
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
-          <button id="login" onClick={doLogin}>Login</button>
+          <div id="session">
+            <button id="login" onClick={doLogin}>Login</button>
+            <button id="logout" className="hide" onClick={doLogout}>Logout</button>
+          </div>
           <div class="status">{{ isLoggedIn }}</div>
         </div>
         <p className="App-intro">

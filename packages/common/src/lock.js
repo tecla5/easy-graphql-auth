@@ -51,6 +51,7 @@ class Lock {
     this.log('Logging out');
     this.resetTokens()
     this.resetStorage()
+    this.loggedOut()
     return this
   }
 
