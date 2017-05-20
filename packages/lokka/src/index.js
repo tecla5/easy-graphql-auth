@@ -1,4 +1,5 @@
 const {
+  setup,
   Store,
   createStore,
   Lock,
@@ -14,5 +15,6 @@ module.exports = {
   createLock,
   jwtUtil,
   Store,
-  createStore
+  createStore,
+  setup
 }

@@ -13,6 +13,8 @@ module.exports = {
   createLock,
   Store,
   createStore,
+  BaseConnector: require('./connector'),
+  setup: require('./setup'),
   queries: require('./queries'),
   jwtUtil: require('./jwt-util')
 }

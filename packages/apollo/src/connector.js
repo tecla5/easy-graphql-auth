@@ -3,24 +3,13 @@ const {
   createNetworkInterface
 } = ApolloClient
 
-module.exports = class GCAuth0Connector {
+const {
+  BaseGCAuth0Connector
+} = require('@graphcool/gc-auth0-common')
+
+module.exports = class GCAuth0Connector extends BaseGCAuth0Connector {
   constructor(config = {}) {
-    if (typeof config !== 'object') {
-      throw Error('config must be an object')
-    }
-
-    this.config = config
-    this.store = config.store
-
-    if (!this.config.storage) {
-      throw Error('missing storage config')
-    }
-    this.keyNames = this.config.storage
-
-    if (!this.config.graphCool) {
-      throw Error('missing graphCool config')
-    }
-    this.connection = this.config.graphCool.connection
+    super(config)
   }
 
   configure() {
@@ -33,7 +22,7 @@ module.exports = class GCAuth0Connector {
           req.options.headers = {}; // Create the header object if needed.
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = this.store.getItem(graphcoolTokenKeyName) || null;
+        req.options.headers.authorization = this.tokens.graphCoolToken
         next();
       }
     }]);

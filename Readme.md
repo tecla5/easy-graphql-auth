@@ -30,6 +30,8 @@ This is a [lerna](https://lernajs.io/) project. So simply bootstrap.
 
 And you will be good to go!
 
+## Creating a config
+
 ## License
 
 MIT 2017 Kristian Mandrup

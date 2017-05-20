@@ -79,6 +79,7 @@ const myLock = new Lock({
 
 - `signedInFailure(err)` on signin failure
 - `signedInOk({profile})` on signin success
+- `loggedOut()` on logout
 
 ### UI functions
 
@@ -124,9 +125,52 @@ class MyLock extends Lock {
   // ...
 }
 
-const myLock = new MyLock(config)
+function createLock(config) {
+  return new MyLock()
+}
+
+const myLock = createLock(config)
+```
+
+In the UI
+
+```js
 myLock
   .subscribeAuthenticated()
   .showLock()
 ```
 
+### Lock & client configuration
+
+```js
+const {
+  setup
+} = require('@graphcool/gc-auth0-apollo')
+const config = require('../config')
+module.exports = setup(config)
+```
+
+You can also fine-tune the setup...
+
+```js
+const {
+  createClient,
+  GCAuth0Connector,
+  // from gc-auth0-common
+  Lock,
+  createLock,
+  jwtUtil,
+  Store,
+  createStore
+} = require('@graphcool/gc-auth0-apollo')
+
+const config = require('../config')
+config.store = createStore(config.storage)
+const lock = createLock(config)
+const client = createClient(config)
+
+module.exports = {
+  lock,
+  client
+}
+```

@@ -3,7 +3,8 @@ const {
   createStore,
   Lock,
   createLock,
-  jwtUtil
+  jwtUtil,
+  setup
 } = require('@graphcool/gc-auth-common')
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
   createLock,
   jwtUtil,
   Store,
-  createStore
+  createStore,
+  setup
 }

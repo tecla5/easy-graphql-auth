@@ -46,6 +46,16 @@ Lock configuration is also pretty simple.
 
 ```js
 const {
+  setup
+} = require('@graphcool/gc-auth0-apollo')
+const config = require('../config')
+module.exports = setup(config)
+```
+
+You can also fine-tune the setup...
+
+```js
+const {
   createClient,
   GCAuth0Connector,
   // from gc-auth0-common
