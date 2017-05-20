@@ -6,7 +6,7 @@ const {
 
 module.exports = {
   GCAuth0Connector: require('./connector'),
-  client: require('./client'),
+  createClient: require('./create-client'),
   // from gc-auth0-common
   Lock,
   createLock,

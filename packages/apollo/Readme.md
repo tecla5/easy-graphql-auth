@@ -21,8 +21,7 @@ const {
 } = require('@graphcool/gc-auth0-apollo')
 
 const config = require('./config')
-const myClient = client(config)
-
+const client = createClient(config)
 const lock = createLock(config)
 ```
 
