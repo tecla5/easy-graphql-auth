@@ -6,10 +6,10 @@ module.exports = class GCAuth0Connector {
 
     this.config = config
 
-    if (!this.config.localStorage) {
+    if (!this.config.storage) {
       throw Error('missing localStorage config')
     }
-    this.graphcoolToken = this.config.localStorage.graphcoolToken
+    this.keyNames = this.config.storage
 
     if (!this.config.graphCool) {
       throw Error('missing graphCool config')

@@ -1,4 +1,4 @@
-class Storage {
+module.exports = class Store {
   constructor(keyNames, opts = {}) {
     this.keyNames = keyNames
 

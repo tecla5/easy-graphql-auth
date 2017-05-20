@@ -6,6 +6,7 @@ const defaultKeyNames = {
 }
 
 const defaultQueries = require('./queries')
+const Store = require('./store')
 
 const USER_ALREADY_EXISTS_ERROR_CODE = 3023
 
@@ -40,10 +41,18 @@ module.exports = class Lock {
     }
   }
 
+  error(...msgs) {
+    if (this.logging) {
+      this.io.error('Lock', ...msgs)
+    }
+  }
+
+
   logout() {
     this.log('Logging out');
     this.resetTokens()
     this.resetStorage()
+    return this
   }
 
   resetTokens() {
@@ -51,60 +60,91 @@ module.exports = class Lock {
       auth0Token: null,
       graphcoolToken: null,
     }
+    return this
   }
 
   resetStorage() {
     this.log('resetStorage');
     this.store.resetAll()
+    return this
   }
 
   showLogin() {
     this.log('showLogin');
     this.lock.show()
+    return this
   }
 
   handleProfileError(err) {
     this.error(err);
   }
 
-  handleProfile(authResult, profile) {
+  handleProfile({
+    authResult,
+    profile
+  }) {
     this.onAuth0Login({
       auth0Token: authResult.idToken,
-      name: profile.name
+      profile: profile
     })
   }
 
-  config() {
+  subscribeAuthenticated() {
     this.log('config');
-    this.lock.on('authenticated', (authResult) => {
-      this.lock.getProfile(authResult.idToken, (err, profile) => {
-        err ? this.handleProfileError(err) : handleProfile()
+    this.lock.on('authenticated', this.onAuthenticated)
+    return this
+  }
+
+  onAuthenticated(authResult) {
+    this.lock.getProfile(authResult.idToken, this.createProfileReceivedCb(authResult))
+  }
+
+  createProfileReceivedCb(authResult) {
+    return (err, profile) => {
+      err ? this.handleProfileError(err) : this.handleProfile({
+        authResult,
+        profile
       })
-    })
+    }
   }
 
   storeAuth0Token(auth0Token) {
     this.store.setValue(this.keyNames.auth0TokenKeyName, auth0Token)
+    return this
   }
 
   async onAuth0Login({
     auth0Token,
-    name
+    profile
   }) {
     this.log('logged in', {
       auth0Token,
-      name
+      profile
     })
+    let name = profile.name
     this.storeAuth0Token(auth0Token)
     // once authenticated, signin to graphcool
-    await this.signinGraphcool(auth0Token, name)
+    await this.signinGraphcool({
+      auth0Token,
+      profile
+    })
   }
 
-  async signinGraphcool(auth0Token, name) {
+  async signinGraphcool({
+    auth0Token,
+    profile
+  }) {
+    let name = profile.name
     try {
       this.log('Signing into Graphcool');
-      await this.doCreateUser((auth0Token, name))
-      const signinResult = await this.doSigninUser(auth0Token)
+      await this.doCreateUser({
+        auth0Token,
+        profile
+      })
+      const signinResult = await this.doSigninUser({
+        auth0Token,
+        profile
+      })
       const signinToken = signinResult.data.signinUser.token
       this.storeGraphCoolToken(signinToken)
     } catch (err) {
@@ -112,17 +152,28 @@ module.exports = class Lock {
     }
   }
 
-  handleSigninError(err) {}
+  handleError(err) {
+    this.error(err)
+    throw err
+  }
+
+  handleSigninError(err) {
+    this.handleError(err)
+  }
 
   handleQueryError(err) {
     if (!err.graphQLErrors ||
       err.graphQLErrors[0].code !== USER_ALREADY_EXISTS_ERROR_CODE
     ) {
-      throw err
+      this.handleError(err)
     }
   }
 
-  async doCreateUser(auth0Token, name) {
+  async doCreateUser({
+    auth0Token,
+    profile
+  }) {
+    let name = profile.name
     // create user if necessary
     try {
       this.log('Create user', name);
@@ -138,7 +189,10 @@ module.exports = class Lock {
   }
 
   // sign in user
-  async doSigninUser(auth0Token) {
+  async doSigninUser({
+    auth0Token,
+    profile
+  }) {
     return await this.queries.signinUser({
       variables: {
         authToken: auth0Token
@@ -149,5 +203,6 @@ module.exports = class Lock {
   storeGraphCoolToken(signinToken) {
     // set graphcool token in localstorage
     this.store.setValue(this.keyNames.graphCoolTokenKeyName, signinToken)
+    return this
   }
 }

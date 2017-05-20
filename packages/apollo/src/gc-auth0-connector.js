@@ -5,11 +5,12 @@ module.exports = class GCAuth0Connector {
     }
 
     this.config = config
+    this.store = config.store
 
-    if (!this.config.localStorage) {
-      throw Error('missing localStorage config')
+    if (!this.config.storage) {
+      throw Error('missing storage config')
     }
-    this.graphcoolToken = this.config.localStorage.graphcoolToken
+    this.keyNames = this.config.storage
 
     if (!this.config.graphCool) {
       throw Error('missing graphCool config')
@@ -18,14 +19,16 @@ module.exports = class GCAuth0Connector {
   }
 
   configure() {
-    this.networkInterface = createNetworkInterface(this.connection)
-    this.networkInterface.use([{
+    let networkInterface = createNetworkInterface(this.connection)
+    this.networkInterface = networkInterface
+    let graphcoolTokenKeyName = this.keyNames.graphcoolTokenKeyName
+    networkInterface.use([{
       applyMiddleware(req, next) {
         if (!req.options.headers) {
           req.options.headers = {}; // Create the header object if needed.
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = localStorage.getItem(this.graphcoolToken) || null;
+        req.options.headers.authorization = this.store.getItem(graphcoolTokenKeyName) || null;
         next();
       }
     }]);
