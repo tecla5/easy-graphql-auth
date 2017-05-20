@@ -1,8 +1,9 @@
-const ApolloClient, {
+const ApolloClient = require('apollo-client')
+const {
   createNetworkInterface
-} = require('apollo-client')
+} = ApolloClient
 
-const GCAuth0Connector = require('./gc-auth0-connector')
+const GCAuth0Connector = require('./connector')
 
 function createGCAuth0Connector(config) {
   return new GCAuth0Connector(config).configure()

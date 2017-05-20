@@ -5,7 +5,7 @@ const {
 } = require('@graphcool/gc-auth-common')
 
 module.exports = {
-  GCAuth0Connector: require('./gc-auth-connector'),
+  GCAuth0Connector: require('./connector'),
   client: require('./client'),
   Lock,
   createLock,
