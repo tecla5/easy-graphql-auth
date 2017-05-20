@@ -15,6 +15,13 @@ See the docs for each of the modules included for more details including install
 - `@graphcool/gc-auth0-lokka`
 - `@graphcool/gc-auth0-common`
 
+## Demo apps
+
+- React app
+- Vue app
+
+Please add one for your framework of choice ;)
+
 ## License
 
 MIT
