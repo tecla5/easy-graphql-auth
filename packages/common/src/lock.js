@@ -10,8 +10,7 @@ const Store = require('./store')
 
 const USER_ALREADY_EXISTS_ERROR_CODE = 3023
 
-module.exports = class Lock {
-
+class Lock {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
   //   graphcoolToken: 'xxx' // key to store graphcoolToken
@@ -205,4 +204,13 @@ module.exports = class Lock {
     this.store.setValue(this.keyNames.graphCoolTokenKeyName, signinToken)
     return this
   }
+}
+
+function createLock(config) {
+  return new Lock(config)
+}
+
+module.exports = {
+  createLock,
+  Lock
 }

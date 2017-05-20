@@ -13,11 +13,27 @@ Using default setup:
 ```js
 const {
   client,
-  GCAuth0Connector
+  GCAuth0Connector,
+  // from gc-auth0-common
+  Lock,
+  createLock,
+  jwtUtil
 } = require('@graphcool/gc-auth0-apollo')
 
 const config = require('./config)
 const myClient = client(config)
+
+const lock = createLock(config)
+```
+
+Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
+
+```js
+$('#login').click(() => {
+  lock
+    .showLock()
+    .subscribeAuthenticated()
+})
 ```
 
 ## Cusrtomization
