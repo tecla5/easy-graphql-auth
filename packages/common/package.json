@@ -1,0 +1,25 @@
+{
+  "name": "@graphcool/gc-auth0-common",
+  "version": "1.0.0",
+  "description": "Apollo client for GraphCool with Auth0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "keywords": [
+    "apollo",
+    "graphcool",
+    "auth0"
+  ],
+  "author": "Kristian Mandrup",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-client": "^1.2.2"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1"
+  }
+}
