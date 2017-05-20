@@ -17,8 +17,10 @@
   "author": "Kristian Mandrup",
   "license": "ISC",
   "dependencies": {
+    "@graphcool/gc-auth0-common": "*",
     "apollo-client": "^1.2.2",
-    "@graphcool/gc-auth0-common": "*"
+    "lokka": "^1.7.0",
+    "lokka-transport-http": "^1.6.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",

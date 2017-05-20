@@ -14,12 +14,12 @@ Using default setup:
 
 ```js
 const {
-  client,
+  createClient,
   GCAuth0Connector
 } = require('@graphcool/gc-auth0-lokka')
 
 const config = require('./config')
-const myClient = client(config)
+const myClient = createClient(config)
 const lock = createLock(config)
 ```
 

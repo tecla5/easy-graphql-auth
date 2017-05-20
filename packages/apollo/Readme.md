@@ -12,7 +12,7 @@ Using default setup:
 
 ```js
 const {
-  client,
+  createClient,
   GCAuth0Connector,
   // from gc-auth0-common
   Lock,
