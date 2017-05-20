@@ -8,7 +8,7 @@ Integration library for GraphCool with Auth0 and Apollo
 
 ## Usage
 
-Using default setup:
+### Lock & client configuration
 
 ```js
 const {
@@ -17,12 +17,20 @@ const {
   // from gc-auth0-common
   Lock,
   createLock,
-  jwtUtil
+  jwtUtil,
+  Store,
+  createStore
 } = require('@graphcool/gc-auth0-apollo')
 
-const config = require('./config')
-const client = createClient(config)
+const config = require('../config')
+config.store = createStore(config.storage)
 const lock = createLock(config)
+const client = createClient(config)
+
+module.exports = {
+  lock,
+  client
+}
 ```
 
 Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
@@ -47,7 +55,7 @@ this.lock.signedInOk = ({profile}) {
 }
 ```
 
-## Cusrtomization
+## Customization
 
 You can extend `GCAuth0Connector` with your own custom configuration and provide a custom factory method `createGCAuth0Connector` on the config object as shown here:
 

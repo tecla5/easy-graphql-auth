@@ -1,4 +1,6 @@
 const {
+  Store,
+  createStore,
   Lock,
   createLock,
   jwtUtil
@@ -10,5 +12,7 @@ module.exports = {
   // from gc-auth0-common
   Lock,
   createLock,
-  jwtUtil
+  jwtUtil,
+  Store,
+  createStore
 }

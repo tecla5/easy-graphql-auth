@@ -14,24 +14,44 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 - [lokka](https://github.com/kadirahq/lokka)
 - other/custom clients
 
+### Lock & client configuration
+
 ```js
 const {
+  createClient,
+  GCAuth0Connector,
+  // from gc-auth0-common
   Lock,
-  queries,
-  store,
-  jwtUtil
-} = require('@graphcool/gc-auth0-common')
-const config = require(./config)
+  createLock,
+  jwtUtil,
+  Store,
+  createStore
+} = require('@graphcool/gc-auth0-apollo')
 
-const myLock = new Lock(config)
-myLock
-  .subscribeAuthenticated()
-  .showLock()
+const config = require('../config')
+config.store = createStore(config.storage)
+const lock = createLock(config)
+const client = createClient(config)
+
+module.exports = {
+  lock,
+  client
+}
+```
+
+Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
+
+```js
+$('#login').click(() => {
+  lock
+    .showLock()
+    .subscribeAuthenticated()
+})
 ```
 
 By default the `Lock` constructor loads:
 
--  GraphQL `queries` from `./queries`
+- GraphQL `queries` from `./queries`
 - `Store` class from `./storage` (to save/load tokens from `localStorage`)
 
 You can pass in your own `queries` and `store` if you like.

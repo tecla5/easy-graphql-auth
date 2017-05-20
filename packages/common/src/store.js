@@ -1,4 +1,4 @@
-module.exports = class Store {
+class Store {
   constructor(keyNames, opts = {}) {
     this.keyNames = keyNames
 
@@ -21,4 +21,13 @@ module.exports = class Store {
   store(keyName, value, opts = {}) {
     this.setItem(keyName, value)
   }
+}
+
+function createStore(keyNames, opts = {}) {
+  return new Store(keyNames, opts)
+}
+
+module.exports = {
+  Store,
+  createStore
 }

@@ -33,7 +33,7 @@ $('#login').click(() => {
 })
 ```
 
-## Cusrtomization
+## Customization
 
 You can extend `GCAuth0Connector` with your own custom configuration and provide a custom factory method `createGCAuth0Connector` on the config object as shown here:
 

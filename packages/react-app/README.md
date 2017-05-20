@@ -42,26 +42,65 @@ class App extends Component {
   }
 ```
 
-Lock configuration is also super simple.
+Lock configuration is also pretty simple.
 
 ```js
 const {
-  client,
+  createClient,
   GCAuth0Connector,
   // from gc-auth0-common
   Lock,
   createLock,
-  jwtUtil
+  jwtUtil,
+  Store,
+  createStore
 } = require('@graphcool/gc-auth0-apollo')
 
 const config = require('../config')
-const myClient = client(config)
-
+config.store = createStore(config.storage)
 const lock = createLock(config)
+const client = createClient(config)
 
-module.exports = lock
+module.exports = {
+  lock,
+  client
+}
 ```
 
-To replace client with lokka, simply replace the imported lib.
+To replace GraphQL client with `lokka`, simply replace the imported lib.
 
 `const { ... } = require('@graphcool/gc-auth0-apollo')`
+
+Both clients implement the exact same interface :)
+
+### Config
+
+GraphCool configuration
+
+```js
+module.exports = {
+  graphCool: {
+    connection: { // used by apollo
+      uri: 'xxx'
+    },
+    endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
+  },
+  storage: {
+    graphcoolTokenKeyName: 'xxx' // key to store graphcoolToken
+  }
+}
+```
+
+Auth0 configuration
+
+```js
+module.exports = {
+  storage: { // localstorage
+    auth0IdTokenKeyName: 'xxx', // key to store auth0IdToken
+  },
+  auth0: { // from auth0 client app settings
+    domain: 'xxx', // Your auth0 domain
+    clientId: 'xxx' // // Your auth0 client id
+  }
+}
+```

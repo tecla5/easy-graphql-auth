@@ -23,13 +23,14 @@ class Lock {
     auth0,
     keyNames,
     queries,
+    store,
     storage
   }, opts = {}) {
     this.queries = queries || defaultQueries
     this.lock = new Auth0Lock(auth0.clientId, auth0.domain)
-    this.keyNames = keyNames || defaultKeyNames
+    this.keyNames = keyNames || storage || defaultKeyNames
     this.logging = opts.logging
-    this.store = new Store(this.keyNames, opts)
+    this.store = store || new Store(this.keyNames, opts)
     this.tokens = this.store.getAll()
     this.io = opts.io || console
   }

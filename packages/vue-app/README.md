@@ -9,7 +9,7 @@ Demo app showcasing `gc-auth0-apollo` and `gc-auth0-lokka` with Vue 2.
 Basic Auth0 event and state flow:
 
 ```js
-import lock from '../auth0/lock'
+import { lock } from '../auth0/lock'
 
 export default {
   name: 'app',
@@ -36,6 +36,63 @@ export default {
       this.profile = {};
       // hide logout button
     }
+  }
+}
+```
+
+### Lock & client configuration
+
+```js
+const {
+  createClient,
+  GCAuth0Connector,
+  // from gc-auth0-common
+  Lock,
+  createLock,
+  jwtUtil,
+  Store,
+  createStore
+} = require('@graphcool/gc-auth0-apollo')
+
+const config = require('../config')
+config.store = createStore(config.storage)
+const lock = createLock(config)
+const client = createClient(config)
+
+module.exports = {
+  lock,
+  client
+}
+```
+
+### Config
+
+GraphCool configuration
+
+```js
+module.exports = {
+  graphCool: {
+    connection: { // used by apollo
+      uri: 'xxx'
+    },
+    endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
+  },
+  storage: {
+    graphcoolTokenKeyName: 'xxx' // key to store graphcoolToken
+  }
+}
+```
+
+Auth0 configuration
+
+```js
+module.exports = {
+  storage: { // localstorage
+    auth0IdTokenKeyName: 'xxx', // key to store auth0IdToken
+  },
+  auth0: { // from auth0 client app settings
+    domain: 'xxx', // Your auth0 domain
+    clientId: 'xxx' // // Your auth0 client id
   }
 }
 ```

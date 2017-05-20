@@ -1,4 +1,6 @@
 const {
+  Store,
+  createStore,
   Lock,
   createLock,
   jwtUtil
@@ -9,5 +11,7 @@ module.exports = {
   createClient: require('./create-client'),
   Lock,
   createLock,
-  jwtUtil
+  jwtUtil,
+  Store,
+  createStore
 }
