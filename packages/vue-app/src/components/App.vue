@@ -5,7 +5,7 @@
            width="100"
            alt="vue"
            class="logo" />
-      <h1>Welcome to Vue.js</h1>
+      <h1>Welcome {{ profile.name }} to Vue.js</h1>
       <div id="session">
         <button id="login"
                 @click="doLogin">Login</button>
@@ -20,8 +20,8 @@
         To get started, edit <code>./src/components/App.vue</code> and save to reload.
         <br/>
         <span :class="$style.fade">
-                      Checkout <code>./README.md</code> for more usages.
-                    </span>
+                                Checkout <code>./README.md</code> for more usages.
+                              </span>
       </p>
     </div>
   </div>
@@ -32,6 +32,13 @@ import lock from '../auth0/lock'
 
 export default {
   name: 'app',
+  data: function () {
+    // TODO: display in template
+    return {
+      isLoggedIn: false,
+      profile: {}
+    }
+  },
   methods: {
     doLogin() {
       lock
@@ -44,15 +51,16 @@ export default {
     }
   },
   created: function () {
+    let component = this
     lock.signedInOk = ({ profile }) => {
-      this.isLoggedIn = true;
-      this.profile = profile;
+      component.isLoggedIn = true;
+      component.profile = profile;
       // hide login button
     }
 
     lock.loggedOut = () => {
-      this.isLoggedIn = false;
-      this.profile = {};
+      component.isLoggedIn = false;
+      component.profile = {};
       // hide logout button
     }
   }
