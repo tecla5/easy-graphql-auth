@@ -5,9 +5,9 @@ module.exports = {
     },
     endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
   },
-  localStorage: { // localstorage
-    auth0IdToken: 'xxx', // key to store auth0IdToken
-    graphcoolToken: 'xxx' // key to store graphcoolToken
+  storage: { // localstorage
+    auth0IdTokenKeyName: 'xxx', // key to store auth0IdToken
+    graphcoolTokenKeyName: 'xxx' // key to store graphcoolToken
   },
   auth0: { // from auth0 client app settings
     domain: 'xxx', // Your auth0 domain
