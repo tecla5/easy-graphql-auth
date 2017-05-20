@@ -20,6 +20,17 @@ const {
 
 const config = require('./config)
 const myClient = client(config)
+const lock = createLock(config)
+```
+
+Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
+
+```js
+$('#login').click(() => {
+  lock
+    .showLock()
+    .subscribeAuthenticated()
+})
 ```
 
 ## Cusrtomization
