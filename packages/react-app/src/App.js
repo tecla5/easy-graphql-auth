@@ -37,6 +37,11 @@ class App extends Component {
       .subscribeAuthenticated()
   }
 
+  doLogout() {
+    lock
+      .logout()
+  }
+
   render() {
     return (
       <div className="App">

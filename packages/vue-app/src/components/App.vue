@@ -1,98 +1,137 @@
 <template>
   <div id="app">
     <div class="banner">
-      <img
-        src="https://vuejs.org/images/logo.png"
-        width="100"
-        alt="vue"
-        class="logo"
-      />
+      <img src="https://vuejs.org/images/logo.png"
+           width="100"
+           alt="vue"
+           class="logo" />
       <h1>Welcome to Vue.js</h1>
+      <div id="session">
+        <button id="login"
+                @click="doLogin">Login</button>
+        <button id="logout"
+                class="hide"
+                @click="doLogout">Logout</button>
+      </div>
+      <div class="status">{{ isLoggedIn }}</div>
     </div>
     <div class="bottom">
       <p>
-        To get started, edit <code>./src/components/App.vue</code> and save to reload.<br/>
+        To get started, edit <code>./src/components/App.vue</code> and save to reload.
+        <br/>
         <span :class="$style.fade">
-          Checkout <code>./README.md</code> for more usages.
-        </span>
+                      Checkout <code>./README.md</code> for more usages.
+                    </span>
       </p>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'app'
+import lock from '../auth0/lock'
+
+export default {
+  name: 'app',
+  methods: {
+    doLogin() {
+      lock
+        .showLock()
+        .subscribeAuthenticated()
+    },
+    doLogout() {
+      lock
+        .logout()
+    }
+  },
+  created: function () {
+    lock.signedInOk = ({ profile }) => {
+      this.isLoggedIn = true;
+      this.profile = profile;
+      // hide login button
+    }
+
+    lock.loggedOut = () => {
+      this.isLoggedIn = false;
+      this.profile = {};
+      // hide logout button
+    }
   }
+}
 </script>
 
 <style>
-  html, body {
-    height: 100%;
-  }
+html,
+body {
+  height: 100%;
+}
 
-  body {
-    margin: 0;
-    font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  }
+body {
+  margin: 0;
+  font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
 
-  code {
-    font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
-    font-size: 0.9em;
-    white-space: pre-wrap;
-    color: #2c3e50;
-  }
+code {
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  color: #2c3e50;
+}
 
-  code::before, code::after {
-    content: '`';
-  }
+code::before,
+code::after {
+  content: '`';
+}
 </style>
 
 <style scoped>
-  #app {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    height: 100%;
-    text-align: center;
-  }
+#app {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+}
 
-  #app h1 {
-    color: #2c3e50;
-    font-weight: 300;
-  }
+#app h1 {
+  color: #2c3e50;
+  font-weight: 300;
+}
 
-  .banner {
-    height: 50%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  }
+.banner {
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .bottom {
-    height: 50%;
-    background-color: #f6f6f6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    font-size: 24px;
-    font-weight: 300;
-  }
+.bottom {
+  height: 50%;
+  background-color: #f6f6f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 24px;
+  font-weight: 300;
+}
 
-  .logo {
-    animation: spin 4s 1s infinite linear
-  }
+.logo {
+  animation: spin 4s 1s infinite linear
+}
 
-  @keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
 <style module>
-  .fade {
-    font-size: 14px;
-  }
+.fade {
+  font-size: 14px;
+}
 </style>

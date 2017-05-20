@@ -4,6 +4,42 @@
 
 Demo app showcasing `gc-auth0-apollo` and `gc-auth0-lokka` with Vue 2.
 
+## Design
+
+Basic Auth0 event and state flow:
+
+```js
+import lock from '../auth0/lock'
+
+export default {
+  name: 'app',
+  methods: {
+    doLogin() {
+      lock
+        .showLock()
+        .subscribeAuthenticated()
+    },
+    doLogout() {
+      lock
+        .logout()
+    }
+  },
+  created: function () {
+    lock.signedInOk = function ({ profile }) {
+      this.isLoggedIn = true;
+      this.profile = profile;
+      // hide login button
+    }
+
+    lock.loggedOut = function () {
+      this.isLoggedIn = false;
+      this.profile = {};
+      // hide logout button
+    }
+  }
+}
+```
+
 ## Commands
 
 You can replace `yarn` with `npm run` here.
