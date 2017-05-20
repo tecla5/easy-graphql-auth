@@ -17,7 +17,8 @@
   "author": "Kristian Mandrup",
   "license": "ISC",
   "dependencies": {
-    "apollo-client": "^1.2.2"
+    "apollo-client": "^1.2.2",
+    "jwt-decode": "^2.2.0"
   },
   "devDependencies": {
     "ava": "^0.19.1"

@@ -18,7 +18,8 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 const {
   Lock,
   queries,
-  store
+  store,
+  jwtUtil
 } = require('@graphcool/gc-auth0-common')
 const config = require(./config)
 

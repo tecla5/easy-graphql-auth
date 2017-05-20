@@ -1,5 +1,6 @@
 module.exports = {
   Lock: require('./lock'),
   queries: require('./queries'),
-  storage: require('./storage')
+  storage: require('./storage'),
+  jwtUtil: require('./jwt-util')
 }
