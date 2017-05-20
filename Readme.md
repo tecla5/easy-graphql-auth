@@ -22,6 +22,14 @@ See the docs for each of the modules included for more details including install
 
 Please add one for your framework of choice ;)
 
+## Development
+
+This is a [lerna](https://lernajs.io/) project. So simply bootstrap.
+
+`$ lerna bootstrap`
+
+And you will be good to go!
+
 ## License
 
-MIT
+MIT 2017 Kristian Mandrup
