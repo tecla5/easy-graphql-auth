@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "ava",
-    "build": "babel app.js -o app.js",
-    "watch": "babel app.js --watch -o app.js"
+    "build": "babel app.js -o build/app.js",
+    "watch": "babel app.js --watch -o build/app.js"
   },
   "keywords": [
     "apollo",
@@ -20,8 +20,9 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
+    "@tecla5/gc-auth0-apollo": "*",
     "apollo-client": "^1.2.2",
-    "@tecla5/gc-auth0-apollo": "*"
+    "jquery": "^3.2.1"
   },
   "devDependencies": {
     "ava": "^0.19.1",
