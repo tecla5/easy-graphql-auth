@@ -1,14 +1,17 @@
 {
-  "private": true,
-  "name": "vue-app",
+  "name": "gc-auth0-vue-app",
   "productName": "vue-app",
   "description": "Vue2 with GraphCool and Auth0",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "dev": "poi",
     "build": "poi build",
     "serve": "serve dist --single"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecla5/gc-auth0-vue-app.git"
   },
   "author": {
     "name": "kristianmandrup",

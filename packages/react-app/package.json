@@ -1,7 +1,10 @@
 {
-  "name": "react-app",
+  "name": "gc-auth0-react-app",
   "version": "0.1.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecla5/gc-auth0-react-app.git"
+  },
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

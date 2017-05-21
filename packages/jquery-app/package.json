@@ -17,6 +17,10 @@
     "auth0",
     "jquery"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecla5/gc-auth0-jquery-app.git"
+  },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {

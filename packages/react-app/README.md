@@ -4,6 +4,17 @@ Demo app showcasing `gc-auth0-apollo` and `gc-auth0-lokka` with React.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
+## Pre-requisites
+
+On [Auth0 university](https://auth0.com/university/) watch:
+
+- [Auth0 101 course](https://auth0.com/university/2/auth0-101)
+- [Getting Started with the lock](https://auth0.com/university/3/getting-started-with-the-lock)
+
+On [GraphCool youtube channel](https://www.youtube.com/channel/UCptAHlN1gdwD89tFM3ENb6w), watch the first 2 minutes of GraphCool  [User Authentication with Auth0 for React and Apollo](https://www.youtube.com/watch?v=5uxq8Om-AZQ) which demonstrates how to create an Auth0 client app and configure a GraphCool app for Auth0 integration.
+
+Now you should be good to go!
+
 ## GraphCool and Auth0
 
 With `gc-auth0` it becomes a breeze to enrich a React component with Auth0 authentication.
