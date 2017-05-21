@@ -9,6 +9,10 @@ Makes it quick and easy to setup [GraphCool](https://www.graph.cool) with [Auth0
 
 See the docs for each of the modules included for more details including installation and usage. Enjoy!!
 
+These libs can be used in combination with the recently updated tutorial project [micro-stripe-example](https://github.com/tecla5/micro-stripe-example) for payments.
+
+Coming soon: *Stripe subscription payments integration*
+
 ## Modules
 
 - `@tecla5/gc-auth0-apollo`
