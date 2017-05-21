@@ -105,6 +105,12 @@ module.exports = {
 }
 ```
 
+## Tests
+
+Tests are written and run using [ava](https://github.com/avajs/ava)
+
+`$ npm test`
+
 ## License
 
 MIT 2017 Tecla5, Kristian Mandrup

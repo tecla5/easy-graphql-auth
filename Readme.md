@@ -19,6 +19,7 @@ See the docs for each of the modules included for more details including install
 
 - React app
 - Vue app
+- jQuery app
 
 Please add one for your framework of choice ;)
 

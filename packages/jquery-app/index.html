@@ -1,0 +1,23 @@
+<html>
+
+<head>
+  <title>GraphCool Auth0 jQuery app</title>
+  <script src="node_modules/jquery/jquery.min.js">
+  </script>
+  <script src="app.js">
+  </script>
+</head>
+
+<body>
+  <h1>GraphCool Auth0 jQuery app</h1>
+  <div id="app">
+    <h1 id="welcome">Welcome to Vue.js</h1>
+    <div id="session">
+      <button id="login" @click="doLogin">Login</button>
+      <button id="logout" class="hide" @click="doLogout">Logout</button>
+    </div>
+    <div class="status">{{ isLoggedIn }}</div>
+  </div>
+</body>
+
+</html>
