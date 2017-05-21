@@ -1,5 +1,5 @@
 const {
   setup
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 const config = require('../config')
 module.exports = setup(config)

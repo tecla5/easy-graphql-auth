@@ -47,7 +47,7 @@ export default {
 ```js
 const {
   setup
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 const config = require('../config')
 module.exports = setup(config)
 ```
@@ -64,7 +64,7 @@ const {
   jwtUtil,
   Store,
   createStore
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 
 const config = require('../config')
 config.store = createStore(config.storage)
@@ -137,3 +137,7 @@ For all the available options, please head to [poi-preset-offline](https://githu
 ---
 
 This project is generated from [template-vue](https://github.com/egoist/template-vue).
+
+## License
+
+MIT 2017 Tecla5, Kristian Mandrup

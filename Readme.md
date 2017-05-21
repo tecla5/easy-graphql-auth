@@ -11,9 +11,9 @@ See the docs for each of the modules included for more details including install
 
 ## Modules
 
-- `@graphcool/gc-auth0-apollo`
-- `@graphcool/gc-auth0-lokka`
-- `@graphcool/gc-auth0-common`
+- `@tecla5/gc-auth0-apollo`
+- `@tecla5/gc-auth0-lokka`
+- `@tecla5/gc-auth0-common`
 
 ## Demo apps
 
@@ -30,8 +30,6 @@ This is a [lerna](https://lernajs.io/) project. So simply bootstrap.
 
 And you will be good to go!
 
-## Creating a config
-
 ## License
 
-MIT 2017 Kristian Mandrup
+MIT 2017 Tecla5, Kristian Mandrup

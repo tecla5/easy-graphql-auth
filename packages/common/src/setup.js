@@ -2,7 +2,7 @@ const {
   createClient,
   createLock,
   createStore
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 
 module.exports = function (config) {
   config.store = createStore(config.storage)

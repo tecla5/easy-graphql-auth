@@ -53,7 +53,7 @@ class Lock {
     this.observers[eventName] = slot.concat(observer)
   }
 
-  _publish(eventName, args) {
+  publish(eventName, args) {
     let observers = this.observers[eventName] || []
     obervers.map(observer => observer(args))
   }
@@ -62,7 +62,7 @@ class Lock {
     this.log('Logging out');
     this.resetTokens()
     this.resetStorage()
-    this._publish('loggedOut')
+    this.publish('loggedOut')
     this.loggedOut()
     return this
   }
@@ -153,13 +153,13 @@ class Lock {
       const signinResult = await this.doSigninUser(args)
       const signinToken = signinResult.data.signinUser.token
       this.storeGraphCoolToken(signinToken)
-      this._publish('signedIn', args)
+      this.publish('signedIn', args)
       this.signedInOk(args)
     } catch (err) {
       let errArgs = Object.assign(args, {
         err
       })
-      this._publish('signedInFailure', args)
+      this.publish('signedInFailure', args)
       this.signedInFailure(args)
       this.handleSigninError(args)
     }

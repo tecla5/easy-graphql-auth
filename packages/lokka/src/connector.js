@@ -7,7 +7,7 @@ import {
 
 const {
   BaseGCAuth0Connector
-} = require('@graphcool/gc-auth0-common')
+} = require('@tecla5/gc-auth0-common')
 
 module.exports = class GCAuth0Connector extends BaseGCAuth0Connector {
   constructor(config = {}) {

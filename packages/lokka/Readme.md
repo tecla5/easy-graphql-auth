@@ -6,7 +6,7 @@ Currently *WIP*
 
 ## Install
 
-`npm i -S @graphcool/gc-auth0-lokka`
+`npm i -S @tecla5/gc-auth0-lokka`
 
 ## Usage
 
@@ -16,7 +16,7 @@ Using default setup:
 const {
   createClient,
   GCAuth0Connector
-} = require('@graphcool/gc-auth0-lokka')
+} = require('@tecla5/gc-auth0-lokka')
 
 const config = require('./config')
 const myClient = createClient(config)
@@ -41,7 +41,7 @@ You can extend `GCAuth0Connector` with your own custom configuration and provide
 const {
   client,
   GCAuth0Connector
-} = require('@graphcool/gc-auth0-lokka')
+} = require('@tecla5/gc-auth0-lokka')
 
 class MyGCAuthConnector extends GCAuth0Connector {
   // ...
@@ -83,3 +83,7 @@ module.exports = {
   }
 }
 ```
+
+## License
+
+MIT 2017 Tecla5, Kristian Mandrup

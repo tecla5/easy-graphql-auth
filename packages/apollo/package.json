@@ -1,5 +1,5 @@
 {
-  "name": "@graphcool/gc-auth0-apollo",
+  "name": "@tecla5/gc-auth0-apollo",
   "version": "1.0.0",
   "description": "Apollo client for GraphCool with Auth0",
   "main": "index.js",
@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "apollo-client": "^1.2.2",
-    "@graphcool/gc-auth0-common": "*"
+    "@tecla5/gc-auth0-common": "*"
   },
   "devDependencies": {
     "ava": "^0.19.1",

@@ -4,7 +4,7 @@ Integration library for GraphCool with Auth0 and Apollo
 
 ## Install
 
-`npm i -S @graphcool/gc-auth0-apollo`
+`npm i -S @tecla5/gc-auth0-apollo`
 
 ## Usage
 
@@ -20,7 +20,7 @@ const {
   jwtUtil,
   Store,
   createStore
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 
 const config = require('../config')
 config.store = createStore(config.storage)
@@ -63,7 +63,7 @@ You can extend `GCAuth0Connector` with your own custom configuration and provide
 const {
   client,
   GCAuth0Connector
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 
 class MyGCAuthConnector extends GCAuth0Connector {
   // ...
@@ -105,3 +105,6 @@ module.exports = {
 }
 ```
 
+## License
+
+MIT 2017 Tecla5, Kristian Mandrup

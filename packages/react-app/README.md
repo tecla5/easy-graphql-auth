@@ -17,6 +17,7 @@ class App extends Component {
     super(props);
     this.state = {isLoggedIn: false};
     this.doLogin = this.doLogin.bind(this);
+    this.doLogout = this.doLogout.bind(this);
 
     lock.on('signedIn', this.loggedIn)
     lock.on('loggedOut', this.loggedOut)
@@ -61,7 +62,7 @@ Lock configuration is also pretty simple.
 ```js
 const {
   setup
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 const config = require('../config')
 module.exports = setup(config)
 ```
@@ -78,7 +79,7 @@ const {
   jwtUtil,
   Store,
   createStore
-} = require('@graphcool/gc-auth0-apollo')
+} = require('@tecla5/gc-auth0-apollo')
 
 const config = require('../config')
 config.store = createStore(config.storage)
@@ -93,7 +94,7 @@ module.exports = {
 
 To replace GraphQL client with `lokka`, simply replace the imported lib.
 
-`const { ... } = require('@graphcool/gc-auth0-apollo')`
+`const { ... } = require('@tecla5/gc-auth0-apollo')`
 
 Both clients implement the exact same interface :)
 
@@ -128,3 +129,7 @@ module.exports = {
   }
 }
 ```
+
+## License
+
+MIT 2017 Tecla5, Kristian Mandrup

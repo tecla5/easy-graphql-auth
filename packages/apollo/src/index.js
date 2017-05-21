@@ -5,7 +5,7 @@ const {
   createLock,
   jwtUtil,
   setup
-} = require('@graphcool/gc-auth-common')
+} = require('@tecla5/gc-auth-common')
 
 module.exports = {
   GCAuth0Connector: require('./connector'),

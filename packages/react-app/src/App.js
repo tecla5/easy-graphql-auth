@@ -6,7 +6,6 @@ import './App.css';
 import lock from './auth0/lock';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -48,7 +47,6 @@ class App extends Component {
     lock
       .logout()
   }
-
   render() {
     return ( <
       div className = "App" >
@@ -72,17 +70,17 @@ class App extends Component {
       className = "hide"
       onClick = {
         doLogout
-      } > Logout < /button> < /
-      div > <
+      } > Logout < /button> <
+      /div> <
       div class = "status" > {
         {
           isLoggedIn
         }
-      } < /div> < /
-      div > <
+      } < /div> <
+      /div> <
       p className = "App-intro" >
-      To get started, edit < code > src / App.js < /code> and save to reload. < /
-      p > <
+      To get started, edit < code > src / App.js < /code> and save to reload. <
+      /p> <
       /div>
     );
   }

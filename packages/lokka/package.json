@@ -1,5 +1,5 @@
 {
-  "name": "@graphcool/gc-auth0-lokka",
+  "name": "@tecla5/gc-auth0-lokka",
   "version": "1.0.0",
   "description": "Apollo client for GraphCool with Auth0",
   "main": "index.js",
@@ -15,9 +15,9 @@
     "auth0"
   ],
   "author": "Kristian Mandrup",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@graphcool/gc-auth0-common": "*",
+    "@tecla5/gc-auth0-common": "*",
     "apollo-client": "^1.2.2",
     "lokka": "^1.7.0",
     "lokka-transport-http": "^1.6.1"

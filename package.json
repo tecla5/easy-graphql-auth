@@ -1,5 +1,5 @@
 {
-  "name": "@graphcool/gc-auth0",
+  "name": "@tecla5/gc-auth0",
   "version": "1.0.0",
   "description": "GraphCool Auth0 integration libraries",
   "devDependencies": {

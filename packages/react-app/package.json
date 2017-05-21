@@ -5,8 +5,8 @@
   "dependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "@graphcool/gc-auth0-apollo": "*",
-    "@graphcool/gc-auth0-lokka": "*"
+    "@tecla5/gc-auth0-apollo": "*",
+    "@tecla5/gc-auth0-lokka": "*"
   },
   "devDependencies": {
     "react-scripts": "1.0.1"
