@@ -75,11 +75,17 @@ const myLock = new Lock({
 - `createProfileReceivedCb(authResult)`
 - `handleProfile({authResult, profile})`
 
-### End of flow callback hooks
+### End of flow hooks
 
 - `signedInFailure(err)` on signin failure
 - `signedInOk({profile})` on signin success
 - `loggedOut()` on logout
+
+### Publish/subscribe hooks
+
+- `on('signedInFailure', function)` on signin failure call observer function (w object)
+- `on('signedIn', function)` on signin success call observer function (w object)
+- `on('loggedOut', function)` on logout call observer function
 
 ### UI functions
 
