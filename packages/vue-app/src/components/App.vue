@@ -20,8 +20,8 @@
         To get started, edit <code>./src/components/App.vue</code> and save to reload.
         <br/>
         <span :class="$style.fade">
-                                Checkout <code>./README.md</code> for more usages.
-                              </span>
+                                        Checkout <code>./README.md</code> for more usages.
+                                      </span>
       </p>
     </div>
   </div>
@@ -40,29 +40,29 @@ export default {
     }
   },
   methods: {
-    doLogin() {
+    doLogin: () => {
       lock
         .showLock()
         .subscribeAuthenticated()
     },
-    doLogout() {
+    doLogout: () => {
       lock
         .logout()
-    }
-  },
-  created: function () {
-    let component = this
-    lock.signedInOk = ({ profile }) => {
+    },
+    loggedIn: ({ profile }) => {
       component.isLoggedIn = true;
       component.profile = profile;
       // hide login button
-    }
-
-    lock.loggedOut = () => {
+    },
+    loggedOut: () => {
       component.isLoggedIn = false;
       component.profile = {};
       // hide logout button
     }
+  },
+  created: function () {
+    lock.on('signedIn', this.loggedIn)
+    lock.on('loggedOut', this.loggedOut)
   }
 }
 </script>

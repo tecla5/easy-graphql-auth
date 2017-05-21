@@ -18,12 +18,26 @@ class App extends Component {
     this.state = {isLoggedIn: false};
     this.doLogin = this.doLogin.bind(this);
 
-    this.lock.signedInOk = ({profile}) => {
-      this.setState({
-        isLoggedIn: true,
-        profile,
-      })
-    }
+    lock.on('signedIn', this.loggedIn)
+    lock.on('loggedOut', this.loggedOut)
+  }
+
+  loggedOut() {
+    this.setState({
+      isLoggedIn: false,
+      profile: {}
+    })
+    // hide logout button
+  }
+
+  signedIn({
+    profile
+  }) {
+    this.setState({
+      isLoggedIn: true,
+      profile,
+    })
+    // hide login button
   }
 
   doLogin() {

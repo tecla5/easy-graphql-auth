@@ -47,7 +47,7 @@ You can then hook into the Auth0 event flow from your view components.
 Example from React demo app:
 
 ```js
-this.lock.signedInOk = ({profile}) {
+this.lock.on('signedIn', ({profile}) {
   this.setState({
     isLoggedIn: true,
     profile,

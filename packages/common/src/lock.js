@@ -33,6 +33,7 @@ class Lock {
     this.store = store || new Store(this.keyNames, opts)
     this.tokens = this.store.getAll()
     this.io = opts.io || console
+    this.observers = {}
   }
 
   log(...msgs) {
@@ -47,11 +48,21 @@ class Lock {
     }
   }
 
+  on(eventName, observer) {
+    let slot = this.observers[eventName] || []
+    this.observers[eventName] = slot.concat(observer)
+  }
+
+  _publish(eventName, args) {
+    let observers = this.observers[eventName] || []
+    obervers.map(observer => observer(args))
+  }
 
   logout() {
     this.log('Logging out');
     this.resetTokens()
     this.resetStorage()
+    this._publish('loggedOut')
     this.loggedOut()
     return this
   }
@@ -118,53 +129,55 @@ class Lock {
     auth0Token,
     profile
   }) {
-    this.log('logged in', {
+    let args = {
       auth0Token,
       profile
-    })
-    let name = profile.name
+    }
+    this.log('logged in', args)
     this.storeAuth0Token(auth0Token)
     // once authenticated, signin to graphcool
-    await this.signinGraphcool({
-      auth0Token,
-      profile
-    })
+    await this.signinGraphcool(args)
   }
 
   async signinGraphcool({
     auth0Token,
     profile
   }) {
-    let name = profile.name
+    let args = {
+      auth0Token,
+      profile
+    }
     try {
       this.log('Signing into Graphcool');
-      await this.doCreateUser({
-        auth0Token,
-        profile
-      })
-      const signinResult = await this.doSigninUser({
-        auth0Token,
-        profile
-      })
+      await this.doCreateUser(args)
+      const signinResult = await this.doSigninUser(args)
       const signinToken = signinResult.data.signinUser.token
       this.storeGraphCoolToken(signinToken)
-      this.signedInOk({
-        profile
-      })
+      this._publish('signedIn', args)
+      this.signedInOk(args)
     } catch (err) {
-      this.signedInFailure(err)
-      this.handleSigninError(err)
+      let errArgs = Object.assign(args, {
+        err
+      })
+      this._publish('signedInFailure', args)
+      this.signedInFailure(args)
+      this.handleSigninError(args)
     }
   }
 
-  signedInFailure(err) {
+  signedInFailure({
+    err,
+    profile
+  }) {
     this.log('signedInFailure', err)
   }
 
   signedInOk({
+    auth0Token,
     profile
   }) {
     this.log('signedInOk', {
+      auth0Token,
       profile
     })
   }

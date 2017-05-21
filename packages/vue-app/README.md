@@ -14,28 +14,30 @@ import { lock } from '../auth0/lock'
 export default {
   name: 'app',
   methods: {
-    doLogin() {
+    doLogin: () => {
       lock
         .showLock()
         .subscribeAuthenticated()
     },
-    doLogout() {
+    doLogout: () => {
       lock
         .logout()
+    },
+
+    loggedIn: ({ profile }) => {
+      component.isLoggedIn = true;
+      component.profile = profile;
+      // hide login button
+    },
+    loggedOut: () => {
+      component.isLoggedIn = false;
+      component.profile = {};
+      // hide logout button
     }
   },
   created: function () {
-    lock.signedInOk = function ({ profile }) {
-      this.isLoggedIn = true;
-      this.profile = profile;
-      // hide login button
-    }
-
-    lock.loggedOut = function () {
-      this.isLoggedIn = false;
-      this.profile = {};
-      // hide logout button
-    }
+    lock.on('signedIn', this.loggedIn)
+    lock.on('loggedOut', this.loggedOut)
   }
 }
 ```
