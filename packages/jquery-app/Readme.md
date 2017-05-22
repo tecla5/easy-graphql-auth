@@ -1,6 +1,6 @@
 # jQuery GraphCool Auth0 app
 
-Demo app demonstrating GraphCool and Auth0 integration in a simple jQuery Web app
+Demo app demonstrating GraphCool and Auth0 integration in a simple [jQuery](https://jquery.com/) Web app
 
 ## Pre-requisites
 
@@ -13,22 +13,38 @@ On [GraphCool youtube channel](https://www.youtube.com/channel/UCptAHlN1gdwD89tF
 
 Now you should be good to go!
 
+## Development
+
+Install webpack-dev-server
+
+`$ npm i -g webpack-dev-server`
+
+Start dev server
+
+`$ npm run dev`
+
+Watch files, compile and trigger reload of dev server
+
+`$ npm run watch`
+
 ## Build
 
 Project needs to be compiled using Babel`
 
 `$ npm run build`
 
-## Run
+## Run file server
 
 Start a [local HTTP file server](https://www.npmjs.com/package/local-web-server)
 
-`$ npm i local-web-server`
+Install HTTP file server globally
+
+`$ npm i local-web-server -g`
 
 Start it
 
 ```bash
-$ ws
+$ npm run start
 serving at http://localhost:8000
 ```
 
@@ -37,6 +53,4 @@ Open a browser at `localhost:8000`
 `$ open http://localhost:8000`
 
 Time to play!
-
-
 

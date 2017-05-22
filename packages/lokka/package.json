@@ -1,13 +1,15 @@
 {
   "name": "@tecla5/gc-auth0-lokka",
   "version": "1.0.0",
-  "description": "Apollo client for GraphCool with Auth0",
-  "main": "index.js",
+  "description": "Lokka client for GraphCool with Auth0",
+  "main": "dist/bundle.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "build": "webpack --progress --colors",
+    "watch": "npm run build --watch"
   },
   "keywords": [
     "apollo",

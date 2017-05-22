@@ -2,8 +2,6 @@
 
 Integration library for GraphCool with Auth0 and Lokka.
 
-Currently *WIP*
-
 ## Install
 
 `npm i -S @tecla5/gc-auth0-lokka`

@@ -2,12 +2,14 @@
   "name": "@tecla5/gc-auth0-common",
   "version": "1.0.0",
   "description": "Apollo client for GraphCool with Auth0",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "build": "webpack --progress --colors",
+    "watch": "npm run build --watch"
   },
   "keywords": [
     "apollo",

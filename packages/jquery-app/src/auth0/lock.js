@@ -1,5 +1,6 @@
-const {
+import {
   setup
-} = require('@tecla5/gc-auth0-apollo')
-const config = require('../config')
-module.exports = setup(config)
+} from '@tecla5/gc-auth0-apollo'
+import config from './config'
+const lock = setup(config)
+export default lock
