@@ -19,13 +19,19 @@ class Lock {
   //   domain: 'xxx', // Your auth0 domain
   //   clientId: 'xxx' // // Your auth0 client id
   // }
-  constructor({
-    auth0,
-    keyNames,
-    queries,
-    store,
-    storage
-  }, opts = {}) {
+  constructor(config, opts = {}) {
+    this.validate(config)
+    const {
+      auth0,
+      keyNames,
+      queries,
+      store,
+      storage,
+      lockConfig
+    } = config || {}
+    // defaults
+    auth0 = auth0 || {}
+
     this.queries = queries || defaultQueries
     this.lock = new Auth0Lock(auth0.clientId, auth0.domain)
     this.keyNames = keyNames || storage || defaultKeyNames
@@ -34,7 +40,10 @@ class Lock {
     this.tokens = this.store.getAll()
     this.io = opts.io || console
     this.observers = {}
+    this.lockConfig = lockConfig || auth0.lock
   }
+
+  validate(config) {}
 
   log(...msgs) {
     if (this.logging) {
@@ -81,9 +90,11 @@ class Lock {
     return this
   }
 
-  showLogin() {
+  // display lock popup
+  showLogin(config = {}) {
     this.log('showLogin');
-    this.lock.show()
+    config = Object.assign({}, config, this.lockConfig || {})
+    this.lock.show(config)
     return this
   }
 

@@ -132,7 +132,7 @@ You can also add custom pub/sub events using `on` and `publish`
 
 ### UI functions
 
-- `showLogin()` - display Auth0 modal login
+- `showLogin(config = {})` - display Auth0 modal login with display config
 
 ### Storage
 
