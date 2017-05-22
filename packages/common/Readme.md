@@ -21,15 +21,12 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 ```js
 import {
   BaseGCAuth0Connector,
-  // from gc-auth0-common
   setup,
-  queries,
   Lock,
   createLock,
-  jwtUtil,
   Store,
   createStore
-} from '@tecla5/gc-auth0-common'
+} from '@tecla5/gc-auth0'
 ```
 
 ## Base Connector
@@ -41,11 +38,13 @@ The `BaseGCAuth0Connector` class can be subclassed as needed.
 The `setup` method can be used for a quick setup.
 
 ```js
+import Auth0Lock from 'auth0-lock'
 import {
   setup
-} from '@tecla5/gc-auth0-common'
+} from '@tecla5/gc-auth0'
 
 import config from '../config'
+config.Auth0Lock = Auth0Lock
 
 export default setup(config)
 ```
@@ -58,15 +57,19 @@ You can customize your setup as needed.
 import {
   createClient,
   GCAuth0Connector,
-  // from gc-auth0-common
-  Lock,
+} from '@tecla5/gc-auth0-apollo'
+
+import {
   createLock,
-  jwtUtil,
-  Store,
   createStore
 } from '@tecla5/gc-auth0-apollo'
 
+import Auth0Lock from 'auth0-lock'
 import config from '../config'
+
+// custom setup
+config.Auth0Lock = Auth0Lock
+
 config.store = createStore(config.storage)
 const lock = createLock(config)
 const client = createClient(config)
@@ -163,9 +166,8 @@ You can subclass and override any of these methods as you see fit.
 ```js
 import {
   Lock,
-  queries,
   storage
-} from '@tecla5/gc-auth0-common'
+} from '@tecla5/gc-auth0'
 import config from './config'
 
 class MyLock extends Lock {

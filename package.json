@@ -1,6 +1,4 @@
 {
-  "name": "@tecla5/gc-auth0",
-  "version": "1.0.0",
   "description": "GraphCool Auth0 integration libraries",
   "devDependencies": {
     "lerna": "^2.0.0-rc.4"

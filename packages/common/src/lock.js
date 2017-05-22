@@ -5,7 +5,9 @@ const defaultKeyNames = {
 
 import Store from './store'
 
-const USER_ALREADY_EXISTS_ERROR_CODE = 3023
+const errorCode = {
+  USER_ALREADY_EXISTS: 3023
+}
 
 class Lock {
   // storage: { // localstorage
@@ -200,7 +202,7 @@ class Lock {
 
   handleQueryError(err) {
     if (!err.graphQLErrors ||
-      err.graphQLErrors[0].code !== USER_ALREADY_EXISTS_ERROR_CODE
+      err.graphQLErrors[0].code !== errorCode.USER_ALREADY_EXISTS
     ) {
       this.handleError(err)
     }

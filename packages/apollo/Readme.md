@@ -22,19 +22,23 @@ Now you should be good to go!
 ### Lock & client configuration
 
 ```js
-const {
+import {
   createClient,
   GCAuth0Connector,
-  // from gc-auth0-common
+} from '@tecla5/gc-auth0-apollo'
+
+import {
   Lock,
   createLock,
   jwtUtil,
   Store,
   createStore
-} = require('@tecla5/gc-auth0-apollo')
+} from '@tecla5/gc-auth0'
 
+import Auth0Lock from 'auth0-lock'
 const config = require('../config')
 config.store = createStore(config.storage)
+config.Auth0Lock = Auth0Lock
 const lock = createLock(config)
 const client = createClient(config)
 

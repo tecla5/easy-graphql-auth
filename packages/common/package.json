@@ -1,7 +1,7 @@
 {
-  "name": "gc-auth0-common",
+  "name": "gc-auth0",
   "version": "1.0.0",
-  "description": "Apollo client for GraphCool with Auth0",
+  "description": "GraphCool-Auth0 integration lib",
   "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
