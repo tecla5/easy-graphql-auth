@@ -9,6 +9,10 @@ const errorCode = {
   USER_ALREADY_EXISTS: 3023
 }
 
+function defaultCreateLockUi(auth0) {
+  return new Auth0Lock(auth0.clientId, auth0.domain)
+}
+
 class Lock {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
@@ -27,11 +31,14 @@ class Lock {
       queries,
       store,
       storage,
-      lockConfig
+      lockConfig,
+      createLockUi
     } = config || {}
     // defaults
     this.queries = queries
-    this.lock = new Auth0Lock(auth0.clientId, auth0.domain)
+    let _createLockUi = createLockUi || defaultCreateLockUi
+    this.lock = _createLockUi(auth0)
+
     this.keyNames = keyNames || storage || defaultKeyNames
     this.logging = opts.logging
     this.store = store || new Store(this.keyNames, opts)

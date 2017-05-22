@@ -38,15 +38,24 @@ The `BaseGCAuth0Connector` class can be subclassed as needed.
 The `setup` method can be used for a quick setup.
 
 ```js
-import Auth0Lock from 'auth0-lock'
 import {
-  setup
+  createClient
+} from '@tecla5/gc-auth0-apollo'
+import {
+  setup,
+  createStore,
+  createLock
 } from '@tecla5/gc-auth0'
-
 import config from '../config'
-config.Auth0Lock = Auth0Lock
+import Auth0Lock from 'auth0-lock'
+config.Auth0Lock = Auth0Lock // class
 
-export default setup(config)
+export default setup({
+  createClient,
+  createStore,
+  createLock
+  // createAuth0Lock
+}, config)
 ```
 
 ### Lock & client configuration

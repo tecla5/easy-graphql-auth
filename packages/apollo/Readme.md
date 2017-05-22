@@ -23,29 +23,22 @@ Now you should be good to go!
 
 ```js
 import {
-  createClient,
-  GCAuth0Connector,
+  createClient
 } from '@tecla5/gc-auth0-apollo'
-
 import {
-  Lock,
-  createLock,
-  jwtUtil,
-  Store,
-  createStore
+  setup,
+  createStore,
+  createLock
 } from '@tecla5/gc-auth0'
-
+import config from '../config'
 import Auth0Lock from 'auth0-lock'
-const config = require('../config')
-config.store = createStore(config.storage)
 config.Auth0Lock = Auth0Lock
-const lock = createLock(config)
-const client = createClient(config)
 
-module.exports = {
-  lock,
-  client
-}
+export default setup({
+  createClient,
+  createStore,
+  createLock
+}, config)
 ```
 
 Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
@@ -91,7 +84,11 @@ function createGCAuth0Connector(config) {
   return new MyGCAuthConnector(config).configure()
 }
 
-const config = require('./config)
+import config from '../config'
+import Auth0Lock from 'auth0-lock'
+config.Auth0Lock = Auth0Lock
+
+
 config.createGCAuth0Connector = createGCAuth0Connector
 const myClient = client(config)
 ```
@@ -101,7 +98,7 @@ const myClient = client(config)
 Use a configuration object of the following form
 
 ```js
-module.exports = {
+export default {
   graphCool: {
     connection: { // used by apollo/lokka connection configuration
       uri: 'xxx', // graphCool endpoint
