@@ -1,4 +1,5 @@
-const gc = require('./gc')
-const auth0 = require('./auth0')
+import gc from './gc'
+import auth0 from './auth0'
+import deepMerge from 'deepmerge'
 
-module.exports = Object.assign({}, gc, auth0)
+export default deepMerge({}, gc, auth0)

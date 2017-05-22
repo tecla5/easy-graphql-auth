@@ -1,15 +1,18 @@
-const {
+import {
   setup,
   Store,
   createStore,
   Lock,
   createLock,
   jwtUtil
-} = require('@tecla5/gc-auth-common')
+} from '@tecla5/gc-auth0-common'
 
-module.exports = {
-  GCAuth0Connector: require('./connector'),
-  createClient: require('./create-client'),
+import GCAuth0Connector from './connector'
+import createClient from './create-client'
+
+export default {
+  GCAuth0Connector,
+  createClient,
   // from gc-auth0-common
   Lock,
   createLock,

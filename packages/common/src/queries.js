@@ -32,7 +32,7 @@ const signinUser = gql `
   }
 `
 
-module.exports = {
+export default {
   createUser,
   signinUser
 }

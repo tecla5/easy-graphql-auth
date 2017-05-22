@@ -1,20 +1,21 @@
-const {
+import {
   Lock,
   createLock
-} = require('./lock')
+} from './lock'
 
-const {
+import {
   Store,
   createStore
-} = require('./store')
+} from './store'
 
-module.exports = {
+import BaseConnector from './connector'
+import setup from './setup'
+import queries from './queries'
+import jwtUtil from './jwt-util'
+
+export default {
   Lock,
   createLock,
   Store,
   createStore,
-  BaseConnector: require('./connector'),
-  setup: require('./setup'),
-  queries: require('./queries'),
-  jwtUtil: require('./jwt-util')
 }

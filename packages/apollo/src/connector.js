@@ -1,13 +1,13 @@
-const ApolloClient = require('apollo-client')
+import ApolloClient from 'apollo-client'
 const {
   createNetworkInterface
 } = ApolloClient
 
-const {
+import {
   BaseGCAuth0Connector
-} = require('@tecla5/gc-auth0-common')
+} from '@tecla5/gc-auth0-common'
 
-module.exports = class GCAuth0Connector extends BaseGCAuth0Connector {
+export default class GCAuth0Connector extends BaseGCAuth0Connector {
   constructor(config = {}) {
     super(config)
   }

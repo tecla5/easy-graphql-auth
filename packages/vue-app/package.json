@@ -18,9 +18,10 @@
     "email": "kmandrup@gmail.com"
   },
   "dependencies": {
-    "offline-plugin": "^4.8.0",
     "@tecla5/gc-auth0-apollo": "*",
-    "@tecla5/gc-auth0-lokka": "*"
+    "@tecla5/gc-auth0-lokka": "*",
+    "deepmerge": "^1.3.2",
+    "offline-plugin": "^4.8.0"
   },
   "devDependencies": {
     "poi": "^8.0.0",

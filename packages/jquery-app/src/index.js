@@ -1,3 +1,5 @@
+// import 'babel-polyfill'
+
 import {
   lock,
   client
@@ -51,7 +53,7 @@ class Auth {
 }
 
 $(document).ready(() => {
-  new Auth({
+  let auth = new Auth({
     login: $('#login'),
     logout: $('#logout')
   })

@@ -1,4 +1,6 @@
 .vscode
 node_modules
 *.log
-dist
+src
+test
+webpack.config.js

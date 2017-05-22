@@ -1,19 +1,31 @@
-const {
+import {
   Store,
   createStore,
   Lock,
   createLock,
   jwtUtil,
   setup
-} = require('@tecla5/gc-auth-common')
+} from '@tecla5/gc-auth0-common'
 
-module.exports = {
-  GCAuth0Connector: require('./connector'),
-  createClient: require('./create-client'),
+import createClient from './create-client'
+import GCAuth0Connector from './connector'
+
+function apolloSetup(config) {
+  setup({
+    createLock,
+    createStore,
+    createClient
+  }, config)
+}
+
+export default {
+  createClient,
+  GCAuth0Connector,
   Lock,
   createLock,
   jwtUtil,
   Store,
   createStore,
-  setup
+  setup,
+  apolloSetup
 }

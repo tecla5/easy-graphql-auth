@@ -1,12 +1,12 @@
-const Auth0Lock = require('auth0-lock')
+import Auth0Lock from 'auth0-lock'
 
 const defaultKeyNames = {
   auth0TokenStorageKey: 'auth0Token',
   graphCoolTokenStorageKey: 'graphCoolToken'
 }
 
-const defaultQueries = require('./queries')
-const Store = require('./store')
+import defaultQueries from './queries'
+import Store from './store'
 
 const USER_ALREADY_EXISTS_ERROR_CODE = 3023
 
@@ -250,7 +250,7 @@ function createLock(config) {
   return new Lock(config)
 }
 
-module.exports = {
+export default {
   createLock,
   Lock
 }

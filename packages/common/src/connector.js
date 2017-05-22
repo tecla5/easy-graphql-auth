@@ -1,4 +1,4 @@
-module.exports = class BaseGCAuth0Connector {
+export default class BaseGCAuth0Connector {
   constructor(config = {}) {
     this.validate(config)
     this.config = config

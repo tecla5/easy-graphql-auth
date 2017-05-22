@@ -70,17 +70,17 @@ class App extends Component {
       className = "hide"
       onClick = {
         doLogout
-      } > Logout < /button> <
-      /div> <
+      } > Logout < /button> < /
+      div > <
       div class = "status" > {
         {
           isLoggedIn
         }
-      } < /div> <
-      /div> <
+      } < /div> < /
+      div > <
       p className = "App-intro" >
-      To get started, edit < code > src / App.js < /code> and save to reload. <
-      /p> <
+      To get started, edit < code > src / App.js < /code> and save to reload. < /
+      p > <
       /div>
     );
   }

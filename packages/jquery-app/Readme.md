@@ -54,3 +54,19 @@ Open a browser at `localhost:8000`
 
 Time to play!
 
+## Troubleshooting
+
+Currently getting:
+
+```bash
+TypeError: Super expression must either be null or a function, not undefined
+```
+
+Have tried with `babel-polyfill` which can be added either in html `<script>` element
+or as first statement in included code `import 'babel-polyfill'`
+
+```html
+  <script src="node_modules/babel-polyfill/dist/polyfill.js"></script>
+```
+
+Might be due to `async` statements or other ES6/ES7 syntax not being transpiled correctly!

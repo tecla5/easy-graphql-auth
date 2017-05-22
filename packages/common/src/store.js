@@ -27,7 +27,7 @@ function createStore(keyNames, opts = {}) {
   return new Store(keyNames, opts)
 }
 
-module.exports = {
+export default {
   Store,
   createStore
 }

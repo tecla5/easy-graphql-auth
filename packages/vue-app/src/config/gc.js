@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   graphCool: {
     connection: { // used by apollo
       uri: 'xxx'
