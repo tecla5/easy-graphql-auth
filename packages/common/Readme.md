@@ -19,7 +19,7 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 `@tecla5/gc-auth0-common` exports the following:
 
 ```js
-const {
+import {
   BaseGCAuth0Connector,
   // from gc-auth0-common
   setup,
@@ -29,7 +29,7 @@ const {
   jwtUtil,
   Store,
   createStore
-} = require('@tecla5/gc-auth0-common')
+} from '@tecla5/gc-auth0-common'
 ```
 
 ## Base Connector
@@ -41,11 +41,13 @@ The `BaseGCAuth0Connector` class can be subclassed as needed.
 The `setup` method can be used for a quick setup.
 
 ```js
-const {
+import {
   setup
-} = require('@tecla5/gc-auth0-common')
-const config = require('../config')
-module.exports = setup(config)
+} from '@tecla5/gc-auth0-common'
+
+import config from '../config'
+
+export default setup(config)
 ```
 
 ### Lock & client configuration
@@ -53,7 +55,7 @@ module.exports = setup(config)
 You can customize your setup as needed.
 
 ```js
-const {
+import {
   createClient,
   GCAuth0Connector,
   // from gc-auth0-common
@@ -62,14 +64,14 @@ const {
   jwtUtil,
   Store,
   createStore
-} = require('@tecla5/gc-auth0-apollo')
+} from '@tecla5/gc-auth0-apollo'
 
-const config = require('../config')
+import config from '../config'
 config.store = createStore(config.storage)
 const lock = createLock(config)
 const client = createClient(config)
 
-module.exports = {
+export default {
   lock,
   client
 }
@@ -159,12 +161,12 @@ You can also add custom pub/sub events using `on` and `publish`
 You can subclass and override any of these methods as you see fit.
 
 ```js
-const {
+import {
   Lock,
   queries,
   storage
-} = require('@tecla5/gc-auth0-common')
-const config = require(./config)
+} from '@tecla5/gc-auth0-common'
+import config from './config'
 
 class MyLock extends Lock {
   // ...
@@ -186,7 +188,7 @@ In the UI
 ```js
 myLock
   .subscribeAuthenticated()
-  .showLock()
+  .showLock(displayConfig)
 ```
 
 ### Hooking in
