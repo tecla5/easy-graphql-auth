@@ -30,8 +30,6 @@ class Lock {
       lockConfig
     } = config || {}
     // defaults
-    auth0 = auth0 || {}
-
     this.queries = queries || defaultQueries
     this.lock = new Auth0Lock(auth0.clientId, auth0.domain)
     this.keyNames = keyNames || storage || defaultKeyNames
