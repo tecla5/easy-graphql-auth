@@ -3,17 +3,23 @@ const defaultKeyNames = {
   graphCoolTokenStorageKey: 'graphCoolToken'
 }
 
-import Store from './store'
+import {
+  Store
+} from './store'
 
 const errorCode = {
   USER_ALREADY_EXISTS: 3023
 }
 
-function defaultCreateLockUi(auth0) {
+function defaultCreateLockUi(auth0 = {}) {
   return new Auth0Lock(auth0.clientId, auth0.domain)
 }
 
-class Lock {
+function defaultCreateStore(keyNames, ops) {
+  return new Store(keyNames, opts)
+}
+
+export class Lock {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
   //   graphcoolToken: 'xxx' // key to store graphcoolToken
@@ -23,6 +29,7 @@ class Lock {
   //   clientId: 'xxx' // // Your auth0 client id
   // }
   constructor(config, opts = {}) {
+    console.log('config', config, config.config)
     this.validate(config)
     const {
       Auth0Lock,
@@ -35,17 +42,19 @@ class Lock {
       createLockUi
     } = config || {}
     // defaults
+    this.logging = opts.logging
+
     this.queries = queries
     let _createLockUi = createLockUi || defaultCreateLockUi
-    this.lock = _createLockUi(auth0)
-
     this.keyNames = keyNames || storage || defaultKeyNames
-    this.logging = opts.logging
-    this.store = store || new Store(this.keyNames, opts)
+    console.log('keyNames', this.keyNames)
+
+    this.store = store || defaultCreateStore(this.keyNames, opts)
     this.tokens = this.store.getAll()
     this.io = opts.io || console
     this.observers = {}
     this.lockConfig = lockConfig || auth0.lock
+    this.lock = _createLockUi(auth0)
   }
 
   validate(config) {}
@@ -253,11 +262,6 @@ class Lock {
   }
 }
 
-function createLock(config) {
+export function createLock(config) {
   return new Lock(config)
-}
-
-export default {
-  createLock,
-  Lock
 }

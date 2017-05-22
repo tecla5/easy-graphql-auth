@@ -1,4 +1,4 @@
-export default class BaseGCAuth0Connector {
+export class BaseGCAuth0Connector {
   constructor(config = {}) {
     this.validate(config)
     this.config = config
@@ -6,17 +6,17 @@ export default class BaseGCAuth0Connector {
     this.storage = config.storage
     this.keyNames = config.storage // alias
     this.auth0 = config.auth0
-    this.graphCool = config.graphCool
+    this.gc = config.gc
     this.tokens = this.store ? this.store.getAll() : config.tokens
-    this.connection = config.graphCool.connection
+    this.connection = config.gc.connection
   }
 
   validate() {
     if (!config.storage) {
       throw Error('missing storage config')
     }
-    if (!config.graphCool) {
-      throw Error('missing graphCool config')
+    if (!config.gc) {
+      throw Error('missing gc config')
     }
     if (typeof config !== 'object') {
       throw Error('config must be an object')

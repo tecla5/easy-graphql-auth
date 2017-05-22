@@ -4,6 +4,7 @@
   <title>Common Auth0 app</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
+  <script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
 </head>
 
 <body>
@@ -16,7 +17,10 @@
     </div>
     <div class="status"></div>
   </div>
-  <script src="dist/bundle.js"></script>
+  <script src="dist/app.js"></script>
+  <script>
+    gcAuth0(Auth0Lock)
+  </script>
 </body>
 
 </html>

@@ -2,13 +2,14 @@
   "presets": [
     [
       "env", {
-        "modules": false
+        "modules": "umd"
       }
     ]
   ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-async-to-generator",
+    "add-module-exports",
     "transform-runtime"
   ]
 }

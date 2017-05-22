@@ -14,6 +14,10 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 - [lokka](https://github.com/kadirahq/lokka)
 - other/custom clients
 
+## Babel play
+
+Experiment with Babel compile via `src/play.js` ;)
+
 ## In the lib
 
 `@tecla5/gc-auth0-common` exports the following:
@@ -27,6 +31,14 @@ import {
   Store,
   createStore
 } from '@tecla5/gc-auth0'
+```
+
+## Auth0Lock
+
+You can include it from CDN
+
+```html
+<script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
 ```
 
 ## Base Connector

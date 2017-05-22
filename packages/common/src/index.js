@@ -1,19 +1,20 @@
-import {
+export {
   Lock,
   createLock
-} from './lock'
+}
+from './lock'
 
-import {
+export {
   Store,
   createStore
-} from './store'
-
-import BaseConnector from './connector'
-import setup from './setup'
-
-export default {
-  Lock,
-  createLock,
-  Store,
-  createStore,
 }
+from './store'
+
+export {
+  BaseGCAuth0Connector
+}
+from './connector'
+export {
+  setup
+}
+from './setup'
