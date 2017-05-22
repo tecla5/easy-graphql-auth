@@ -1,11 +1,11 @@
 export const gc = {
   gc: {
     connection: { // used by apollo
-      uri: 'xxx'
+      uri: 'https://api.graph.cool/simple/v1/cj2rloi1qdont01601k6x1qe8'
     },
-    endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
+    endpoint: 'https://api.graph.cool/simple/v1/cj2rloi1qdont01601k6x1qe8' // Your graphcool simple api endpoint url goes here
   },
   storage: {
-    gcTokenKeyName: 'xxx' // key to store graphcoolToken
+    gcTokenKeyName: 'graphcoolToken' // key to store graphcoolToken
   }
 }

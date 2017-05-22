@@ -19,7 +19,13 @@
   </div>
   <script src="dist/app.js"></script>
   <script>
-    gcAuth0(Auth0Lock)
+    var auth0 = gcAuth0(Auth0Lock)
+    auth0.lock
+      .showLogin()
+      .subscribeAuthenticated()
+      .on('signedIn', function (res) {
+        console.log('logged in', res)
+      })
   </script>
 </body>
 

@@ -54,7 +54,7 @@ export class Lock {
     this.io = opts.io || console
     this.observers = {}
     this.lockConfig = lockConfig || auth0.lock
-    this.lock = _createLockUi(auth0)
+    this.lock = _createLockUi(auth0, opts)
   }
 
   validate(config) {}
@@ -133,7 +133,7 @@ export class Lock {
   }
 
   onAuthenticated(authResult) {
-    this.lock.getProfile(authResult.idToken, this.createProfileReceivedCb(authResult))
+    this.lock.getUserInfo(authResult.idToken, this.createProfileReceivedCb(authResult))
   }
 
   createProfileReceivedCb(authResult) {

@@ -125,6 +125,44 @@ const myLock = new Lock({
 })
 ```
 
+### Auth0 Lock Playground
+
+Try out the [Auth0 Lock playground](https://auth0.github.io/playground/) to experiment with different display options.
+
+### Customized Auth0Lock
+
+We can easily replace `AuthLock` with `Auth0LockPasswordless`:
+
+`import Auth0LockPasswordless from 'auth0-lock-passwordless'`
+
+Or import via HTML `<script>`
+
+```html
+<script src="http://cdn.auth0.com/js/lock-passwordless-2.2.min.js"></script>
+```
+
+```js
+lock = createLock({
+  createLockUi: function(auth0, opts) {
+    return new Auth0LockPasswordless(auth0.clientId, auth0.domain)
+  }
+})
+
+lock.prototype.onAuthenticated = function () {
+  // or lock.magiclink() to send email message with magic link
+  this.lock.sms(this.createProfileReceivedCb(authResult))
+}
+
+lock.prototype.createProfileReceivedCb = function() {
+  return (err, profile, id_token) => {
+    err ? this.handleProfileError(err) : this.handleProfile({
+      profile,
+      id_token
+    })
+  }
+}
+```
+
 ### Logout
 
 - `logout()`
