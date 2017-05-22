@@ -4,7 +4,7 @@ Integration library for GraphCool with Auth0 and Lokka.
 
 ## Install
 
-`npm i -S @tecla5/gc-auth0-lokka`
+`npm i -S @tecla5/gc-auth0-lokka @tecla5/gc-auth0-common`
 
 ## Pre-requisites
 
@@ -22,6 +22,15 @@ Now you should be good to go!
 Using default setup:
 
 ```js
+import {
+  setup,
+  Store,
+  createStore,
+  Lock,
+  createLock,
+  jwtUtil
+} from '@tecla5/gc-auth0-common'
+
 const {
   createClient,
   GCAuth0Connector

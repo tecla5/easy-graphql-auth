@@ -212,6 +212,78 @@ class App extends Component {
 }
 ```
 
+### JWT utils
+
+Sample jwt utility methods
+
+```js
+import decode from 'jwt-decode'
+
+export function getTokenExpirationDate(token) {
+  const decoded = decode(token)
+  if (!decoded.exp) {
+    return null
+  }
+  const date = new Date(0) // The 0 here is the key, which sets the date to the epoch
+  date.setUTCSeconds(decoded.exp)
+  return date
+}
+
+export function isTokenExpired(token) {
+  const date = getTokenExpirationDate(token)
+  const offsetSeconds = 0
+  if (date === null) {
+    return false
+  }
+  return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
+}
+```
+
+### Queries
+
+Sample GraphQL queries to pass in `config` object
+
+```js
+import gql from 'graphql-tag';
+
+const createUser = gql `
+  mutation createUser($authToken: String!, $name: String){
+    createUser(
+      authProvider: {
+        auth0: {
+          idToken: $authToken,
+        }
+      },
+      name: $name
+    ) {
+      id,
+      auth0UserId
+    }
+  }
+`
+
+const signinUser = gql `
+  mutation signinUser($authToken: String!){
+    signinUser(
+      auth0: {
+        idToken: $authToken
+      }
+    ) {
+      token
+      user {
+        id,
+        auth0UserId
+      }
+    }
+  }
+`
+
+export default {
+  createUser,
+  signinUser
+}
+```
+
 ## Tests
 
 Tests are written and run using [ava](https://github.com/avajs/ava)

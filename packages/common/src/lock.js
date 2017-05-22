@@ -1,11 +1,8 @@
-import Auth0Lock from 'auth0-lock'
-
 const defaultKeyNames = {
   auth0TokenStorageKey: 'auth0Token',
   graphCoolTokenStorageKey: 'graphCoolToken'
 }
 
-import defaultQueries from './queries'
 import Store from './store'
 
 const USER_ALREADY_EXISTS_ERROR_CODE = 3023
@@ -22,6 +19,7 @@ class Lock {
   constructor(config, opts = {}) {
     this.validate(config)
     const {
+      Auth0Lock,
       auth0,
       keyNames,
       queries,
@@ -30,7 +28,7 @@ class Lock {
       lockConfig
     } = config || {}
     // defaults
-    this.queries = queries || defaultQueries
+    this.queries = queries
     this.lock = new Auth0Lock(auth0.clientId, auth0.domain)
     this.keyNames = keyNames || storage || defaultKeyNames
     this.logging = opts.logging

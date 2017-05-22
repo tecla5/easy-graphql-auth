@@ -10,8 +10,6 @@ import {
 
 import BaseConnector from './connector'
 import setup from './setup'
-import queries from './queries'
-import jwtUtil from './jwt-util'
 
 export default {
   Lock,
