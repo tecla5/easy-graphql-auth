@@ -117,6 +117,10 @@ export default {
 }
 ```
 
+## Babel compilation optimization
+
+See [How to do proper tree-shaking in Webpack 2](https://blog.craftlab.hu/how-to-do-proper-tree-shaking-in-webpack-2-e27852af8b21)
+
 ## Tests
 
 Tests are written and run using [ava](https://github.com/avajs/ava)
