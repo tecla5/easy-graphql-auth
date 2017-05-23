@@ -1,11 +1,9 @@
-# GraphCool Auth0 integration libs
+# Auth0 integration libs for GraphQL clients and servers
 
-A small collection of GraphCool Auth0 integration libs.
-Makes it quick and easy to setup [GraphCool](https://www.graph.cool) with [Auth0](https://auth0.com/) integration for *GraphQL* clients, such as:
+Makes it quick and easy to setup GraphQL servers such as [GraphCool](https://www.graph.cool) with [Auth0](https://auth0.com/) and *GraphQL* clients, such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
-- other/custom clients
 
 See the docs for each of the modules included for more details including installation and usage. Enjoy!!
 
@@ -15,15 +13,15 @@ Coming soon: *Stripe subscription payments integration*
 
 ## Modules
 
-- `@tecla5/gc-auth0-apollo`
-- `@tecla5/gc-auth0-lokka`
-- `@tecla5/gc-auth0-common`
+- `@tecla5/gql-apollo`
+- `@tecla5/gql-lokka`
+- `@tecla5/gql-auth0`
 
 ## Demo apps
 
+- jQuery app
 - React app
 - Vue app
-- jQuery app
 
 Please add one for your framework of choice ;)
 

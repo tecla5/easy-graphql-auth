@@ -4,7 +4,7 @@ Common utilities for integration of GraphCool with Auth0
 
 ## Install
 
-`npm i -S @tecla5/gc-auth0-common`
+`npm i -S @tecla5/gql-auth0-common`
 
 ## Usage
 
@@ -131,7 +131,22 @@ Try out the [Auth0 Lock playground](https://auth0.github.io/playground/) to expe
 
 ## Controlling the lock
 
-See all the Lock [customization](https://auth0.com/docs/libraries/lock/v10/customization) options you can pass to fine tune the Lock behavior and visual appearance.
+See the [Lock reference](https://auth0.com/docs/libraries/lock/v10/) and the [customization configuration](https://auth0.com/docs/libraries/lock/v10/customization) for options you can pass to fine tune the Lock behavior and visual appearance:
+
+- [display](https://auth0.com/docs/libraries/lock/v10/customization#display-options)
+- [theming](https://auth0.com/docs/libraries/lock/v10/customization#theming-options)
+- [social](https://auth0.com/docs/libraries/lock/v10/customization#social-options)
+- [authentication](https://auth0.com/docs/libraries/lock/v10/customization#authentication-setup)
+- [database](https://auth0.com/docs/libraries/lock/v10/customization#database-options)
+- [other](https://auth0.com/docs/libraries/lock/v10/customization#other-options)
+
+### UI customization
+
+See [ui customization](https://auth0.com/docs/libraries/lock/v10/ui-customization) page
+
+### I18n
+
+See [i18n](https://auth0.com/docs/libraries/lock/v10/i18n)
 
 ### Customized Auth0Lock
 
@@ -176,6 +191,7 @@ lock.prototype.createProfileReceivedCb = function() {
 
 - `subscribeAuthenticated()`
 - `onAuthenticated(authResult)`
+- `onHashParsed()`
 - `createProfileReceivedCb(authResult)`
 - `handleProfile({authResult, profile})`
 
@@ -200,7 +216,7 @@ You can also add custom pub/sub events using `on` and `publish`
 
 ### UI functions
 
-- `showLogin(config = {})` - display Auth0 modal login with display config
+- `showLock(config = {})` - display Auth0 modal Lock with display config
 
 ### Storage
 
@@ -221,6 +237,16 @@ You can also add custom pub/sub events using `on` and `publish`
 - `async doSigninUser({auth0Token,profile})`
 - `async onAuth0Login({auth0Token, profile})`
 - `async signinGraphcool({auth0Token, profile})`
+
+### build
+
+- `buildSigninUserData({auth0Token, profile})`
+- `buildUserData({auth0Token, profile})`
+
+### Fake data
+
+- `fakeCreateUser(userData)`
+- `fakeSigninUser(profile)`
 
 ## Custom lock
 

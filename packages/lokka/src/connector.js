@@ -6,10 +6,10 @@ import {
 } from 'lokka-transport-http'
 
 import {
-  BaseGCAuth0Connector
-} from '@tecla5/gc-auth0-common'
+  GraphQLConnector
+} from '@tecla5/gc-auth0'
 
-export default class GCAuth0Connector extends BaseGCAuth0Connector {
+export class LokkaConnector extends GraphQLConnector {
   constructor(config = {}) {
     super(config)
   }

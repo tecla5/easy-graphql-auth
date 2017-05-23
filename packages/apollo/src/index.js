@@ -5,22 +5,24 @@ import {
   createLock,
   jwtUtil,
   setup
-} from '@tecla5/gc-auth0-common'
+} from '@tecla5/gql-auth0'
 
-import createClient from './create-client'
-import GCAuth0Connector from './connector'
+import {
+  ApolloConnector as Connector,
+  createConnector
+} from './apollo-connector'
 
 function apolloSetup(config) {
   setup({
     createLock,
     createStore,
-    createClient
+    createConnector
   }, config)
 }
 
 export default {
-  createClient,
-  GCAuth0Connector,
+  createConnector,
+  Connector,
   Lock,
   createLock,
   jwtUtil,

@@ -1,15 +1,10 @@
 export class Store {
   constructor(keyNames, opts = {}) {
     this.keyNames = keyNames
-    this.validateKeyName('auth0IdTokenKeyName').validateKeyName('gcTokenKeyName')
+    this.validateKeyName('auth0IdTokenKeyName').validateKeyName('gqlServerTokenKeyName')
 
     this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName
-    this.gcTokenKeyName = this.keyNames.gcTokenKeyName
-
-    console.log({
-      get: this.getItem,
-      set: this.setItem
-    })
+    this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
   }
 
   removeItem(name) {
@@ -39,13 +34,13 @@ export class Store {
 
   resetAll() {
     this.removeItem(this.auth0TokenKeyName)
-    this.removeItem(this.gcTokenKeyName)
+    this.removeItem(this.gqlServerTokenKeyName)
   }
 
   getAll(opts = {}) {
     return {
       auth0Token: this.getItem(this.auth0IdTokenKeyName),
-      graphcoolToken: this.getItem(this.gcTokenKeyName),
+      gqlServerToken: this.getItem(this.gqlServerTokenKeyName),
     }
   }
 

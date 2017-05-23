@@ -6,14 +6,16 @@ from './lock'
 
 export {
   Store,
-  createStore
+  createStore,
+  Configurable,
+  keyNames
 }
-from './store'
+from './common'
 
 export {
-  BaseGCAuth0Connector
+  GraphQLConnector
 }
-from './connector'
+from './gql-connector'
 export {
   setup
 }

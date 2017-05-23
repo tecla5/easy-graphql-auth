@@ -1,10 +1,10 @@
-# GraphCool Auth0 Lokka
+# GraphQL server integration with Lokka
 
-Integration library for GraphCool with Auth0 and Apollo
+Integration library for GraphQL server with Auth0 and Apollo
 
 ## Install
 
-`npm i -S @tecla5/gc-auth0-apollo`
+`npm i -S @tecla5/gql-auth0-apollo`
 
 ## Pre-requisites
 
@@ -34,11 +34,13 @@ import config from '../config'
 import Auth0Lock from 'auth0-lock'
 config.Auth0Lock = Auth0Lock
 
-export default setup({
+let res = setup({
   createClient,
   createStore,
   createLock
 }, config)
+
+export default res.lock
 ```
 
 Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.

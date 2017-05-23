@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/gc-auth0-apollo",
-  "version": "1.0.0",
-  "description": "Apollo client for GraphCool with Auth0",
+  "name": "@tecla5/gql-apollo",
+  "version": "0.1.0",
+  "description": "Apollo client for GraphQL server",
   "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/gc-auth0-apollo.git"
+    "url": "https://github.com/tecla5/gql-auth0-apollo.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",

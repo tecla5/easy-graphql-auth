@@ -19,8 +19,7 @@
   </div>
   <script src="dist/app.js"></script>
   <script>
-    var auth0 = gcAuth0(Auth0Lock)
-    var lock = auth0.lock
+    var lock = gqlServerAuth0(Auth0Lock)
     lock
       .enableLog()
       .subscribeAuthenticated()

@@ -4,10 +4,10 @@ const {
 } = ApolloClient
 
 import {
-  BaseGCAuth0Connector
-} from '@tecla5/gc-auth0-common'
+  GraphQLConnector
+} from '@tecla5/gql-auth0'
 
-export default class GCAuth0Connector extends BaseGCAuth0Connector {
+export class ApolloConnector extends GraphQLConnector {
   constructor(config = {}) {
     super(config)
   }
@@ -15,14 +15,14 @@ export default class GCAuth0Connector extends BaseGCAuth0Connector {
   configure() {
     let networkInterface = createNetworkInterface(this.connection)
     this.networkInterface = networkInterface
-    let graphcoolTokenKeyName = this.keyNames.graphcoolTokenKeyName
+    let graphcoolTokenKeyName = this.keyNames.gqlServerTokenKeyName
     networkInterface.use([{
       applyMiddleware(req, next) {
         if (!req.options.headers) {
           req.options.headers = {}; // Create the header object if needed.
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = this.tokens.graphCoolToken
+        req.options.headers.authorization = this.tokens.gqlServerToken
         next();
       }
     }]);
@@ -31,4 +31,8 @@ export default class GCAuth0Connector extends BaseGCAuth0Connector {
       networkInterface
     })
   }
+}
+
+export function createConnector(config) {
+  return new Connector(config).configure()
 }

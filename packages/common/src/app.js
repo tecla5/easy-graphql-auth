@@ -7,11 +7,12 @@ import {
   config
 } from './config'
 
-export default function gcAuth0(Auth0Lock) {
+export default function gqlServerAuth0(Auth0Lock) {
   config.Auth0Lock = Auth0Lock
 
-  return setup({
+  let res = setup({
     createStore,
     createLock
   }, config)
+  return res.lock
 }

@@ -1,9 +1,9 @@
 import {
-  gc
-} from './gc'
+  gqlServer
+} from './gqlServer'
 import {
   auth0
 } from './auth0'
-import deepMerge from 'deepmerge'
+import extend from 'deep-extend'
 
-export const config = deepMerge.all([gc, auth0])
+export const config = extend(gqlServer, auth0)

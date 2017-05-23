@@ -1,17 +1,15 @@
-const defaultKeyNames = {
-  auth0TokenStorageKey: 'auth0Token',
-  graphCoolTokenStorageKey: 'graphCoolToken'
-}
-
 import {
   Store
-} from './store'
+} from './common/store'
+
+import extend from 'deep-extend'
+import defaultKeyNames from './common/keynames'
 
 const errorCode = {
   USER_ALREADY_EXISTS: 3023
 }
 
-export class Lock {
+export class Lock extends Configurable {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
   //   graphcoolToken: 'xxx' // key to store graphcoolToken
@@ -21,10 +19,13 @@ export class Lock {
   //   clientId: 'xxx' // // Your auth0 client id
   // }
   constructor(config, opts = {}) {
-    console.log('config', config, config.config)
-    this.validate(config)
+    super(config, opts)
     const {
       Auth0Lock,
+      title,
+      logo,
+      theme,
+      dict,
       auth0,
       keyNames,
       queries,
@@ -34,33 +35,36 @@ export class Lock {
       createLockUi,
       displayMethod
     } = config || {}
-    // defaults
-    this.logging = opts.logging
 
     this.displayMethod = displayMethod || 'getUserInfo'
     this.queries = queries || {}
     let _createLockUi = createLockUi || this.defaultCreateLockUi
-    this.keyNames = keyNames || storage || defaultKeyNames
-    console.log('keyNames', this.keyNames)
-
-    this.store = store || this.defaultCreateStore(this.keyNames, opts)
-    this.tokens = this.store.getAll()
-    this.io = opts.io || console
-    this.observers = {}
     this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
+
+    this.theme = theme
+    this.theme.logo = this.theme.logo || logo
+    this.dict = dict
+    this.dict.title = this.dict.title || title
+    this.setupLockConfig()
+
     this.lock = _createLockUi(auth0, opts)
     this.onHashParsed()
-    console.log('lock', this.lock)
+  }
+
+  setupLockConfig() {
+    this.lockConfig = extend(this.defaultLockConfig, this.lockConfig)
+  }
+
+  get defaultTheme() {
+    return this.theme || {}
   }
 
   get defaultLockConfig() {
-    return {}
-    // return {
-    //   auth: {
-    //     redirect: false
-    //   },
-    //   autoclose: true
-    // }
+    return {
+      theme: this.defaultTheme() || {}
+    }, {
+      languageDictionary: this.dict || {}
+    }
   }
 
   defaultCreateLockUi(auth0 = {}, opts) {
@@ -68,40 +72,12 @@ export class Lock {
     return new Auth0Lock(auth0.clientId, auth0.domain, opts)
   }
 
-  defaultCreateStore(keyNames, opts) {
-    return new Store(keyNames, opts)
-  }
-
-  validate(config) {}
-
-  enableLog() {
-    this.logging = true
-    return this
-  }
-
-  disableLog() {
-    this.logging = false
-    return this
-  }
-
-  log(...msgs) {
-    if (this.logging) {
-      this.io.log('Lock', ...msgs)
-    }
-  }
-
-  error(...msgs) {
-    if (this.logging) {
-      this.io.error('Lock', ...msgs)
-    }
-  }
-
   get auth0IdTokenKeyName() {
     return this.store.auth0IdTokenKeyName
   }
 
-  get gcTokenKeyName() {
-    return this.store.gcTokenKeyName
+  get gqlServerTokenKeyName() {
+    return this.store.gqlServerTokenKeyName
   }
 
   getAuth0Token() {
@@ -113,9 +89,9 @@ export class Lock {
     return this
   }
 
-  setGraphCoolToken(signinToken) {
+  setGQLServerToken(signinToken) {
     // set graphcool token in localstorage
-    this.store.setItem(this.gcTokenKeyName, signinToken)
+    this.store.setItem(this.gqlServerTokenKeyName, signinToken)
     return this
   }
 
@@ -140,24 +116,6 @@ export class Lock {
         }
       }
     })
-    return this
-  }
-
-  on(eventName, observer) {
-    this.log('on', eventName, observer)
-    let slot = this.observers[eventName] || []
-    this.observers[eventName] = slot.concat(observer)
-    return this
-  }
-
-  publish(eventName, args) {
-    this.log('publish', eventName, args)
-    let observers = this.observers[eventName] || []
-    if (observers) {
-      observers.map(observer => observer(args))
-    } else {
-      this.log('no observers registered for', eventName)
-    }
     return this
   }
 
@@ -248,24 +206,24 @@ export class Lock {
     this.log('onAuth0Login', data)
     this.setAuth0Token(auth0Token)
     // once authenticated, signin to graphcool
-    await this.signinGraphcool(data)
+    await this.signinGQLServer(data)
   }
 
   extractSignedInUserToken(signinResult) {
     return signinResult.data.signinUser.token
   }
 
-  async signinGraphcool(data) {
+  async signinGraphQLServer(data) {
     let {
       auth0Token,
       profile
     } = data
     try {
-      this.log('Signing into Graphcool');
+      this.log('Signing into GraphQL server');
       let created = await this.doCreateUser(data)
       const signinResult = await this.doSigninUser(data)
       const signinToken = this.extractSignedInUserToken(signinResult)
-      this.setGraphCoolToken(signinToken)
+      this.setGQLServerToken(signinToken)
       this.publish('signedIn', data)
       this.signedInOk(data)
     } catch (err) {
@@ -289,11 +247,6 @@ export class Lock {
     this.log('signedInOk', data)
   }
 
-  handleError(err) {
-    this.error(err)
-    throw err
-  }
-
   handleSigninError(err) {
     this.handleError(err)
   }
@@ -306,10 +259,11 @@ export class Lock {
     }
   }
 
-  buildUserData({
-    auth0Token,
-    profile
-  }) {
+  buildUserData(data) {
+    let {
+      auth0Token,
+      profile
+    } = data
     return {
       variables: {
         authToken: auth0Token,
@@ -362,13 +316,13 @@ export class Lock {
     } = data
     this.log('signin user', data);
     if (!this.queries.signinUser) {
-      return this.fakeSigninUser()
+      return this.fakeSigninUser(profile)
     }
     let userData = this.buildSigninUserData(data)
     return await this.queries.signinUser(userData)
   }
 
-  async fakeSigninUser() {
+  fakeSigninUser(profile) {
     this.log('returning fake signedinUser')
     return {
       data: {

@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/gc-auth0-lokka",
-  "version": "1.0.0",
-  "description": "Lokka client for GraphCool with Auth0",
+  "name": "@tecla5/gql-lokka",
+  "version": "0.1.0",
+  "description": "Lokka client for GraphQL server",
   "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
@@ -18,12 +18,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/gc-auth0-lokka.git"
+    "url": "https://github.com/tecla5/gql-lokka.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gc-auth0-common": "*",
+    "@tecla5/gc-auth0": "*",
     "apollo-client": "^1.2.2",
     "lokka": "^1.7.0",
     "lokka-transport-http": "^1.6.1"

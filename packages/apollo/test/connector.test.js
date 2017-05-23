@@ -1,6 +1,15 @@
 import test from 'ava'
-import connector from '../src/connector'
+import {
+  createConnector
+} from '../dist/bundle.js'
+import config from './fixtures/config'
 
-test('connector', t => {
-  t.is(typeof connector, 'function')
+test('createConnector', t => {
+  let conn = createConnector(config)
+
+  t.is(conn.config, config)
+  t.is(conn.store, config.store)
+  t.is(conn.keyNames, config.storage)
+  t.is(conn.connection, config.graphCool.connection)
+  t.is(typeof conn.networkInterface, 'object')
 })
