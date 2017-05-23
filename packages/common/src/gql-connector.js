@@ -1,6 +1,6 @@
 import {
   Configurable
-} from '../common/configurable'
+} from './common/configurable'
 
 export class GraphQLConnector extends Configurable {
   constructor(config = {}) {

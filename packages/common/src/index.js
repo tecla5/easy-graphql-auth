@@ -13,6 +13,11 @@ export {
 from './common'
 
 export {
+  GraphQLServerAuth
+}
+from './gql-server-auth'
+
+export {
   GraphQLConnector
 }
 from './gql-connector'

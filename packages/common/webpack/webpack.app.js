@@ -6,7 +6,7 @@ let config = merge.smart(common, {
   entry: './src/app.js',
   output: {
     filename: 'app.js',
-    library: 'gcAuth0',
+    library: 'gqlServerAuth0',
     libraryTarget: 'umd',
     umdNamedDefine: true
   }

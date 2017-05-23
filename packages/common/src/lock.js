@@ -1,6 +1,13 @@
 import {
   Store
 } from './common/store'
+import {
+  Configurable
+} from './common/configurable'
+
+import {
+  GraphQLServerAuth
+} from './gql-server-auth'
 
 import extend from 'deep-extend'
 import defaultKeyNames from './common/keynames'
@@ -26,24 +33,35 @@ export class Lock extends Configurable {
       logo,
       theme,
       dict,
-      auth0,
       keyNames,
       queries,
       store,
       storage,
+      auth0,
+      gqlServer,
+      client,
+      connection,
       lockConfig,
       createLockUi,
       displayMethod
     } = config || {}
 
     this.displayMethod = displayMethod || 'getUserInfo'
-    this.queries = queries || {}
     let _createLockUi = createLockUi || this.defaultCreateLockUi
     this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
+    this.auth0 = auth0
 
-    this.theme = theme
+    // GraphQL client/connection used for mutation queries
+    this.client = client
+    this.connection = connection
+    this.hasGraphQLConnection = client || connection
+    this.queries = queries || {}
+    this.gqlServer = gqlServer
+    this.gqlServerAuth = new GraphQLServerAuth(config)
+
+    this.theme = theme || {}
     this.theme.logo = this.theme.logo || logo
-    this.dict = dict
+    this.dict = dict || {}
     this.dict.title = this.dict.title || title
     this.setupLockConfig()
 
@@ -61,7 +79,7 @@ export class Lock extends Configurable {
 
   get defaultLockConfig() {
     return {
-      theme: this.defaultTheme() || {}
+      theme: this.defaultTheme || {}
     }, {
       languageDictionary: this.dict || {}
     }
@@ -76,22 +94,12 @@ export class Lock extends Configurable {
     return this.store.auth0IdTokenKeyName
   }
 
-  get gqlServerTokenKeyName() {
-    return this.store.gqlServerTokenKeyName
-  }
-
   getAuth0Token() {
     return this.store.getItem(this.auth0IdTokenKeyName)
   }
 
   setAuth0Token(auth0Token) {
     this.store.setItem(this.auth0IdTokenKeyName, auth0Token);
-    return this
-  }
-
-  setGQLServerToken(signinToken) {
-    // set graphcool token in localstorage
-    this.store.setItem(this.gqlServerTokenKeyName, signinToken)
     return this
   }
 
@@ -206,131 +214,49 @@ export class Lock extends Configurable {
     this.log('onAuth0Login', data)
     this.setAuth0Token(auth0Token)
     // once authenticated, signin to graphcool
-    await this.signinGQLServer(data)
-  }
-
-  extractSignedInUserToken(signinResult) {
-    return signinResult.data.signinUser.token
-  }
-
-  async signinGraphQLServer(data) {
-    let {
-      auth0Token,
-      profile
-    } = data
     try {
-      this.log('Signing into GraphQL server');
-      let created = await this.doCreateUser(data)
-      const signinResult = await this.doSigninUser(data)
-      const signinToken = this.extractSignedInUserToken(signinResult)
-      this.setGQLServerToken(signinToken)
-      this.publish('signedIn', data)
+      await this.serverSignin(data)
       this.signedInOk(data)
     } catch (err) {
       let errArgs = Object.assign(data, {
         err
       })
-      this.publish('signedInFailure', data)
       this.signedInFailure(data)
-      this.handleSigninError(data)
     }
   }
 
-  signedInFailure({
-    err,
-    profile
-  }) {
+  get shouldDoGraphQLServerSignin() {
+    return this.hasGraphQLConnection
+  }
+
+  async serverSignin(data) {
+    // return if gqlServer not configured
+    if (!this.shouldDoGraphQLServerSignin) {
+      this.log('skipping signinGraphQLServer')
+      return
+    }
+    if (this.gqlServerAuth) {
+      await this.gqlServerAuth.signin(data)
+    }
+  }
+
+  signedInFailure(data) {
+    let {
+      err,
+      profile
+    } = data
     this.log('signedInFailure', err)
+    this.publish('signedInFailure', data)
+    this.handleSigninError(data)
   }
 
   signedInOk(data) {
     this.log('signedInOk', data)
+    this.publish('signedIn', data)
   }
 
   handleSigninError(err) {
     this.handleError(err)
-  }
-
-  handleQueryError(err) {
-    if (!err.graphQLErrors ||
-      err.graphQLErrors[0].code !== errorCode.USER_ALREADY_EXISTS
-    ) {
-      this.handleError(err)
-    }
-  }
-
-  buildUserData(data) {
-    let {
-      auth0Token,
-      profile
-    } = data
-    return {
-      variables: {
-        authToken: auth0Token,
-        name: profile.name
-      }
-    }
-  }
-
-  async doCreateUser(data) {
-    let {
-      auth0Token,
-      profile
-    } = data
-    // create user if necessary
-    try {
-      this.log('Create user', name);
-      let userData = this.buildUserData(data)
-      if (this.queries.createUser) {
-        await this.queries.createUser(userData)
-      } else {
-        this.log('missing createUser query, faking it')
-        await this.fakeCreateUser(userData)
-      }
-    } catch (err) {
-      this.handleQueryError(err)
-    }
-  }
-
-  // TODO: simulate GraphCool query mutation result?
-  fakeCreateUser(userData) {
-    return userData
-  }
-
-  buildSigninUserData({
-    auth0Token,
-    profile
-  }) {
-    return {
-      variables: {
-        authToken: auth0Token
-      }
-    }
-  }
-
-  // sign in user
-  async doSigninUser(data) {
-    let {
-      auth0Token,
-      profile
-    } = data
-    this.log('signin user', data);
-    if (!this.queries.signinUser) {
-      return this.fakeSigninUser(profile)
-    }
-    let userData = this.buildSigninUserData(data)
-    return await this.queries.signinUser(userData)
-  }
-
-  fakeSigninUser(profile) {
-    this.log('returning fake signedinUser')
-    return {
-      data: {
-        signinUser: {
-          token: '1234'
-        }
-      }
-    }
   }
 }
 

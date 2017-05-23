@@ -76,8 +76,8 @@ You can customize your setup as needed.
 
 ```js
 import {
-  createClient,
-  GCAuth0Connector,
+  createConnector,
+  ApolloConnector as Connector,
 } from '@tecla5/gc-auth0-apollo'
 
 import {
@@ -91,13 +91,15 @@ import config from '../config'
 // custom setup
 config.Auth0Lock = Auth0Lock
 
+const connection = createConnector(config)
 config.store = createStore(config.storage)
+// tells lock to also signin to graphQL server after auth0 signin
+config.connection = connection
 const lock = createLock(config)
-const client = createClient(config)
 
 export default {
   lock,
-  client
+  client: conn.client
 }
 ```
 
@@ -182,6 +184,87 @@ lock.prototype.createProfileReceivedCb = function() {
 }
 ```
 
+### Lock configuration
+
+```js
+{
+  Auth0Lock,
+  // Auth0Lock config
+  title, // title of Auth0Lock form
+  logo, // logo of Auth0Lock form
+  theme, // theme config for Auth0Lock form
+  dict, // text config for Auth0Lock form
+
+  // showLock display/behavior configuration
+  lockConfig,
+  // display method override
+  displayMethod
+  // custom factory method
+  createLockUi,
+
+  // GraphQL queries obj
+  queries,
+
+  // names of keys to store
+  keyNames,
+  // (local) storage config obj
+  storage,
+  // store to use for storage
+  store,
+  // service configs
+  auth0,
+  gqlServer
+}
+```
+
+### Auth0Lock display
+
+- `logo` - logo image (url to a `.png` file or similar)
+- `title` - title under logo
+
+### GraphQL queries
+
+- `createUser`
+- `signinUser`
+
+### Service config
+
+- `auth0`
+- `gqlServer`
+
+#### createUser mutation
+
+Pass whichever profile attributes such as `name`
+
+```js
+  mutation createUser($authToken: String!, $name: String){
+    createUser(
+      ...
+    )
+  }
+```
+
+#### signinUser mutation
+
+Only needs the `authToken`
+
+```js
+  mutation signinUser($authToken: String!){
+    signinUser(
+      ...
+    )
+  }
+```
+
+### Getters
+
+- `auth0IdTokenKeyName`
+- `shouldDoGraphQLServerSignin` (bool)
+
+`shouldDoGraphQLServerSignin` is used to determine if GraphQL server signin should be performed after successful auth0 signin.
+
+By default tests if `.connection` or `.client` is set (passed by config object in constructor).
+
 ### Logout
 
 - `logout()`
@@ -191,9 +274,9 @@ lock.prototype.createProfileReceivedCb = function() {
 
 - `subscribeAuthenticated()`
 - `onAuthenticated(authResult)`
-- `onHashParsed()`
 - `createProfileReceivedCb(authResult)`
 - `handleProfile({authResult, profile})`
+- `onHashParsed()`
 
 ### End of flow hooks
 
@@ -221,29 +304,58 @@ You can also add custom pub/sub events using `on` and `publish`
 ### Storage
 
 - `resetStorage()`
-- `storeAuth0Token(auth0Token)`
-- `storeGraphCoolToken(signinToken)`
+- `setAuth0Token(auth0Token)`
+- `setGraphQLServerToken(signinToken)`
 
 ### Error handlers
 
 - `handleError(err)`
-- `handleQueryError(err)`
 - `handleProfileError(err)`
 - `handleSigninError(err)`
 
 ### Async functions
 
+- `async serverSignin(({auth0Token, profile})`
+
+Creates a `GraphQLServerAuth` instance and attempts to signin to GraphQL server
+
+## GraphQLServerAuth
+
+- `async signin(data)` - start signin
+
+### Getters/Setters
+
+- `gqlServerTokenKeyName`
+- `setGraphQLServerToken(signinToken)`
+
+### Mutation queries
+
 - `async doCreateUser({auth0Token, profile})`
 - `async doSigninUser({auth0Token,profile})`
-- `async onAuth0Login({auth0Token, profile})`
-- `async signinGraphcool({auth0Token, profile})`
 
-### build
+### Error handlers
+
+- `handleQueryError(err)`
+- `handleError(err)`
+
+### Events
+
+- `async onAuth0Login({auth0Token, profile})`
+
+### Extract data
+
+`extractSignedInUserToken(signinResult)`
+
+#### build
+
+Build data to be sent to GraphQL mutation queries
 
 - `buildSigninUserData({auth0Token, profile})`
 - `buildUserData({auth0Token, profile})`
 
 ### Fake data
+
+Allow use of fake data if no GraphQL queries defined
 
 - `fakeCreateUser(userData)`
 - `fakeSigninUser(profile)`
@@ -274,7 +386,7 @@ function createLock(config) {
 const myLock = createLock(config)
 ```
 
-In the UI
+## In the UI
 
 ```js
 myLock
@@ -282,7 +394,7 @@ myLock
   .showLock(displayConfig)
 ```
 
-### Hooking in
+### Hookin' in
 
 The recommended approach to "hook in" from your view/component layer, is to use the
 pub/sub observer mechanism. This approach is demonstrated in the Vue and React demo apps.

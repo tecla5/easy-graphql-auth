@@ -4,10 +4,9 @@ export class Configurable {
   constructor(config = {}, opts = {}) {
     this.validate(config)
     let {
+      keyNames,
       store,
       storage,
-      auth0,
-      gqlServer
     } = config
 
     this.config = config
@@ -19,8 +18,6 @@ export class Configurable {
     this.keyNames = keyNames || storage || defaultKeyNames
     this.store = store || this.defaultCreateStore(this.keyNames, opts)
     this.tokens = this.store.getAll()
-    this.auth0 = config.auth0
-    this.gqlServer = gqlServer
     this.tokens = this.store ? this.store.getAll() : config.tokens
   }
 
@@ -73,17 +70,9 @@ export class Configurable {
     return new Store(keyNames, opts)
   }
 
-  validate() {
+  validate(config) {
     if (typeof config !== 'object') {
       throw Error('config must be an object')
     }
-
-    if (!config.storage) {
-      throw Error('missing storage config')
-    }
-    if (!config.gqlServer) {
-      throw Error('missing gqlServer config')
-    }
   }
-
 }
