@@ -23,7 +23,7 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gql-auth": "*",
+    "@tecla5/easy-gql-auth": "*",
     "lokka": "^1.7.0",
     "lokka-transport-http": "^1.6.1"
   },

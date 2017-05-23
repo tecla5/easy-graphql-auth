@@ -8,7 +8,7 @@ export {
   Store,
   createStore
 }
-from '@tecla5/auth-foundation'
+from '@tecla5/token-foundation'
 
 export {
   setup

@@ -1,6 +1,6 @@
 import {
   Configurable
-} from '@tecla5/auth-foundation'
+} from '@tecla5/token-foundation'
 
 export class GraphQLAuth extends Configurable {
   constructor(config) {

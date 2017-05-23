@@ -1,6 +1,6 @@
 {
-  "name": "vue-app",
-  "productName": "vue-app",
+  "name": "auth0-vue-app",
+  "productName": "auth0-vue-app",
   "description": "Vue2 with GraphCool and Auth0",
   "version": "1.0.0",
   "license": "MIT",

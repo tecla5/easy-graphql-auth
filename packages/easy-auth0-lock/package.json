@@ -24,7 +24,7 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/auth-foundation": "*",
+    "@tecla5/token-foundation": "*",
     "deep-extend": "^0.5.0"
   },
   "devDependencies": {

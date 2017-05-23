@@ -1,9 +1,6 @@
-import {
-  gqlServer
-} from './gqlServer'
-import {
-  auth0
-} from './auth0'
-import extend from 'deep-extend'
-
-export const config = extend(gqlServer, auth0)
+export default {
+  storage: { // localstorage
+    auth0IdTokenKeyName: 'auth0IdToken', // key to store auth0IdToken
+    gqlServerTokenKeyName: 'graphcoolToken' // key to store graphcoolToken
+  }
+}

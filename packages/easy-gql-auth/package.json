@@ -1,5 +1,5 @@
 {
-  "name": "@tecla5/gql-easy-auth",
+  "name": "@tecla5/easy-gql-auth",
   "version": "0.1.0",
   "description": "GraphQL authentication lib",
   "main": "dist/bundle.prod.js",
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/gql-auth.git"
+    "url": "https://github.com/tecla5/easy-gql-auth.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
