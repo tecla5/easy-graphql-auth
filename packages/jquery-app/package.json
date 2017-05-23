@@ -1,7 +1,7 @@
 {
-  "name": "gc-auth0-jquery-app",
+  "name": "jquery-app",
   "version": "1.0.0",
-  "description": "GraphCool Auth0 demo app based on jQuery",
+  "description": "Auth0 GraphCool demo app based on jQuery",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -21,14 +21,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/gc-auth0-jquery-app.git"
+    "url": "https://github.com/tecla5/auth0-jquery-app.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gc-auth0-apollo": "*",
-    "apollo-client": "^1.2.2",
-    "jquery": "^3.2.1"
+    "@tecla5/apollo-conn": "*",
+    "@tecla5/easy-auth0-lock": "*"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

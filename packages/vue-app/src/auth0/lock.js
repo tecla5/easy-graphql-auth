@@ -1,6 +1,19 @@
-import apollo from '@tecla5/gc-auth0-apollo'
+import {
+  setup,
+  createLock,
+  createStore
+} from '@tecla5/easy-auth0-lock'
+
 import config from '../config'
 import Auth0Lock from 'auth0-lock'
 config.Auth0Lock = Auth0Lock
 
-export default apollo.setup(apollo, config)
+let {
+  lock
+} = setup({
+  createLock,
+  createStore,
+  createConnection
+}, config)
+
+export default lock

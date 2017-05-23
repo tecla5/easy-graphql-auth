@@ -1,5 +1,5 @@
 {
-  "name": "gc-auth0-vue-app",
+  "name": "vue-app",
   "productName": "vue-app",
   "description": "Vue2 with GraphCool and Auth0",
   "version": "1.0.0",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/gc-auth0-vue-app.git"
+    "url": "https://github.com/tecla5/auth0-vue-app.git"
   },
   "author": {
     "name": "kristianmandrup",
     "email": "kmandrup@gmail.com"
   },
   "dependencies": {
-    "@tecla5/gc-auth0-apollo": "*",
-    "@tecla5/gc-auth0-lokka": "*",
+    "@tecla5/apollo-conn": "*",
+    "@tecla5/easy-auth0-lock": "*",
     "deepmerge": "^1.3.2",
     "offline-plugin": "^4.8.0"
   },

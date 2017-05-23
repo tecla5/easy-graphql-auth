@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <title>Common Auth0 app</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+  </script>
+  <script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
+</head>
+
+<body>
+  <h1>Common Auth0 app</h1>
+  <div id="app">
+    <h1 id="welcome">Welcome to GraphCool with Auth0 minimal demo app</h1>
+    <div id="session">
+      <button id="login">Login</button>
+      <button id="logout" class="hide">Logout</button>
+    </div>
+    <div class="status"></div>
+  </div>
+  <script src="dist/app.js"></script>
+  <script>
+    var lock = createAuth0Lock(Auth0Lock)
+    lock
+      .enableLog()
+      .subscribeAuthenticated()
+      .on('signedIn', function (res) {
+        console.log('logged in', res)
+      })
+
+    $(document).ready(() => {
+      $('#login').click(function () {
+        lock.showLock()
+      })
+      logout: $('#logout').click(function () {
+        lock.logout()
+      })
+    })
+  </script>
+</body>
+
+</html>

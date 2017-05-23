@@ -1,0 +1,63 @@
+{
+  "name": "@tecla5/apollo-conn",
+  "version": "0.1.0",
+  "description": "Apollo client connection to GraphQL server",
+  "main": "dist/bundle.prod.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "ava",
+    "build:prod": "webpack --progress --colors --env=prod",
+    "build:dev": "webpack --progress --colors --env=dev"
+  },
+  "keywords": [
+    "apollo",
+    "graphcool",
+    "auth0"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tecla5/apollo-conn.git"
+  },
+  "author": "Kristian Mandrup",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-client": "^1.2.2",
+    "@tecla5/gql-auth": "*"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-cli": "^6.24.0",
+    "babel-core": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.3.1",
+    "babili-webpack-plugin": "0.0.11",
+    "webpack-merge": "^4.1.0"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
+  },
+  "ava": {
+    "files": [
+      "test/**/*.js"
+    ],
+    "concurrency": 1,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "tap": true,
+    "powerAssert": false,
+    "require": [
+      "babel-register",
+      "babel-polyfill"
+    ],
+    "babel": "inherit"
+  }
+}

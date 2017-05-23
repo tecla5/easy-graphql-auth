@@ -13,15 +13,17 @@ Coming soon: *Stripe subscription payments integration*
 
 ## Modules
 
-- `@tecla5/gql-apollo`
-- `@tecla5/gql-lokka`
-- `@tecla5/gql-auth0`
+- `@tecla5/token-foundation` - token storage and common utilities
+- `@tecla5/apollo-conn` - connect to GraphQL server via Apollo
+- `@tecla5/lokka-conn` - connect to GraphQL server via Lokka
+- `@tecla5/easy-auth0-lock` - Easy Auth0 Lock
+- `@tecla5/easy-gql-auth` - Easy GraphQL authentication
 
 ## Demo apps
 
-- jQuery app
-- React app
-- Vue app
+- `jquery-app`
+- `react-app`
+- `vue-app`
 
 Please add one for your framework of choice ;)
 
