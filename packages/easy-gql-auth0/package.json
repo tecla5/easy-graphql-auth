@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/easy-auth0-lock",
+  "name": "@tecla5/easy-gql-auth0",
   "version": "0.1.0",
-  "description": "Auth0 Lock signin made easy",
+  "description": "Easy authentication for GraphQL with Auth0",
   "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
@@ -19,13 +19,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/easy-auth0-lock.git"
+    "url": "https://github.com/tecla5/easy-gql-auth0.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/easy-auth0-lock": "*",
-    "auth-lock": "^10.16.0"
+    "@tecla5/token-foundation": "*",
+    "deep-extend": "^0.5.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",
