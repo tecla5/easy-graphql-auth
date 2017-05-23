@@ -27,6 +27,76 @@ Coming soon: *Stripe subscription payments integration*
 
 Please add one for your framework of choice ;)
 
+## Setup
+
+A typical configuration would look as follows:
+
+```js
+import {
+  createConnection
+} from '@tecla5/apollo-conn'
+import {
+  setup,
+  createStore,
+  createLock
+} from '@tecla5/easy-auth0-lock'
+import config from '../config'
+import Auth0Lock from 'auth0-lock'
+config.Auth0Lock = Auth0Lock
+
+export default setup({
+  createConnection,
+  createStore,
+  createLock
+}, config)
+```
+
+A typical session component with signin & logout
+
+```js
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    };
+
+    lock.on('signedIn', this.loggedIn)
+    lock.on('loggedOut', this.loggedOut)
+  }
+
+  loggedOut() {
+    this.setState({
+      isLoggedIn: false,
+      profile: {}
+    })
+    // hide logout button
+  }
+
+  signedIn({
+    profile
+  }) {
+    this.setState({
+      isLoggedIn: true,
+      profile,
+    })
+    // hide login button
+  }
+
+  doLogin() {
+    lock
+      .showLock()
+      .subscribeAuthenticated()
+  }
+
+  doLogout() {
+    lock
+      .logout()
+  }
+}
+```
+
+
 ## Pre-requisites
 
 On [Auth0 university](https://auth0.com/university/) watch:

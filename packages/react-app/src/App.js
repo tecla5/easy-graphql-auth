@@ -47,6 +47,7 @@ class App extends Component {
     lock
       .logout()
   }
+
   render() {
     return ( <
       div className = "App" >
