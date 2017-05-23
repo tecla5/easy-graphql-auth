@@ -1,7 +1,4 @@
 import ApolloClient from 'apollo-client'
-const {
-  createNetworkInterface
-} = ApolloClient
 
 import {
   GraphQLConnector
@@ -10,14 +7,26 @@ import {
 export class ApolloConnector extends GraphQLConnector {
   constructor(config = {}) {
     super(config)
+    this.ApolloClient = config.ApolloClient || ApolloClient
+    this.createNetworkInterface = this.ApolloClient.createNetworkInterface
   }
 
   configure() {
-    let networkInterface = createNetworkInterface(this.connection)
+    let networkInterface = this.createNetworkInterface(this.connection)
     this.networkInterface = networkInterface
     let graphcoolTokenKeyName = this.keyNames.gqlServerTokenKeyName
-    networkInterface.use([{
-      applyMiddleware(req, next) {
+    this.configureNetworkInterface()
+    this.client = this.createApolloClient()
+    return this
+  }
+
+  configureNetworkInterface() {
+    this.networkInterface.use([this.networkMw()]);
+  }
+
+  networkMw() {
+    return {
+      applyMiddleware: (req, next) => {
         if (!req.options.headers) {
           req.options.headers = {}; // Create the header object if needed.
         }
@@ -25,10 +34,12 @@ export class ApolloConnector extends GraphQLConnector {
         req.options.headers.authorization = this.tokens.gqlServerToken
         next();
       }
-    }]);
+    }
+  }
 
-    this.client = new ApolloClient({
-      networkInterface
+  createApolloClient() {
+    return new this.ApolloClient({
+      networkInterface: this.networkInterface
     })
   }
 }

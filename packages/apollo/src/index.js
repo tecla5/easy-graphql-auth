@@ -13,7 +13,7 @@ import {
 } from './apollo-connector'
 
 function apolloSetup(config) {
-  setup({
+  return setup({
     createLock,
     createStore,
     createConnector
