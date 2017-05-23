@@ -44,8 +44,8 @@ export class Store {
 
   getAll(opts = {}) {
     return {
-      auth0Token: localStorage.getItem(this.auth0IdTokenKeyName),
-      graphcoolToken: localStorage.getItem(this.gcTokenKeyName),
+      auth0Token: this.getItem(this.auth0IdTokenKeyName),
+      graphcoolToken: this.getItem(this.gcTokenKeyName),
     }
   }
 

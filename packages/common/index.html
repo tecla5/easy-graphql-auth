@@ -10,22 +10,32 @@
 <body>
   <h1>Common Auth0 app</h1>
   <div id="app">
-    <h1 id="welcome">Welcome to Vue.js</h1>
+    <h1 id="welcome">Welcome to GraphCool with Auth0 minimal demo app</h1>
     <div id="session">
-      <button id="login" @click="doLogin">Login</button>
-      <button id="logout" class="hide" @click="doLogout">Logout</button>
+      <button id="login">Login</button>
+      <button id="logout" class="hide">Logout</button>
     </div>
     <div class="status"></div>
   </div>
   <script src="dist/app.js"></script>
   <script>
     var auth0 = gcAuth0(Auth0Lock)
-    auth0.lock
-      .showLogin()
+    var lock = auth0.lock
+    lock
+      .enableLog()
       .subscribeAuthenticated()
       .on('signedIn', function (res) {
         console.log('logged in', res)
       })
+
+    $(document).ready(() => {
+      $('#login').click(function () {
+        lock.showLock()
+      })
+      logout: $('#logout').click(function () {
+        lock.logout()
+      })
+    })
   </script>
 </body>
 

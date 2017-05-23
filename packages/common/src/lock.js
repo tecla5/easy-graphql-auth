@@ -11,14 +11,6 @@ const errorCode = {
   USER_ALREADY_EXISTS: 3023
 }
 
-function defaultCreateLockUi(auth0 = {}) {
-  return new Auth0Lock(auth0.clientId, auth0.domain)
-}
-
-function defaultCreateStore(keyNames, ops) {
-  return new Store(keyNames, opts)
-}
-
 export class Lock {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
@@ -39,25 +31,58 @@ export class Lock {
       store,
       storage,
       lockConfig,
-      createLockUi
+      createLockUi,
+      displayMethod
     } = config || {}
     // defaults
     this.logging = opts.logging
 
-    this.queries = queries
-    let _createLockUi = createLockUi || defaultCreateLockUi
+    this.displayMethod = displayMethod || 'getUserInfo'
+    this.queries = queries || {}
+    let _createLockUi = createLockUi || this.defaultCreateLockUi
     this.keyNames = keyNames || storage || defaultKeyNames
     console.log('keyNames', this.keyNames)
 
-    this.store = store || defaultCreateStore(this.keyNames, opts)
+    this.store = store || this.defaultCreateStore(this.keyNames, opts)
     this.tokens = this.store.getAll()
     this.io = opts.io || console
     this.observers = {}
-    this.lockConfig = lockConfig || auth0.lock
+    this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
     this.lock = _createLockUi(auth0, opts)
+    this.onHashParsed()
+    console.log('lock', this.lock)
+  }
+
+  get defaultLockConfig() {
+    return {}
+    // return {
+    //   auth: {
+    //     redirect: false
+    //   },
+    //   autoclose: true
+    // }
+  }
+
+  defaultCreateLockUi(auth0 = {}, opts) {
+    console.log('create lock', auth0, opts)
+    return new Auth0Lock(auth0.clientId, auth0.domain, opts)
+  }
+
+  defaultCreateStore(keyNames, opts) {
+    return new Store(keyNames, opts)
   }
 
   validate(config) {}
+
+  enableLog() {
+    this.logging = true
+    return this
+  }
+
+  disableLog() {
+    this.logging = false
+    return this
+  }
 
   log(...msgs) {
     if (this.logging) {
@@ -71,18 +96,73 @@ export class Lock {
     }
   }
 
+  get auth0IdTokenKeyName() {
+    return this.store.auth0IdTokenKeyName
+  }
+
+  get gcTokenKeyName() {
+    return this.store.gcTokenKeyName
+  }
+
+  getAuth0Token() {
+    return this.store.getItem(this.auth0IdTokenKeyName)
+  }
+
+  setAuth0Token(auth0Token) {
+    this.store.setItem(this.auth0IdTokenKeyName, auth0Token);
+    return this
+  }
+
+  setGraphCoolToken(signinToken) {
+    // set graphcool token in localstorage
+    this.store.setItem(this.gcTokenKeyName, signinToken)
+    return this
+  }
+
+  onHashParsed() {
+    this.lock.on('hash_parsed', (authResult) => {
+      this.log('hash parsed', {
+        authResult
+      });
+      if (authResult == null) {
+        if (this.getAuth0Token() == null) {
+          this.showLock();
+        }
+      } else {
+        this.log('setting auth token', {
+          authResult
+        });
+        if (authResult.idToken) {
+          this.setAuth0Token(authResult.idToken)
+          this.log('success', authResult);
+        } else {
+          this.error('authResult missing idToken')
+        }
+      }
+    })
+    return this
+  }
+
   on(eventName, observer) {
+    this.log('on', eventName, observer)
     let slot = this.observers[eventName] || []
     this.observers[eventName] = slot.concat(observer)
+    return this
   }
 
   publish(eventName, args) {
+    this.log('publish', eventName, args)
     let observers = this.observers[eventName] || []
-    obervers.map(observer => observer(args))
+    if (observers) {
+      observers.map(observer => observer(args))
+    } else {
+      this.log('no observers registered for', eventName)
+    }
+    return this
   }
 
   logout() {
-    this.log('Logging out');
+    this.log('logout');
     this.resetTokens()
     this.resetStorage()
     this.publish('loggedOut')
@@ -90,7 +170,12 @@ export class Lock {
     return this
   }
 
+  loggedOut() {
+    this.log('logged out');
+  }
+
   resetTokens() {
+    this.log('resetTokens')
     this.tokens = {
       auth0Token: null,
       graphcoolToken: null,
@@ -105,10 +190,11 @@ export class Lock {
   }
 
   // display lock popup
-  showLogin(config = {}) {
-    this.log('showLogin');
-    config = Object.assign({}, config, this.lockConfig || {})
-    this.lock.show(config)
+  showLock(config) {
+    let displayConfig = config || this.defaultLockConfig
+    displayConfig = Object.assign({}, displayConfig, this.lockConfig || {})
+    this.log('showLock', displayConfig);
+    this.lock.show(displayConfig)
     return this
   }
 
@@ -116,24 +202,33 @@ export class Lock {
     this.error(err);
   }
 
-  handleProfile({
-    authResult,
-    profile
-  }) {
+  handleProfile(data) {
+    let {
+      authResult,
+      profile
+    } = data
+    this.log('handleProfile', data)
+    let auth0Token = this.extractAuthToken(authResult)
     this.onAuth0Login({
-      auth0Token: authResult.idToken,
-      profile: profile
+      auth0Token,
+      profile
     })
   }
 
   subscribeAuthenticated(cb) {
     this.log('config');
-    this.lock.on('authenticated', cb || this.onAuthenticated)
+    this.lock.on('authenticated', cb || this.onAuthenticated.bind(this))
     return this
   }
 
+  extractAuthToken(authResult) {
+    return authResult.accessToken
+  }
+
   onAuthenticated(authResult) {
-    this.lock.getUserInfo(authResult.idToken, this.createProfileReceivedCb(authResult))
+    this.log('onAuthenticated', authResult)
+    let auth0Token = this.extractAuthToken(authResult)
+    this.lock[this.displayMethod](auth0Token, this.createProfileReceivedCb(authResult).bind(this))
   }
 
   createProfileReceivedCb(authResult) {
@@ -145,48 +240,41 @@ export class Lock {
     }
   }
 
-  storeAuth0Token(auth0Token) {
-    this.store.setValue(this.keyNames.auth0TokenKeyName, auth0Token)
-    return this
-  }
-
-  async onAuth0Login({
-    auth0Token,
-    profile
-  }) {
-    let args = {
+  async onAuth0Login(data) {
+    let {
       auth0Token,
       profile
-    }
-    this.log('logged in', args)
-    this.storeAuth0Token(auth0Token)
+    } = data
+    this.log('onAuth0Login', data)
+    this.setAuth0Token(auth0Token)
     // once authenticated, signin to graphcool
-    await this.signinGraphcool(args)
+    await this.signinGraphcool(data)
   }
 
-  async signinGraphcool({
-    auth0Token,
-    profile
-  }) {
-    let args = {
+  extractSignedInUserToken(signinResult) {
+    return signinResult.data.signinUser.token
+  }
+
+  async signinGraphcool(data) {
+    let {
       auth0Token,
       profile
-    }
+    } = data
     try {
       this.log('Signing into Graphcool');
-      await this.doCreateUser(args)
-      const signinResult = await this.doSigninUser(args)
-      const signinToken = signinResult.data.signinUser.token
-      this.storeGraphCoolToken(signinToken)
-      this.publish('signedIn', args)
-      this.signedInOk(args)
+      let created = await this.doCreateUser(data)
+      const signinResult = await this.doSigninUser(data)
+      const signinToken = this.extractSignedInUserToken(signinResult)
+      this.setGraphCoolToken(signinToken)
+      this.publish('signedIn', data)
+      this.signedInOk(data)
     } catch (err) {
-      let errArgs = Object.assign(args, {
+      let errArgs = Object.assign(data, {
         err
       })
-      this.publish('signedInFailure', args)
-      this.signedInFailure(args)
-      this.handleSigninError(args)
+      this.publish('signedInFailure', data)
+      this.signedInFailure(data)
+      this.handleSigninError(data)
     }
   }
 
@@ -197,14 +285,8 @@ export class Lock {
     this.log('signedInFailure', err)
   }
 
-  signedInOk({
-    auth0Token,
-    profile
-  }) {
-    this.log('signedInOk', {
-      auth0Token,
-      profile
-    })
+  signedInOk(data) {
+    this.log('signedInOk', data)
   }
 
   handleError(err) {
@@ -224,41 +306,77 @@ export class Lock {
     }
   }
 
-  async doCreateUser({
+  buildUserData({
     auth0Token,
     profile
   }) {
-    let name = profile.name
+    return {
+      variables: {
+        authToken: auth0Token,
+        name: profile.name
+      }
+    }
+  }
+
+  async doCreateUser(data) {
+    let {
+      auth0Token,
+      profile
+    } = data
     // create user if necessary
     try {
       this.log('Create user', name);
-      await this.queries.createUser({
-        variables: {
-          authToken: auth0Token,
-          name: name
-        }
-      })
+      let userData = this.buildUserData(data)
+      if (this.queries.createUser) {
+        await this.queries.createUser(userData)
+      } else {
+        this.log('missing createUser query, faking it')
+        await this.fakeCreateUser(userData)
+      }
     } catch (err) {
       this.handleQueryError(err)
     }
   }
 
-  // sign in user
-  async doSigninUser({
+  // TODO: simulate GraphCool query mutation result?
+  fakeCreateUser(userData) {
+    return userData
+  }
+
+  buildSigninUserData({
     auth0Token,
     profile
   }) {
-    return await this.queries.signinUser({
+    return {
       variables: {
         authToken: auth0Token
       }
-    })
+    }
   }
 
-  storeGraphCoolToken(signinToken) {
-    // set graphcool token in localstorage
-    this.store.setValue(this.keyNames.graphCoolTokenKeyName, signinToken)
-    return this
+  // sign in user
+  async doSigninUser(data) {
+    let {
+      auth0Token,
+      profile
+    } = data
+    this.log('signin user', data);
+    if (!this.queries.signinUser) {
+      return this.fakeSigninUser()
+    }
+    let userData = this.buildSigninUserData(data)
+    return await this.queries.signinUser(userData)
+  }
+
+  async fakeSigninUser() {
+    this.log('returning fake signedinUser')
+    return {
+      data: {
+        signinUser: {
+          token: '1234'
+        }
+      }
+    }
   }
 }
 

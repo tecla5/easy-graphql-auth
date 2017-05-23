@@ -129,6 +129,10 @@ const myLock = new Lock({
 
 Try out the [Auth0 Lock playground](https://auth0.github.io/playground/) to experiment with different display options.
 
+## Controlling the lock
+
+See all the Lock [customization](https://auth0.com/docs/libraries/lock/v10/customization) options you can pass to fine tune the Lock behavior and visual appearance.
+
 ### Customized Auth0Lock
 
 We can easily replace `AuthLock` with `Auth0LockPasswordless`:
