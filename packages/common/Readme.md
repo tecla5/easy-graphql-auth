@@ -202,6 +202,8 @@ lock.prototype.createProfileReceivedCb = function() {
   // custom factory method
   createLockUi,
 
+  // factory to create GraphQLServerAuth instance
+  createGraphQLServerAuth,
   // GraphQL queries obj
   queries,
 
@@ -211,7 +213,7 @@ lock.prototype.createProfileReceivedCb = function() {
   storage,
   // store to use for storage
   store,
-  // service configs
+  // service configs (tokens etc)
   auth0,
   gqlServer
 }

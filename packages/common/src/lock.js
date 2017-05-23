@@ -6,7 +6,7 @@ import {
 } from './common/configurable'
 
 import {
-  GraphQLServerAuth
+  createGraphQLServerAuth
 } from './gql-server-auth'
 
 import extend from 'deep-extend'
@@ -43,6 +43,7 @@ export class Lock extends Configurable {
       connection,
       lockConfig,
       createLockUi,
+      createGraphQLServerAuth,
       displayMethod
     } = config || {}
 
@@ -57,7 +58,9 @@ export class Lock extends Configurable {
     this.hasGraphQLConnection = client || connection
     this.queries = queries || {}
     this.gqlServer = gqlServer
-    this.gqlServerAuth = new GraphQLServerAuth(config)
+    let _createGraphQLServerAuth = config.createGraphQLServerAuth || createGraphQLServerAuth
+
+    this.gqlServerAuth = _createGraphQLServerAuth(config)
 
     this.theme = theme || {}
     this.theme.logo = this.theme.logo || logo
