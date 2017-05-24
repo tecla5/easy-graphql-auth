@@ -3,11 +3,6 @@ export {
 }
 from './add'
 
-const a = 2
-
-console.log({
-  a
-})
-console.log('add', add(1, 2))
-
-export default a
+export function sub(a, b) {
+  console.log(`${a} - ${b}`, a - b)
+}

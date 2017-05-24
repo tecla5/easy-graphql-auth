@@ -1,6 +1,6 @@
 import {
   Configurable
-} from './common/configurable'
+} from '@tecla5/token-foundation'
 
 export class GraphQLConnection extends Configurable {
   constructor(config = {}) {

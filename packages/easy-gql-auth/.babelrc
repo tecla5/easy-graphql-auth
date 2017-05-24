@@ -1,16 +1,11 @@
 {
-  "presets": [
-    [
-      "env", {
-        "modules": "umd"
-      }
-    ]
-  ],
+  "presets": ["env"],
   "plugins": [
+    "transform-regenerator",
     "transform-object-rest-spread",
     "transform-async-to-generator",
     "transform-class-properties",
     "add-module-exports",
-    "transform-runtime"
+    "compact-reexports"
   ]
 }

@@ -1,6 +1,6 @@
-# Babel
+# Babel play
 
-Fucking nightmare jungle!
+A fucking jungle *nightmare* of plugins!
 
 ```js
   "plugins": [
@@ -9,5 +9,17 @@ Fucking nightmare jungle!
     "transform-class-properties",
     "transform-export-extensions",
     "compact-reexports"
+  ]
+```
+
+Presets with umd modules export?
+
+```js
+[
+    [
+      "env", {
+        "modules": "umd"
+      }
+    ]
   ]
 ```
