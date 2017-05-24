@@ -1,14 +1,25 @@
-import ApolloClient from 'apollo-client'
-
 import {
   GraphQLConnection
 } from '@tecla5/easy-gql-auth'
 
 export class ApolloConnection extends GraphQLConnection {
-  constructor(config = {}) {
+  constructor(config = {}, opts = {}) {
     super(config)
-    this.ApolloClient = config.ApolloClient || ApolloClient
+    this.ApolloClient = config.ApolloClient || opts.ApolloClient
+
+    if (!this.ApolloClient) {
+      this.configError('missing ApolloClient in constructor arguments')
+    }
+    if (!this.ApolloClient.createNetworkInterface) {
+      this.configError('missing createNetworkInterface method in supplied ApolloClient')
+    }
+
     this.createNetworkInterface = this.ApolloClient.createNetworkInterface
+  }
+
+  configError(msg) {
+    console.error('ApolloConnection', msg)
+    throw Error(msg)
   }
 
   connect() {

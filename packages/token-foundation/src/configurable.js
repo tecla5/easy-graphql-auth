@@ -1,4 +1,7 @@
 import defaultKeyNames from './keynames'
+import {
+  Store
+} from './store'
 
 export class Configurable {
   constructor(config = {}, opts = {}) {

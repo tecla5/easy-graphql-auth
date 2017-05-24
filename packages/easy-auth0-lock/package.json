@@ -57,7 +57,7 @@
   },
   "ava": {
     "files": [
-      "test/**/*.js"
+      "test/**/*.test.js"
     ],
     "concurrency": 1,
     "failFast": true,

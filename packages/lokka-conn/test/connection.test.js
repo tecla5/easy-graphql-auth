@@ -13,7 +13,10 @@ import {
 import config from './config'
 
 test('createConnector', t => {
-  let conn = createConnection(config)
+  let conn = createConnection(config, {
+    Lokka,
+    Transport
+  })
 
   t.is(conn.config, config)
   t.is(conn.store, config.store)

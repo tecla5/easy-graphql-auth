@@ -4,28 +4,21 @@ Integration library for GraphQL server with Apollo
 
 ## Install
 
-`npm i -S @tecla5/gql-apollo`
+`npm i -S @tecla5/apollo-conn`
 
 ## Usage
-
-### Babel config optimization
-
-Perhaps try plugins:
-
-```
-    "add-module-exports",
-    "compact-reexports"
-```
 
 ### Client configuration
 
 ```js
 import {
-  apolloSetup
-} from '@tecla5/gc-auth0-apollo'
+  createConnection
+} from '@tecla5/apollo-conn'
 
 import config from '../config'
-const client = apolloSetup(config)
+const connection = createConnection(config, {
+  ApolloClient
+})
 ```
 
 ## Customization

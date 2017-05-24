@@ -1,11 +1,14 @@
 import test from 'ava'
+import ApolloClient from 'apollo-client'
 import {
   createConnection
 } from '../src/connection.js'
 import config from './config'
 
 test('createConnector', t => {
-  let conn = createConnection(config)
+  let conn = createConnection(config, {
+    ApolloClient
+  })
 
   t.is(conn.config, config)
   t.is(conn.store, config.store)

@@ -2,21 +2,21 @@ export class Store {
   constructor(keyNames, opts = {}) {
     this.keyNames = keyNames
     this.validateKeyName('auth0IdTokenKeyName').validateKeyName('gqlServerTokenKeyName')
-
+    this.storage = opts.storage || localStorage
     this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName
     this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
   }
 
   removeItem(name) {
-    localStorage.removeItem(name)
+    this.storage.removeItem(name)
   }
 
   getItem(name) {
-    return localStorage.getItem(name)
+    return this.storage.getItem(name)
   }
 
   setItem(name, value) {
-    localStorage.setItem(name, value)
+    this.storage.setItem(name, value)
   }
 
   validateKeyName(name) {
