@@ -3,8 +3,12 @@ import {
 } from '@tecla5/token-foundation'
 
 export class GraphQLAuth extends Configurable {
-  constructor(config) {
-    super(config)
+  constructor(config, opts) {
+    super(config, opts)
+
+    if (!this.client) {
+      this.configError('missing GraphQL client in configuration')
+    }
   }
 
   extractSignedInUserToken(signinResult) {

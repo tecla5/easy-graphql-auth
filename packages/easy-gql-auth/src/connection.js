@@ -3,8 +3,8 @@ import {
 } from '@tecla5/token-foundation'
 
 export class GraphQLConnection extends Configurable {
-  constructor(config = {}) {
-    super(config)
+  constructor(config = {}, opts) {
+    super(config, opts)
     let gqlServer = config.gqlServer
     this.gqlServer = gqlServer
     this.connection = gqlServer.connection

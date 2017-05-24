@@ -1,5 +1,6 @@
 export function setup(exe, config) {
   let lock, connection, client
+  config.AuthLock = config.AuthLock || exe.AuthLock
   if (exe.createStore) {
     config.store = exe.createStore(config.storage)
   }

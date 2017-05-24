@@ -10,8 +10,9 @@ export function createLock({
   createConnection,
   Auth0Lock
 }) {
-  config.Auth0Lock = Auth0Lock || _Auth0Lock
+  Auth0Lock = Auth0Lock || _Auth0Lock
   return setup({
+    Auth0Lock,
     createConnection,
     createStore,
     createLock
