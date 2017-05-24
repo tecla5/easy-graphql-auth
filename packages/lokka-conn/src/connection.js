@@ -4,7 +4,7 @@ import {
 
 export class LokkaConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
-    super(config)
+    super(config, opts)
 
     this.Lokka = config.Lokka || opts.Lokka
     this.Transport = config.Transport || opts.Transport
@@ -42,13 +42,13 @@ export class LokkaConnection extends GraphQLConnection {
     headers,
     endpoint
   }) {
-    endpoint = endpoint || this.config.graphCool.endpoint
+    endpoint = endpoint || this.config.gqlServer.endpoint
     return new this.Transport(endpoint, {
       headers: headers || this.headers
     })
   }
 }
 
-export function createConnection(config) {
-  return new LokkaConnection(config).connect()
+export function createConnection(config, opts) {
+  return new LokkaConnection(config, opts).connect()
 }

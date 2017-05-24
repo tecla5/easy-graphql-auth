@@ -482,6 +482,14 @@ Tests are written and run using [ava](https://github.com/avajs/ava)
 
 `$ npm test`
 
+To mock `localStorage` for unit testing in node env:
+
+```js
+global.window = {}
+import localStorage from 'mock-local-storage'
+window.localStorage = global.localStorage
+```
+
 ## License
 
 MIT 2017 Tecla5, Kristian Mandrup

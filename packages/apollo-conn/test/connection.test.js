@@ -1,18 +1,26 @@
 import test from 'ava'
-import ApolloClient from 'apollo-client'
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
 import {
   createConnection
 } from '../src/connection.js'
 import config from './config'
+import './mock-localstorage'
 
-test('createConnector', t => {
+test('createConnection', t => {
+  // console.log({
+  //   config
+  // })
   let conn = createConnection(config, {
-    ApolloClient
+    ApolloClient,
+    createNetworkInterface
   })
 
   t.is(conn.config, config)
-  t.is(conn.store, config.store)
-  t.is(conn.keyNames, config.storage)
-  t.is(conn.connection, config.graphCool.connection)
+  t.is(typeof conn.store, 'object')
+
+  t.deepEqual(conn.keyNames, config.storage)
+  t.deepEqual(conn.connection, config.gqlServer.connection)
   t.is(typeof conn.networkInterface, 'object')
 })
