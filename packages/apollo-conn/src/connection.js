@@ -7,6 +7,7 @@ export class ApolloConnection extends GraphQLConnection {
     super(config)
     this.ApolloClient = config.ApolloClient || opts.ApolloClient
     this.createNetworkInterface = config.createNetworkInterface || opts.createNetworkInterface
+    this.name = 'ApolloConnection'
 
     if (!this.ApolloClient) {
       this.configError('missing ApolloClient in constructor arguments')
@@ -14,11 +15,6 @@ export class ApolloConnection extends GraphQLConnection {
     if (!this.createNetworkInterface) {
       this.configError('missing createNetworkInterface in constructor arguments')
     }
-  }
-
-  configError(msg) {
-    console.error('ApolloConnection', msg)
-    throw Error(msg)
   }
 
   connect() {

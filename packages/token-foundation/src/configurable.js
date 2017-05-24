@@ -26,6 +26,11 @@ export class Configurable extends Loggable {
     this.tokens = this.store ? this.store.getAll() : config.tokens
   }
 
+  configError(msg) {
+    this.error(msg)
+    throw Error(msg)
+  }
+
   on(eventName, observer) {
     this.log('on', eventName, observer)
     let slot = this.observers[eventName] || []

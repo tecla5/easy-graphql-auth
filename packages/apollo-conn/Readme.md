@@ -1,6 +1,8 @@
 # GraphQL server integration with Lokka
 
-Integration library for GraphQL server with Apollo
+Small integration library for connecting to GraphQL server with Apollo using [token-foundation](https://github.com/tecla5/token-foundation) lib
+
+See [apollo network](http://dev.apollodata.com/core/network.html)
 
 ## Install
 
@@ -12,6 +14,7 @@ Integration library for GraphQL server with Apollo
 
 ```js
 import {
+  // ApolloConnector,
   createConnection
 } from '@tecla5/apollo-conn'
 
@@ -40,13 +43,15 @@ class MyGCAuthConnector extends ApolloConnector {
   // ...
 }
 
-function createMyConnector(config) {
-  return new MyGCAuthConnector(config).configure()
+function createConnection(config, opts) {
+  return new MyGCAuthConnector(config, opts).connect()
 }
 
 import config from '../config'
-config.createConnector = createMyConnector
-const myClient = apolloSetup(config)
+const myClient = setup(config, {
+  createConnection,
+  // ...
+})
 ```
 
 ## Config object
@@ -59,7 +64,8 @@ export default {
     connection: { // used by apollo/lokka connection configuration
       uri: 'xxx', // graphCool endpoint
       // ... more networkInterface config
-    }
+    },
+    endpoint: 'xxx', // graphCool endpoint
   },
   storage: { // localstorage
     gqlServerTokenKeyName: 'xxx' // key to store graphcoolToken

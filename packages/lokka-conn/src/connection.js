@@ -20,14 +20,25 @@ export class LokkaConnection extends GraphQLConnection {
       this.createLokka.bind(this)
       this.createTransport.bind(this)
     }
+    this.name = 'LokkaConnection'
   }
 
   connect() {
     let headers, transport
+
+    if (!this.tokens.auth0IdToken) {
+      this.configError('missing auth0IdToken')
+    }
+
     this.headers = headers = {
       'Authorization': `Bearer ${this.tokens.auth0IdToken}`
     }
-    this.transport = transport = this.createTransport(headers)
+
+    let endpoint = this.endpoint
+    this.transport = transport = this.createTransport({
+      headers,
+      endpoint
+    })
     this.client = this.createLokka(transport)
     return this
   }
@@ -42,9 +53,17 @@ export class LokkaConnection extends GraphQLConnection {
     headers,
     endpoint
   }) {
-    endpoint = endpoint || this.config.gqlServer.endpoint
+    endpoint = endpoint || this.endpoint
+    headers = headers || this.headers
+    if (!endpoint) {
+      this.configError('missing endpoint')
+    }
+    if (!headers) {
+      this.configError('missing headers')
+    }
+
     return new this.Transport(endpoint, {
-      headers: headers || this.headers
+      headers
     })
   }
 }

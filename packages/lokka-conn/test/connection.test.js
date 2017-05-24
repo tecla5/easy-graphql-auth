@@ -23,4 +23,7 @@ test('createConnection', t => {
 
   t.deepEqual(conn.keyNames, config.storage)
   t.deepEqual(conn.connection, config.gqlServer.connection)
+
+  t.deepEqual(conn.endpoint, config.gqlServer.endPoint)
+  t.notDeepEqual(conn.endpoint, config.gqlServer.connection.uri)
 })

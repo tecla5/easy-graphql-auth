@@ -23,7 +23,7 @@ export class Loggable {
 
   error(...msgs) {
     if (this.logging) {
-      this.io.error('Lock', ...msgs)
+      this.io.error(this.name, ...msgs)
     }
   }
 }

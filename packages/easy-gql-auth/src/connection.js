@@ -5,6 +5,9 @@ import {
 export class GraphQLConnection extends Configurable {
   constructor(config = {}) {
     super(config)
-    this.connection = config.gqlServer.connection
+    let gqlServer = config.gqlServer
+    this.gqlServer = gqlServer
+    this.connection = gqlServer.connection
+    this.connection.endpoint = gqlServer.endpoint || this.connection.uri
   }
 }
