@@ -2,7 +2,7 @@ import {
   GraphQLConnection
 } from '@tecla5/easy-gql-auth'
 
-export class ApolloConnection extends GraphQLConnection {
+export class ApolloAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config)
     this.ApolloClient = config.ApolloClient || opts.ApolloClient
@@ -20,7 +20,6 @@ export class ApolloConnection extends GraphQLConnection {
   connect() {
     let networkInterface = this.createNetworkInterface(this.connection)
     this.networkInterface = networkInterface
-    let graphcoolTokenKeyName = this.keyNames.gqlServerTokenKeyName
     this.configureNetworkInterface()
     this.client = this.createApolloClient()
     return this
@@ -31,13 +30,18 @@ export class ApolloConnection extends GraphQLConnection {
   }
 
   networkMw() {
+    let auth0IdToken = this.tokens.auth0IdToken
+    if (!auth0IdToken) {
+      this.configError('missing auth0IdToken for HTTP header')
+    }
+
     return {
       applyMiddleware: (req, next) => {
         if (!req.options.headers) {
           req.options.headers = {}; // Create the header object if needed.
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = this.tokens.gqlServerToken
+        req.options.headers.authorization = auth0IdToken
         next();
       }
     }
