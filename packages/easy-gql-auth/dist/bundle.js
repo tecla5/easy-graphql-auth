@@ -126,13 +126,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       var j = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new g(h, j);
     };var g = b.Store = function () {
       function h(j) {
-        var k = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, h), this.keyNames = j, this.validateKeyName('auth0IdTokenKeyName').validateKeyName('gqlServerTokenKeyName'), this.storage = k.storage || localStorage, this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName, this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName;
+        var k = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, h), this.keyNames = j.storage || j, this.storage = k.storage || k.keyStore || localStorage, this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName, this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName;
       }return f(h, [{ key: 'removeItem', value: function value(k) {
           this.storage.removeItem(k);
         } }, { key: 'getItem', value: function value(k) {
           return this.storage.getItem(k);
         } }, { key: 'setItem', value: function value(k, l) {
           this.storage.setItem(k, l);
+        } }, { key: 'validateKeyNames', value: function value() {
+          for (var k = this, l = arguments.length, m = Array(l), n = 0; n < l; n++) {
+            m[n] = arguments[n];
+          }m.map(function (o) {
+            return k.validateKeyName(o);
+          });
         } }, { key: 'validateKeyName', value: function value(k) {
           return 'string' != typeof this.keyNames[k] && this.error('keyNames missing ' + k), this;
         } }, { key: 'error', value: function value(k) {
@@ -234,7 +240,7 @@ exports.GraphQLAuth = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.createGraphQLServerAuth = createGraphQLServerAuth;
+exports.createGraphQLAuth = createGraphQLAuth;
 
 var _tokenFoundation = __webpack_require__(0);
 
@@ -472,8 +478,8 @@ var GraphQLAuth = exports.GraphQLAuth = function (_Configurable) {
   return GraphQLAuth;
 }(_tokenFoundation.Configurable);
 
-function createGraphQLServerAuth(config) {
-  new GraphQLServerAuth(config);
+function createGraphQLAuth(config) {
+  new GraphQLAuth(config);
 }
 
 /***/ }),

@@ -1,7 +1,16 @@
-export class Store {
+import {
+  Loggable
+} from './loggable'
+
+export class Store extends Loggable {
   constructor(keyNames, opts = {}) {
-    this.keyNames = keyNames
-    this.storage = opts.storage || localStorage
+    super('Store', opts)
+    this.log('create', {
+      keyNames,
+      opts
+    })
+    this.keyNames = keyNames.storage || keyNames
+    this.storage = opts.storage || opts.keyStore || window.localStorage
     this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName
     this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
   }
@@ -19,7 +28,7 @@ export class Store {
   }
 
   validateKeyNames(...names) {
-    names.map(name => validateKeyName(name))
+    names.map(name => this.validateKeyName(name))
   }
 
   validateKeyName(name) {

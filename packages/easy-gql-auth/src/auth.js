@@ -116,6 +116,6 @@ export class GraphQLAuth extends Configurable {
   }
 }
 
-export function createGraphQLServerAuth(config) {
-  new GraphQLServerAuth(config)
+export function createGraphQLAuth(config) {
+  return new GraphQLAuth(config)
 }

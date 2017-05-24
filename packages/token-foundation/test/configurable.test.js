@@ -4,18 +4,7 @@ import {
 } from '../src/configurable'
 
 import config from './config'
-
-const storage = {
-  removeItem() {
-    // fake
-  },
-  getItem() {
-    // fake
-  },
-  setItem() {
-    // fake
-  },
-}
+import storage from './storage'
 
 test('Configurable', t => {
   t.is(typeof Configurable, 'function')

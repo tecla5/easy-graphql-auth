@@ -1,10 +1,14 @@
 import defaultKeyNames from './keynames'
 import {
+  Loggable
+} from './loggable'
+import {
   Store
 } from './store'
 
-export class Configurable {
+export class Configurable extends Loggable {
   constructor(config = {}, opts = {}) {
+    super('Configurable', opts)
     this.validate(config)
     let {
       keyNames,
@@ -13,8 +17,6 @@ export class Configurable {
     } = config
 
     this.config = config
-    this.io = opts.io || console
-    this.logging = opts.logging
     this.observers = {}
     this.config = config
     this.storage = storage
@@ -45,28 +47,6 @@ export class Configurable {
   handleError(err) {
     this.error(err)
     throw err
-  }
-
-  enableLog() {
-    this.logging = true
-    return this
-  }
-
-  disableLog() {
-    this.logging = false
-    return this
-  }
-
-  log(...msgs) {
-    if (this.logging) {
-      this.io.log('Lock', ...msgs)
-    }
-  }
-
-  error(...msgs) {
-    if (this.logging) {
-      this.io.error('Lock', ...msgs)
-    }
   }
 
   defaultCreateStore(keyNames, opts) {

@@ -5,10 +5,6 @@ import bundle, {
   Configurable
 } from '../dist/bundle.js'
 
-console.log({
-  bundle
-})
-
 test('Configurable', t => {
   t.is(typeof Configurable, 'function')
 })

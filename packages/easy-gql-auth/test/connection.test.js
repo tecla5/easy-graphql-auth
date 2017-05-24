@@ -1,12 +1,17 @@
 import test from 'ava'
+import config from './config'
+import storage from './storage'
 import {
-  createConnector,
-  Connector
-} from '../src/connector'
+  GraphQLConnection as Connection
+} from '../src/connection'
 
-test('createConnector', t => {
-  let config = {}
-  let connector = createConnector(config)
+import './mock-localstorage'
 
-  t.is(connector.config, config)
+test('createConnection', t => {
+  let connection = new Connection(config, {
+    logging: true,
+    storage
+  })
+
+  t.is(connection.config, config)
 })
