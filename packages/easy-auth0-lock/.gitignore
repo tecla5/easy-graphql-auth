@@ -1,6 +1,5 @@
 .vscode
 node_modules
 *.log
-dist
 play.*
 app.*
