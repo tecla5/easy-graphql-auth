@@ -13,9 +13,9 @@
     "build:dev": "webpack --progress --colors --env=dev"
   },
   "keywords": [
-    "apollo",
-    "graphcool",
-    "auth0"
+    "auth0",
+    "lock",
+    "auth0-lock"
   ],
   "repository": {
     "type": "git",

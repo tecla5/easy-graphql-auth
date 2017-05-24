@@ -5,6 +5,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
   <script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
+  <script src="node_modules/babel-polyfill/dist/polyfill.min.js"></script>
   <style>
     .hide {
       display: none
@@ -24,15 +25,15 @@
   </div>
   <script src="dist/app.js"></script>
   <script>
-    var lock = createAuth0Lock(Auth0Lock)
-    lock
-      .enableLog()
-      .subscribeAuthenticated()
-      .on('signedIn', function (res) {
-        console.log('logged in', res)
-      })
-
     $(document).ready(() => {
+      var lock = easyAuth0.lock(Auth0Lock)
+      lock
+        .enableLog()
+        .subscribeAuthenticated()
+        .on('signedIn', function (res) {
+          console.log('logged in', res)
+        })
+
       $('#login').click(function () {
         lock.showLock()
       })

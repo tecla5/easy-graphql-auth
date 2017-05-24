@@ -2,7 +2,7 @@
   "name": "@tecla5/token-foundation",
   "version": "0.1.0",
   "description": "Foundation library for using token storage, observers and logging",
-  "main": "dist/bundle.js",
+  "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
   },

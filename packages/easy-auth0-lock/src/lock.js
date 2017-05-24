@@ -53,7 +53,9 @@ export class Lock extends Configurable {
     this.queries = queries || {}
     this.gqlServer = gqlServer
 
-    this.gqlServerAuth = config.createGraphQLServerAuth(config)
+    if (config.createGraphQLServerAuth) {
+      this.gqlServerAuth = config.createGraphQLServerAuth(config)
+    }
 
     this.theme = theme || {}
     this.theme.logo = this.theme.logo || logo
@@ -233,6 +235,8 @@ export class Lock extends Configurable {
     }
     if (this.gqlServerAuth) {
       await this.gqlServerAuth.signin(data)
+    } else {
+      this.log('Skipping GraphQL Auth. gqlServerAuth instance not found')
     }
   }
 

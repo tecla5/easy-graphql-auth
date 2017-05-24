@@ -1,7 +1,6 @@
 export class Store {
   constructor(keyNames, opts = {}) {
     this.keyNames = keyNames
-    this.validateKeyName('auth0IdTokenKeyName').validateKeyName('gqlServerTokenKeyName')
     this.storage = opts.storage || localStorage
     this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName
     this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
@@ -17,6 +16,10 @@ export class Store {
 
   setItem(name, value) {
     this.storage.setItem(name, value)
+  }
+
+  validateKeyNames(...names) {
+    names.map(name => validateKeyName(name))
   }
 
   validateKeyName(name) {
