@@ -18,21 +18,6 @@ Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) c
 
 Experiment with Babel compile via `src/play.js` ;)
 
-## In the lib
-
-`@tecla5/gc-auth0-common` exports the following:
-
-```js
-import {
-  BaseGCAuth0Connector,
-  setup,
-  Lock,
-  createLock,
-  Store,
-  createStore
-} from '@tecla5/gc-auth0'
-```
-
 ## Auth0Lock
 
 You can include it from CDN

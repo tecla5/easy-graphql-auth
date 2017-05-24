@@ -2,15 +2,17 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: path.resolve(__dirname, '../src/index.js'),
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    library: 'apolloConn',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [{
       test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
+      exclude: /node_modules/,
       use: {
         loader: 'babel-loader',
       }

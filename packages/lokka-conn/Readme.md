@@ -1,10 +1,10 @@
-# GraphCool Auth0 Lokka
+# Lokka connect
 
-Integration library for GraphCool with Auth0 and Lokka.
+Connect to GraphQL server via Lokka transport client
 
 ## Install
 
-`npm i -S @tecla5/gc-auth0-lokka @tecla5/gc-auth0-common`
+`npm i -S @tecla5/lokka-conn`
 
 ## Pre-requisites
 
@@ -23,31 +23,20 @@ Using default setup:
 
 ```js
 import {
-  createClient
-} from '@tecla5/gc-auth0-apollo'
+  Lokka
+} from 'lokka'
 import {
-  setup,
-  createStore,
-  createLock
-} from '@tecla5/gc-auth0'
-import config from '../config'
-import Auth0Lock from 'auth0-lock'
-config.Auth0Lock = Auth0Lock
+  Transport
+} from 'lokka-transport-http'
 
-export default setup({
-  createClient,
-  createStore,
-  createLock
-}, config)
-```
+import {
+  createConnection
+} from '@tecla5/lokka-conn'
+import config from './config'
 
-Then configure UI event handler to display Auth0 lock modal popup and subscribe to authenticated event.
-
-```js
-$('#login').click(() => {
-  lock
-    .showLock()
-    .subscribeAuthenticated()
+let connection = createConnection(config, {
+  Lokka,
+  Transport
 })
 ```
 

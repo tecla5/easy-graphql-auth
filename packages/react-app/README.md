@@ -81,17 +81,6 @@ module.exports = setup(config)
 You can also fine-tune the setup...
 
 ```js
-const {
-  createClient,
-  GCAuth0Connector,
-  // from gc-auth0-common
-  Lock,
-  createLock,
-  jwtUtil,
-  Store,
-  createStore
-} = require('@tecla5/gc-auth0-apollo')
-
 const config = require('../config')
 config.store = createStore(config.storage)
 const lock = createLock(config)

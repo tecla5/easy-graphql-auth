@@ -1,4 +1,12 @@
 import test from 'ava'
+
+import {
+  Lokka
+} from 'lokka'
+import {
+  Transport
+} from 'lokka-transport-http'
+
 import {
   createConnection
 } from '../src/connection.js'

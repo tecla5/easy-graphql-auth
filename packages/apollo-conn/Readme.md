@@ -8,6 +8,15 @@ Integration library for GraphQL server with Apollo
 
 ## Usage
 
+### Babel config optimization
+
+Perhaps try plugins:
+
+```
+    "add-module-exports",
+    "compact-reexports"
+```
+
 ### Client configuration
 
 ```js

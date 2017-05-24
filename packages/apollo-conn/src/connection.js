@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-client'
 
 import {
   GraphQLConnection
-} from '@tecla5/gql-auth'
+} from '@tecla5/easy-gql-auth'
 
 export class ApolloConnection extends GraphQLConnection {
   constructor(config = {}) {
