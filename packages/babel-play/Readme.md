@@ -1,5 +1,8 @@
-{
-  "presets": ["env"],
+# Babel
+
+Fucking nightmare jungle!
+
+```js
   "plugins": [
     "transform-object-rest-spread",
     "transform-async-to-generator",
@@ -7,4 +10,4 @@
     "transform-export-extensions",
     "compact-reexports"
   ]
-}
+```

@@ -9,24 +9,15 @@
   "scripts": {
     "test": "ava",
     "test:dist": "ava test/dist.test.js",
-    "build:prod": "webpack --progress --colors --display-error-details --env=prod",
-    "build:dev": "webpack --progress --colors --display-error-details --env=dev"
+    "build": "webpack --progress --colors --display-error-details"
   },
   "keywords": [
-    "authentication",
-    "storage",
-    "keys",
+    "play",
+    "babel",
     "config"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/tecla5/token-foundation.git"
-  },
   "author": "Kristian Mandrup",
   "license": "MIT",
-  "dependencies": {
-    "deep-extend": "^0.5.0"
-  },
   "devDependencies": {
     "ava": "^0.19.1",
     "babel-cli": "^6.24.0",
@@ -49,7 +40,7 @@
   },
   "babel": {
     "presets": [
-      "env"
+      "es2017"
     ],
     "plugins": [
       "transform-object-rest-spread",

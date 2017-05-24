@@ -3,6 +3,7 @@ const BabiliPlugin = require('babili-webpack-plugin');
 const merge = require('webpack-merge')
 
 let config = merge.smart(common, {
+  entry: './src/index.js',
   output: {
     filename: 'bundle.prod.js'
   },

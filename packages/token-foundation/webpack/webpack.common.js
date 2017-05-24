@@ -2,13 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: {
-    polyfill: 'babel-polyfill',
-    app: './src/index.js'
-  },
+  entry: path.join(__dirname, '../src/index.js'),
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'bundle.js'
+  },
+  resolve: {
+    extensions: ['.js'],
   },
   module: {
     rules: [{

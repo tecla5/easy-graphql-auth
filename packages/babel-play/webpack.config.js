@@ -2,18 +2,15 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: path.join(__dirname, '../src/index.js'),
+  entry: path.join(__dirname, './src/index.js'),
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, './dist'),
     filename: 'bundle.js'
-  },
-  resolve: {
-    extensions: ['.js'],
   },
   module: {
     rules: [{
       test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
+      exclude: /node_modules/,
       use: {
         loader: 'babel-loader',
       }
@@ -21,6 +18,5 @@ module.exports = {
   },
   stats: {
     colors: true
-  },
-  devtool: 'source-map'
+  }
 };

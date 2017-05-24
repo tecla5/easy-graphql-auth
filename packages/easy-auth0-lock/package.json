@@ -24,8 +24,7 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/easy-auth0-lock": "*",
-    "auth-lock": "^10.16.0"
+    "@tecla5/token-foundation": "*"
   },
   "devDependencies": {
     "ava": "^0.19.1",

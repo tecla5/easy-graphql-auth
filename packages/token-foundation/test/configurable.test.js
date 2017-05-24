@@ -1,6 +1,8 @@
-export default {
-  storage: { // localstorage
-    auth0IdTokenKeyName: 'auth0IdToken', // key to store auth0IdToken
-    gqlServerTokenKeyName: 'graphcoolToken' // key to store graphcoolToken
-  }
-}
+import test from 'ava'
+import {
+  Configurable
+} from '../src/configurable'
+
+test('Configurable', t => {
+  t.is(typeof Configurable, 'function')
+})

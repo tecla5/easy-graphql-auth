@@ -1,10 +1,10 @@
 import {
   Store,
-  Configurable
-} from '@tecla5/auth-foundation'
+  Configurable,
+  keyNames
+} from '@tecla5/token-foundation'
 
 import extend from 'deep-extend'
-import defaultKeyNames from './common/keynames'
 
 const errorCode = {
   USER_ALREADY_EXISTS: 3023
