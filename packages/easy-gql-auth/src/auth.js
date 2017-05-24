@@ -64,7 +64,9 @@ export class GraphQLAuth extends Configurable {
       this.log('Create user', name);
       let userData = this.buildUserData(data)
       if (this.queries.createUser) {
-        await this.queries.createUser(userData)
+        await this.doQuery({
+          query: this.queries.createUser(userData)
+        })
       } else {
         this.log('missing createUser query, faking it')
         await this.fakeCreateUser(userData)
@@ -72,6 +74,14 @@ export class GraphQLAuth extends Configurable {
     } catch (err) {
       this.handleQueryError(err)
     }
+  }
+
+  async doQuery({
+    query
+  }) {
+    return await this.client.query({
+      query
+    })
   }
 
   // TODO: simulate GraphCool query mutation result?
@@ -101,7 +111,9 @@ export class GraphQLAuth extends Configurable {
       return this.fakeSigninUser(profile)
     }
     let userData = this.buildSigninUserData(data)
-    return await this.queries.signinUser(userData)
+    return await this.doQuery({
+      query: this.queries.signinUser(userData)
+    })
   }
 
   fakeSigninUser(profile) {
