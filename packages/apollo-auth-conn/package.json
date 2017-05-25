@@ -1,5 +1,5 @@
 {
-  "name": "@tecla5/apollo-auth",
+  "name": "@tecla5/apollo-conn",
   "version": "0.1.0",
   "description": "Apollo client connection to GraphQL server",
   "main": "dist/bundle.prod.js",
@@ -24,7 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "apollo-client": "^1.2.2",
-    "@tecla5/easy-gql-auth": "*"
+    "@tecla5/gql-auth": "*"
   },
   "devDependencies": {
     "ava": "^0.19.1",

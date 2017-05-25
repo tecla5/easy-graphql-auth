@@ -71,30 +71,28 @@ class App extends Component {
 Lock configuration is also pretty simple.
 
 ```js
-const {
-  setup
-} = require('@tecla5/gc-auth0-apollo')
-const config = require('../config')
-module.exports = setup(config)
-```
+import {
+  createConnection
+} from '@tecla5/apollo-conn'
+import {
+  setup,
+  createStore,
+  createLock
+} from '@tecla5/easy-auth0-lock'
+import config from '../config'
+import Auth0Lock from 'auth0-lock'
 
-You can also fine-tune the setup...
-
-```js
-const config = require('../config')
-config.store = createStore(config.storage)
-const lock = createLock(config)
-const client = createClient(config)
-
-module.exports = {
-  lock,
-  client
-}
+export default setup(config, {
+  Auth0Lock,
+  createConnection,
+  createStore,
+  createLock
+})
 ```
 
 To replace GraphQL client with `lokka`, simply replace the imported lib.
 
-`const { ... } = require('@tecla5/gc-auth0-apollo')`
+`const { ... } = require('@tecla5/lokka-auth')`
 
 Both clients implement the exact same interface :)
 
@@ -132,4 +130,4 @@ module.exports = {
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

@@ -1,4 +1,4 @@
 import gqlServer from './gqlServer'
-import auth0 from './auth0'
+import auth from './auth'
 import deepMerge from 'deepmerge'
 export default deepMerge({}, gqlServer, auth0)

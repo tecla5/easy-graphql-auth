@@ -5,6 +5,6 @@
     "transform-async-to-generator",
     "transform-class-properties",
     "transform-export-extensions",
-    "compact-reexports"
+    "add-module-exports"
   ]
 }

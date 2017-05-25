@@ -101,4 +101,4 @@ Tests are written and run using [ava](https://github.com/avajs/ava)
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

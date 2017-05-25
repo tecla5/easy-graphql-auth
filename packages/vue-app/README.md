@@ -149,4 +149,4 @@ This project is generated from [template-vue](https://github.com/egoist/template
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

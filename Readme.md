@@ -1,15 +1,13 @@
-# Auth0 integration libs for GraphQL clients and servers
+# Auth integration libs for GraphQL clients and servers
 
-Makes it quick and easy to setup GraphQL servers such as [GraphCool](https://www.graph.cool) with [Auth0](https://auth0.com/) and GraphQL clients, such as:
+Makes it quick and easy to setup GraphQL servers with [Auth0](https://auth0.com/) (and other Auth providers) for GraphQL clients, such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
 
+Designed specifically for [GraphCool](https://www.graph.cool) (SaaS) server but well suited for any other GraphQL server.
+
 See the docs for each of the modules included for more details including installation and usage. Enjoy!!
-
-These libs can be used in combination with the recently updated tutorial project [micro-stripe-example](https://github.com/tecla5/micro-stripe-example) for payments.
-
-Coming soon: *Stripe subscription payments integration* (separate project)
 
 ## Modules included
 
@@ -17,25 +15,25 @@ Coming soon: *Stripe subscription payments integration* (separate project)
 
 - `@tecla5/token-foundation` - token storage and common utilities
 
-### GraphQL connection
+### GraphQL client connection
 
 - `@tecla5/gql-conn` - GraphQL server connection config and token store
 
-### GraphQL client connections
+### GraphQL client auth connection
 
-- `@tecla5/apollo-conn` -  GraphQL server connection via Apollo (built on `gql-conn`)
-- `@tecla5/lokka-conn` - GraphQL server connection via Lokka (built on `gql-conn`)
+- `@tecla5/apollo-auth-conn` -  GraphQL server connection via Apollo (built on `gql-conn`)
+- `@tecla5/lokka-auth-conn` - GraphQL server connection via Lokka (built on `gql-conn`)
 
 Each GraphQL connection should have the capability to:
 
 - perform GraphQL queries via `async doQuery({query})`
 - add JWT token to connection via `setJWTtoken({signinToken})`
 
-### GraphQL auth
+### GraphQL auth flow
 
 - `@tecla5/gql-auth` - GraphQL authentication
 
-### Auth0
+### Auth0 login (UI)
 
 - `@tecla5/easy-auth0-lock` - Efficient setup of GraphQL authentication with Auth0 Lock
 
@@ -70,7 +68,7 @@ import {
 } from '@tecla5/gql-auth'
 import {
   createConnection
-} from '@tecla5/apollo-auth'
+} from '@tecla5/apollo-auth-conn'
 import {
   setup,
   createStore,
@@ -133,7 +131,6 @@ class App extends Component {
 }
 ```
 
-
 ## Pre-requisites
 
 On [Auth0 university](https://auth0.com/university/) watch:
@@ -152,6 +149,33 @@ This is a [lerna](https://lernajs.io/) project. So simply bootstrap.
 `$ lerna bootstrap`
 
 And you will be good to go!
+
+## Build
+
+`$ lerna run build:dev` - for dev
+
+`$ lerna run build:dev` - for prod (minified)
+
+## Test
+
+`$ lerna run test`
+
+## Publish to npm
+
+`$ lerna publish`
+
+## Payments
+
+These auth libs can be used in combination with the recently updated tutorial project [micro-stripe-example](https://github.com/tecla5/micro-stripe-example) for payments.
+
+Coming soon: *Stripe subscription payments integration* (separate project)
+
+The goal is to supply efficient infrastructure to build the core functionality for most sites:
+
+- user signup
+- payment (including subscriptions)
+
+Stay tuned...
 
 ## License
 

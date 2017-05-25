@@ -20,15 +20,15 @@
         To get started, edit <code>./src/components/App.vue</code> and save to reload.
         <br/>
         <span :class="$style.fade">
-                                            Checkout <code>./README.md</code> for more usages.
-                                          </span>
+                                              Checkout <code>./README.md</code> for more usages.
+                                            </span>
       </p>
     </div>
   </div>
 </template>
 
 <script>
-import lock from '../auth0/lock'
+import lock from '../auth/lock'
 
 export default {
   name: 'app',

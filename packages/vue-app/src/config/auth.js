@@ -1,6 +1,6 @@
 export default {
   storage: { // localstorage
-    authTokenKeyName: 'authToken', // key to store auth0IdToken
+    authTokenKeyName: 'auth0IdToken', // key to store auth0IdToken
   },
   auth: {
     auth0: { // from auth0 client app settings

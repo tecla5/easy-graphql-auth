@@ -6,8 +6,9 @@
     "url": "https://github.com/tecla5/auth0-react-app.git"
   },
   "dependencies": {
-    "@tecla5/apollo-auth": "*",
+    "@tecla5/apollo-auth-conn": "*",
     "@tecla5/easy-auth0-lock": "*",
+    "@tecla5/easy-gql-auth0": "*",
     "deepmerge": "^1.3.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"

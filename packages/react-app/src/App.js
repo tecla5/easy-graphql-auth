@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import lock from './auth0/lock';
+import lock from './auth/lock';
 
 class App extends Component {
   constructor(props) {

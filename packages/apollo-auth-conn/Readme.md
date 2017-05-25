@@ -1,12 +1,12 @@
-# Apollo Auth
+# Apollo Auth Connection
 
-Auth library for connecting to GraphQL server with Apollo using [easy-gql-auth](https://github.com/tecla5/easy-gql-auth) lib
+Auth library for connecting to GraphQL server with Apollo using [gql-auth](https://github.com/tecla5/gql-auth) lib
 
 See [apollo network](http://dev.apollodata.com/core/network.html)
 
 ## Install
 
-`npm i -S @tecla5/apollo-auth`
+`npm i -S @tecla5/apollo-auth-conn`
 
 ## Usage
 
@@ -16,7 +16,7 @@ See [apollo network](http://dev.apollodata.com/core/network.html)
 import {
   // ApolloAuthConnection as Connection,
   createConnection
-} from '@tecla5/apollo-auth'
+} from '@tecla5/apollo-auth-conn'
 
 import ApolloClient, {
   createNetworkInterface
@@ -38,7 +38,7 @@ You can extend `ApolloConnection` with your own custom configuration and provide
 import {
   createConnection,
   ApolloAuthConnection
-} from '@tecla5/gql-apollo'
+} from '@tecla5/apollo-auth-conn'
 
 class MyGCAuthConnection extends ApolloAuthConnection {
   // ...
@@ -69,14 +69,14 @@ export default {
     endpoint: 'xxx',  // used as connection.uri if no connection setting)
   },
   storage: { // localstorage
-    auth0IdTokenKeyName: 'auth0IdToken'
+    authTokenKeyName: 'authToken'
   }
 }
 ```
 
 ## ApolloAuthConnection
 
-The `ApolloAuthConnection` extends `GraphQLConnection` from [easy-gql-auth](https://github.com/tecla5/easy-gql-auth)
+The `ApolloAuthConnection` extends `GraphQLConnection` from [gql-auth](https://github.com/tecla5/gql-auth)
 
 The superclass calls `validateConnection` which by default validates if `store` and `keyNames` are defined for auth to retrieve the auth token.
 
@@ -95,4 +95,4 @@ Tests are written and run using [ava](https://github.com/avajs/ava)
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

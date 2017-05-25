@@ -70,3 +70,7 @@ or as first statement in included code `import 'babel-polyfill'`
 ```
 
 Might be due to `async` statements or other ES6/ES7 syntax not being transpiled correctly!
+
+## License
+
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup
