@@ -49,7 +49,7 @@ Notably a `setup` method is included which should facilitate full setup of all t
 
 - `@tecla5/easy-gql-auth0` - Efficient setup of full Auth0 and GraphQL authentication flow
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow-v2.png" alt="Full auth0 graphQL flow" width="100%" height="100%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow-v3.png" alt="Full auth0 graphQL flow" width="100%" height="100%">
 
 ## Demo apps
 
