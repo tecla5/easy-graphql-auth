@@ -9,6 +9,10 @@ Makes it super quick and easy to setup a full authentication flow for a GraphQL 
 ## Usage
 
 ```js
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
+
 import {
   createConnection
 } from '@tecla5/apollo-conn'
@@ -20,6 +24,8 @@ import {
 import config from './config'
 
 let lock = createLock(config, {
+  ApolloClient,
+  createNetworkInterface,
   createConnection
 })
 ```
