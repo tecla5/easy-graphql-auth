@@ -60,7 +60,7 @@ The `keyNames` passed to store will typically come from a `storage` object of th
 ```js
   storage: { // localstorage
     authTokenKeyName: 'authToken', // key to store authToken
-    gqlServerTokenKeyName: 'graphcoolToken' // key to store token return by graphQL server
+    gqlServerTokenKeyName: 'gqlAuthToken' // key to store token return by graphQL server
   }
 ```
 

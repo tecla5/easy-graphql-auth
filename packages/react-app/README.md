@@ -119,7 +119,7 @@ Auth0 configuration
 ```js
 module.exports = {
   storage: { // localstorage
-    auth0IdTokenKeyName: 'xxx', // key to store auth0IdToken
+    authTokenKeyName: 'xxx', // key to store auth0IdToken
   },
   auth0: { // from auth0 client app settings
     domain: 'xxx', // Your auth0 domain
