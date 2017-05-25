@@ -1,6 +1,6 @@
 export default {
   storage: { // localstorage
-    // key to store authIdToken
-    authIdTokenKeyName: 'authIdToken'
+    // key to store authToken
+    authTokenKeyName: 'authToken'
   }
 }

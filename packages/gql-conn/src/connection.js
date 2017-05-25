@@ -35,7 +35,7 @@ export class GraphQLConnection extends Configurable {
     return this.keyNames.gqlServerTokenKeyName
   }
 
-  get authIdToken() {
+  get authToken() {
     return this.store.getItem(this.authTokenKeyName) || null
   }
 }

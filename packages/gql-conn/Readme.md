@@ -39,7 +39,7 @@ You can override this behavior for a custom auth token strategy if needed.
 ### Getters
 
 - `authTokenKeyName` the key name used to store the auth token
-- `authIdToken` get the auth token from the store if present
+- `authToken` get the auth token from the store if present
 
 ### setJwtToken
 

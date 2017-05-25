@@ -47,7 +47,7 @@ class MyAuthConnection extends LokkaAuthConnection {
 }
 
 function createConnection(config) {
-  return new MyAuthConnection(config).configure()
+  return new MyAuthConnection(config).connect()
 }
 ```
 
@@ -57,7 +57,7 @@ Use a configuration object of the following form
 
 ```js
 export default {
-  graphCool: {
+  gqlServer: {
     connection: { // used by apollo/lokka connection configuration
       uri: 'xxx', // graphCool endpoint
       // ... more networkInterface config
@@ -65,7 +65,7 @@ export default {
     endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
   },
   storage: { // localstorage
-    graphcoolTokenKeyName: 'xxx' // key to store graphcoolToken
+    gqlTokenKeyName: 'xxx' // key to store graphcoolToken
   }
 }
 ```
@@ -82,14 +82,14 @@ The `authToken` is expected to be received from the GraphQL server and stored in
 The default strategy is to create a new `headers` with the Authorization `Bearer` set to the token found in the store (if present) or the incoming token. If there is no `authToken` the default headers are used.
 
 ```js
-`'Authorization': `Bearer ${authIdToken}`
+`'Authorization': `Bearer ${authToken}`
 ```
 
 Then a new Lokka `Transport` instance is created with this headers enabled for subsequent requests to be authenticated via JWT.
 
 ### setJwtToken
 
-- `setJwtToken({signinToken})` used to set JWT token on HTTP header
+- `setJwtToken(signinToken)` used to set JWT token on HTTP header
 
 Calls `connect` with the `signinToken` from the GraphQL server
 

@@ -51,7 +51,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
           req.options.headers = this.defaultHeaders || {}
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = this.authIdToken
+        req.options.headers.authorization = this.authToken
         next();
       }
     }

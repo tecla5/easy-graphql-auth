@@ -44,9 +44,9 @@ let config = {
   },
   storage: {
     // key to store gql server auth token
-    gqlServerTokenKeyName: 'xxxx',
+    gqlServerTokenKeyName: 'gqlServerToken',
     // key to store auth provider token
-    authIdTokenKeyName: 'authIdToken'
+    authTokenKeyName: 'authToken'
   },
   queries
 }

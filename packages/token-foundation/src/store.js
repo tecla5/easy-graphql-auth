@@ -11,7 +11,7 @@ export class Store extends Loggable {
     })
     this.keyNames = keyNames.storage || keyNames
     this.storage = opts.storage || opts.keyStore || window.localStorage
-    this.authIdTokenKeyName = this.keyNames.authIdTokenKeyName
+    this.authTokenKeyName = this.keyNames.authTokenKeyName
     this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
   }
 
@@ -45,13 +45,13 @@ export class Store extends Loggable {
   }
 
   resetAll() {
-    this.removeItem(this.authIdTokenKeyName)
+    this.removeItem(this.authTokenKeyName)
     this.removeItem(this.gqlServerTokenKeyName)
   }
 
   getAll(opts = {}) {
     return {
-      authToken: this.getItem(this.authIdTokenKeyName),
+      authToken: this.getItem(this.authTokenKeyName),
       gqlServerToken: this.getItem(this.gqlServerTokenKeyName),
     }
   }
