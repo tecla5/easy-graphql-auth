@@ -1,6 +1,6 @@
 import {
   GraphQLConnection
-} from './connection'
+} from '@tecla5/gql-conn'
 
 export class GraphQLAuth extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
@@ -34,7 +34,7 @@ export class GraphQLAuth extends GraphQLConnection {
 
   async signin(data) {
     let {
-      auth0Token,
+      authToken,
       profile
     } = data
     this.log('Signing into GraphQL server');
@@ -54,12 +54,12 @@ export class GraphQLAuth extends GraphQLConnection {
 
   buildUserData(data) {
     let {
-      auth0Token,
+      authToken,
       profile
     } = data
     return {
       variables: {
-        authToken: auth0Token,
+        authToken: authToken,
         name: profile.name
       }
     }
@@ -67,7 +67,7 @@ export class GraphQLAuth extends GraphQLConnection {
 
   async doCreateUser(data) {
     let {
-      auth0Token,
+      authToken,
       profile
     } = data
     // create user if necessary
@@ -79,7 +79,7 @@ export class GraphQLAuth extends GraphQLConnection {
           query: this.queries.createUser(userData)
         })
         publish('createdUserOK', {
-          auth0Token,
+          authToken,
           userData,
           profile,
           result
@@ -91,7 +91,7 @@ export class GraphQLAuth extends GraphQLConnection {
       }
     } catch (error) {
       publish('createUserFailure', {
-        auth0Token,
+        authToken,
         userData,
         profile,
         result,
@@ -114,12 +114,12 @@ export class GraphQLAuth extends GraphQLConnection {
   }
 
   buildSigninUserData({
-    auth0Token,
+    authToken,
     profile
   }) {
     return {
       variables: {
-        authToken: auth0Token
+        authToken: authToken
       }
     }
   }
@@ -127,7 +127,7 @@ export class GraphQLAuth extends GraphQLConnection {
   // sign in user
   async doSigninUser(data) {
     let {
-      auth0Token,
+      authToken,
       profile
     } = data
     this.log('signin user', data);
@@ -140,7 +140,7 @@ export class GraphQLAuth extends GraphQLConnection {
         query: this.queries.signinUser(userData)
       })
       this.publish('signedInOK', {
-        auth0Token,
+        authToken,
         profile,
         userData,
         result
@@ -148,7 +148,7 @@ export class GraphQLAuth extends GraphQLConnection {
       return result
     } catch (error) {
       this.publish('signedInFailure', {
-        auth0Token,
+        authToken,
         profile,
         userData,
         error,

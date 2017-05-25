@@ -2,8 +2,10 @@ require("babel-core/register");
 require("babel-polyfill");
 
 let {
-  createLock
+  GraphQLAuth,
+  GraphQLConnection
 } = require('./dist/bundle')
 console.log({
-  createLock
+  GraphQLAuth,
+  GraphQLConnection
 })

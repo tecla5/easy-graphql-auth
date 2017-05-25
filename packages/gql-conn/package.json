@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/easy-auth0-lock",
+  "name": "@tecla5/gql-conn",
   "version": "0.1.0",
-  "description": "Auth0 Lock signin made easy",
+  "description": "GraphQL server connection and token store lib",
   "main": "dist/bundle.prod.js",
   "directories": {
     "test": "test"
@@ -13,18 +13,19 @@
     "build:dev": "webpack --progress --colors --env=dev"
   },
   "keywords": [
-    "auth0",
-    "lock",
-    "auth0-lock"
+    "apollo",
+    "graphcool",
+    "auth0"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/setup-auth0-lock.git"
+    "url": "https://github.com/tecla5/gql-conn.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/token-foundation": "*"
+    "@tecla5/token-foundation": "*",
+    "deep-extend": "^0.5.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",
@@ -43,6 +44,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babili": "0.0.12",
     "babili-webpack-plugin": "0.0.11",
+    "mock-local-storage": "^1.0.2",
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0"
   },

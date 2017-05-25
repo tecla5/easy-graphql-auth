@@ -17,14 +17,19 @@ Coming soon: *Stripe subscription payments integration*
 
 ### GraphQL auth
 
-- `@tecla5/easy-gql-auth` - Easy GraphQL authentication
+- `@tecla5/gql-conn` - GraphQL server connection config and token store
 - `@tecla5/apollo-auth` - connect to GraphQL server via Apollo
 - `@tecla5/lokka-auth` - connect to GraphQL server via Lokka
+- `@tecla5/gql-auth` - GraphQL authentication
+- `@tecla5/easy-gql-auth` - Efficient setup of GraphQL authentication flow
 
-### Auth0 Lock
+Note that `easy-gql-auth` is designed to work well with *auth0* but can be configuted to support alternative auth providers
 
-- `@tecla5/easy-gql-auth0` - Easy GraphQL authentication with Auth0
-- `@tecla5/easy-auth0-lock` - Easy Auth0 Lock usage
+### Auth0
+
+- `@tecla5/easy-auth0-lock` - Efficient setup of GraphQL authentication with Auth0 Lock
+
+`easy-auth0-lock` can be made to work with various Auth0 authentication systems beyond *Lock*, including [passwordless](https://auth0.com/passwordless) with magic link or sms.
 
 ## Demo apps
 
@@ -36,22 +41,27 @@ Please add one for your framework of choice ;)
 
 ## Setup
 
-A typical configuration would look as follows:
+A typical configuration could look as follows:
 
 ```js
+import Auth0Lock from 'auth0-lock'
+import {
+  createGraphQLAuth
+} from '@tecla5/gql-auth'
 import {
   createConnection
-} from '@tecla5/apollo-conn'
+} from '@tecla5/apollo-auth'
 import {
   setup,
   createStore,
   createLock
 } from '@tecla5/easy-auth0-lock'
+
 import config from '../config'
-import Auth0Lock from 'auth0-lock'
-config.Auth0Lock = Auth0Lock
 
 export default setup({
+  Auth0Lock,
+  createGraphQLAuth,
   createConnection,
   createStore,
   createLock

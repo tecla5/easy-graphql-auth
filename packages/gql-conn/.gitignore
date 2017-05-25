@@ -1,6 +1,5 @@
 .vscode
 node_modules
 *.log
-src
-test
-webpack.config.js
+play.*
+app.*
