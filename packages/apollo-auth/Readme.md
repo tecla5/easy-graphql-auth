@@ -1,12 +1,12 @@
-# GraphQL server integration with Lokka
+# Apollo Auth
 
-Small integration library for connecting to GraphQL server with Apollo using [token-foundation](https://github.com/tecla5/token-foundation) lib
+Auth library for connecting to GraphQL server with Apollo using [easy-gql-auth](https://github.com/tecla5/easy-gql-auth) lib
 
 See [apollo network](http://dev.apollodata.com/core/network.html)
 
 ## Install
 
-`npm i -S @tecla5/apollo-conn`
+`npm i -S @tecla5/apollo-auth`
 
 ## Usage
 
@@ -16,12 +16,11 @@ See [apollo network](http://dev.apollodata.com/core/network.html)
 import {
   // ApolloAuthConnection as Connection,
   createConnection
-} from '@tecla5/apollo-conn'
+} from '@tecla5/apollo-auth'
 
 import ApolloClient, {
   createNetworkInterface
 } from 'apollo-client'
-
 
 import config from '../config'
 

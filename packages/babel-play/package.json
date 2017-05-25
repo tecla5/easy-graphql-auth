@@ -1,7 +1,7 @@
 {
-  "name": "@tecla5/token-foundation",
+  "name": "@tecla5/babel-play",
   "version": "0.1.0",
-  "description": "Foundation library for using token storage, observers and logging",
+  "description": "Babel/Webpack play project",
   "main": "dist/bundle.js",
   "directories": {
     "test": "test"
@@ -9,7 +9,8 @@
   "scripts": {
     "test": "ava",
     "test:dist": "ava test/dist.test.js",
-    "build": "webpack --progress --colors --display-error-details"
+    "build": "webpack --progress --colors --display-error-details",
+    "build:prod": "echo 'babel play has no prod build yet\n'"
   },
   "keywords": [
     "play",

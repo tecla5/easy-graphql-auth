@@ -2,7 +2,7 @@ import {
   GraphQLConnection
 } from '@tecla5/easy-gql-auth'
 
-export class LokkaConnection extends GraphQLConnection {
+export class LokkaAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
 
@@ -70,5 +70,5 @@ export class LokkaConnection extends GraphQLConnection {
 }
 
 export function createConnection(config, opts) {
-  return new LokkaConnection(config, opts).connect()
+  return new LokkaAuthConnection(config, opts).connect()
 }

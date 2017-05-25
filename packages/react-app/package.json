@@ -6,7 +6,7 @@
     "url": "https://github.com/tecla5/auth0-react-app.git"
   },
   "dependencies": {
-    "@tecla5/apollo-auth0": "*",
+    "@tecla5/apollo-auth": "*",
     "@tecla5/easy-auth0-lock": "*",
     "deepmerge": "^1.3.2",
     "react": "^15.5.4",
@@ -18,6 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "echo 'react-app has no prod build yet\n'",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
