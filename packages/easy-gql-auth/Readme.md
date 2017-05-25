@@ -14,36 +14,22 @@ Easy GraphQL authentication for clients, such as:
 - [lokka](https://github.com/kadirahq/lokka)
 - custom clients
 
-
 ## GraphQLConnection
 
 The `GraphQLConnection` class can be subclassed as needed.
 
-### Quick setup
+The constructur calls `validateConnection` which by default validates if `store` and `keyNames` are defined for auth to retrieve the auth token.
 
-The `setup` method can be used for a quick setup.
+You can override this behavior for a custom auth token strategy if needed.
 
-```js
-import {
-  createConnection
-} from '@tecla5/apollo-auth0'
-import {
-  setup,
-  createStore,
-  createLock
-} from '@tecla5/easy-auth0-lock'
+### Getters
 
-import config from '../config'
+- `authTokenKeyName` the key name used to store the auth token
+- `authIdToken` get the auth token from the store if present
 
-import Auth0Lock from 'auth0-lock'
+## GraphQLAuth
 
-export default setup({
-  Auth0Lock,
-  createClient,
-  createStore,
-  createLock
-}, config)
-```
+Performs authentication with GraphQL server via GraphQL client such as `apollo` or `lokka`
 
 ### GraphQL queries
 

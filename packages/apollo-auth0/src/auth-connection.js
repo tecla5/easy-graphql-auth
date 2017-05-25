@@ -29,10 +29,6 @@ export class ApolloAuthConnection extends GraphQLConnection {
     this.networkInterface.use([this.networkMw()]);
   }
 
-  get auth0IdToken() {
-    return this.store.getItem(this.keyNames.auth0IdToken) || null
-  }
-
   networkMw() {
     return {
       applyMiddleware: (req, next) => {
@@ -41,7 +37,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
           req.options.headers = {};
         }
         // get the authentication token from local storage if it exists
-        req.options.headers.authorization = this.auth0IdToken
+        req.options.headers.authorization = this.authIdToken
         next();
       }
     }

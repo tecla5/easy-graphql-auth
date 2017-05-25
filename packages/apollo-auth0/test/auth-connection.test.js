@@ -24,3 +24,10 @@ test('createConnection', t => {
   t.deepEqual(conn.connection, config.gqlServer.connection)
   t.is(typeof conn.networkInterface, 'object')
 })
+
+test('connect - empty storage', t => {})
+
+
+test('connect - auth token in storage', t => {
+
+})

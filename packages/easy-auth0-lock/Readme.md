@@ -36,22 +36,24 @@ The `setup` method can be used for a quick setup.
 
 ```js
 import {
-  createClient
-} from '@tecla5/gc-auth0-apollo'
+  createConnection
+} from '@tecla5/apollo-auth0'
+
 import {
   setup,
   createStore,
   createLock
-} from '@tecla5/gc-auth0'
+} from '@tecla5/easy-auth0-lock'
+
 import config from '../config'
+
 import Auth0Lock from 'auth0-lock'
-config.Auth0Lock = Auth0Lock // class
 
 export default setup({
-  createClient,
+  Auth0Lock,
+  createConnection,
   createStore,
   createLock
-  // createAuth0Lock
 }, config)
 ```
 
@@ -61,9 +63,8 @@ You can customize your setup as needed.
 
 ```js
 import {
-  createConnector,
-  ApolloConnector as Connector,
-} from '@tecla5/gc-auth0-apollo'
+  createConnection
+} from '@tecla5/apollo-auth'
 
 import {
   createLock,
@@ -73,14 +74,11 @@ import {
 import Auth0Lock from 'auth0-lock'
 import config from '../config'
 
-// custom setup
-config.Auth0Lock = Auth0Lock
-
-const connection = createConnector(config)
-config.store = createStore(config.storage)
-// tells lock to also signin to graphQL server after auth0 signin
-config.connection = connection
-const lock = createLock(config)
+const lock = createLock(config, {
+  Auth0Lock,
+  createConnection,
+  createStore
+})
 
 export default {
   lock,

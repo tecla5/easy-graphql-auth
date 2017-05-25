@@ -12,7 +12,9 @@ Makes it super quick and easy to setup authentication for a GraphQL server with 
 import {
   createConnection
 } from '@tecla5/apollo-conn'
-let lock = createLock({config, createConnection})
+let lock = createLock(config, {
+  createConnection
+})
 
 // login
 lock

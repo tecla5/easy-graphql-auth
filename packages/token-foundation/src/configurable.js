@@ -16,12 +16,11 @@ export class Configurable extends Loggable {
       storage,
     } = config
 
-    this.config = config
     this.observers = {}
     this.config = config
     this.storage = storage
     this.keyNames = keyNames || storage || defaultKeyNames
-    this.store = store || this.defaultCreateStore(this.keyNames, opts)
+    this.store = store || this.createStore(this.keyNames, opts)
     this.tokens = this.store.getAll()
     this.tokens = this.store ? this.store.getAll() : config.tokens
   }
@@ -52,6 +51,16 @@ export class Configurable extends Loggable {
   handleError(err) {
     this.error(err)
     throw err
+  }
+
+  createStore(keyNames, opts) {
+    let {
+      createStore
+    } = opts
+    if (typeof createStore === 'function') {
+      return this.createStore(keyNames, opts)
+    }
+    return this.defaultCreateStore(keyNames, opts)
   }
 
   defaultCreateStore(keyNames, opts) {

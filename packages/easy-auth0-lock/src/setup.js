@@ -1,18 +1,25 @@
-export function setup(exe, config) {
+export function setup(config, opts = {}) {
+  let {
+    createStore,
+    createConnection,
+    createLock
+  } = opts
+
   let lock, connection, client
-  config.AuthLock = config.AuthLock || exe.AuthLock
-  if (exe.createStore) {
-    config.store = exe.createStore(config.storage)
+  if (createStore) {
+    let keyNames = config.keyNames || config.storage
+    config.store = createStore(keyNames, opts)
   }
-  if (exe.createConnector) {
-    connection = exe.createConnection(config)
+
+  if (createConnection) {
+    connection = createConnection(config, opts)
     client = connector.client
   }
   config.client = client
   config.connection
 
-  if (exe.createLock) {
-    lock = exe.createLock(config)
+  if (createLock) {
+    lock = createLock(config, opts)
   }
 
   return {

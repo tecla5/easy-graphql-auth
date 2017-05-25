@@ -14,44 +14,45 @@ See [apollo network](http://dev.apollodata.com/core/network.html)
 
 ```js
 import {
-  // ApolloConnector,
+  // ApolloAuthConnection as Connection,
   createConnection
 } from '@tecla5/apollo-conn'
 
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
+
+
 import config from '../config'
+
 const connection = createConnection(config, {
-  ApolloClient
+  ApolloClient,
+  createNetworkInterface
 })
 ```
 
 ## Customization
 
-You can extend `ApolloConnector` with your own custom configuration and provide a custom factory method `createConnector` on the config object as shown here:
+You can extend `ApolloConnection` with your own custom configuration and provide a custom factory method `createConnection` on the config object as shown here:
 
 ```js
 import {
-  createConnector,
-  ApolloConnector
+  createConnection,
+  ApolloAuthConnection
 } from '@tecla5/gql-apollo'
 
-class MyGCAuthConnector extends ApolloConnector {
+class MyGCAuthConnection extends ApolloAuthConnection {
   // ...
-  constructor(config) {
-    super(config)
+  constructor(config, opts) {
+    super(config, opts)
     // custom
   }
   // ...
 }
 
 function createConnection(config, opts) {
-  return new MyGCAuthConnector(config, opts).connect()
+  return new MyGCAuthConnection(config, opts).connect()
 }
-
-import config from '../config'
-const myClient = setup(config, {
-  createConnection,
-  // ...
-})
 ```
 
 ## Config object
@@ -61,21 +62,31 @@ Use a configuration object of the following form
 ```js
 export default {
   gqlServer: {
-    connection: { // used by apollo/lokka connection configuration
-      uri: 'xxx', // graphCool endpoint
+    connection: { // used by apollo connection configuration
+      uri: 'xxx', // graphQL endpoint
       // ... more networkInterface config
     },
-    endpoint: 'xxx', // graphCool endpoint
+    // graphQL endpoint
+    endpoint: 'xxx',  // used as connection.uri if no connection setting)
   },
   storage: { // localstorage
-    gqlServerTokenKeyName: 'xxx' // key to store graphcoolToken
+    auth0IdTokenKeyName: 'auth0IdToken'
   }
 }
 ```
 
-## Babel compilation optimization
+## ApolloAuthConnection
 
-See [How to do proper tree-shaking in Webpack 2](https://blog.craftlab.hu/how-to-do-proper-tree-shaking-in-webpack-2-e27852af8b21)
+The `ApolloAuthConnection` extends `GraphQLConnection` from [easy-gql-auth](https://github.com/tecla5/easy-gql-auth)
+
+The superclass calls `validateConnection` which by default validates if `store` and `keyNames` are defined for auth to retrieve the auth token.
+
+You can override this behavior for a custom auth token strategy if needed.
+
+### Getters
+
+- `authTokenKeyName` the key name used to store the auth token
+- `authIdToken` get the auth token from the store if present
 
 ## Tests
 

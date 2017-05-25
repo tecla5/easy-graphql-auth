@@ -5,16 +5,17 @@ import {
 } from '@tecla5/easy-auth0-lock'
 import _Auth0Lock from 'auth0-lock'
 
-export function createLock({
-  config,
-  createConnection,
-  Auth0Lock
-}) {
-  Auth0Lock = Auth0Lock || _Auth0Lock
-  return setup({
+export function createLock(config, opts = {}) {
+  let {
+    createConnection,
+    Auth0Lock
+  } = opts
+  Auth0Lock = Auth0Lock || config.Auth0Lock || _Auth0Lock
+
+  return setup(config, {
     Auth0Lock,
     createConnection,
     createStore,
     createLock
-  }, config)
+  })
 }

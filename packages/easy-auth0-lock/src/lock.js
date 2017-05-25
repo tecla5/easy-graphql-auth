@@ -19,7 +19,7 @@ export class Lock extends Configurable {
   //   domain: 'xxx', // Your auth0 domain
   //   clientId: 'xxx' // // Your auth0 client id
   // }
-  constructor(config, opts = {}) {
+  constructor(config = {}, opts = {}) {
     super(config, opts)
     const {
       Auth0Lock,
@@ -39,7 +39,12 @@ export class Lock extends Configurable {
       createLockUi,
       createGraphQLServerAuth,
       displayMethod
-    } = config || {}
+    } = config
+
+    let {
+      createConnection,
+    } = opts
+    this.Auth0Lock = Auth0Lock || opts.Auth0Lock
 
     this.displayMethod = displayMethod || 'getUserInfo'
     let _createLockUi = createLockUi || this.defaultCreateLockUi
@@ -48,7 +53,7 @@ export class Lock extends Configurable {
 
     // GraphQL client/connection used for mutation queries
     this.client = client
-    this.connection = connection
+    this.connection = connection || createConnection(config)
     this.hasGraphQLConnection = client || connection
     this.queries = queries || {}
     this.gqlServer = gqlServer
@@ -63,7 +68,7 @@ export class Lock extends Configurable {
     this.dict.title = this.dict.title || title
     this.setupLockConfig()
 
-    this.lock = _createLockUi(auth0, opts)
+    this.lock = _createLockUi(auth0, opts).bind(this)
     this.onHashParsed()
   }
 
@@ -85,7 +90,7 @@ export class Lock extends Configurable {
 
   defaultCreateLockUi(auth0 = {}, opts) {
     console.log('create lock', auth0, opts)
-    return new Auth0Lock(auth0.clientId, auth0.domain, opts)
+    return new this.Auth0Lock(auth0.clientId, auth0.domain, opts)
   }
 
   get auth0IdTokenKeyName() {
@@ -260,6 +265,6 @@ export class Lock extends Configurable {
   }
 }
 
-export function createLock(config) {
-  return new Lock(config)
+export function createLock(config, opts) {
+  return new Lock(config, opts)
 }
