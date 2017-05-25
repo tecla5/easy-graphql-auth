@@ -6,10 +6,8 @@ export class GraphQLConnection extends Configurable {
   constructor(config = {}, opts) {
     super(config, opts)
     let gqlServer = config.gqlServer
-    this.gqlServer = gqlServer
-    this.connection = gqlServer.connection
-    this.connection.endpoint = gqlServer.endpoint || this.connection.uri
-
+    gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri
+    this.config.gqlServer = gqlServer
     this.validateConnection()
   }
 
@@ -24,7 +22,7 @@ export class GraphQLConnection extends Configurable {
   }
 
   get authTokenKeyName() {
-    return this.keyNames.auth0IdTokenKeyName
+    return this.keyNames.authIdTokenKeyName
   }
 
   get authIdToken() {

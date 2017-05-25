@@ -1,8 +1,8 @@
 import {
-  Configurable
-} from '@tecla5/token-foundation'
+  GraphQLConnection
+} from './connection'
 
-export class GraphQLAuth extends Configurable {
+export class GraphQLAuth extends GraphQLConnection {
   constructor(config, opts) {
     super(config, opts)
     this.connection = this.connection || config.connection || opts.createConnection(opts)

@@ -18,7 +18,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
   }
 
   connect() {
-    let networkInterface = this.createNetworkInterface(this.connection)
+    let networkInterface = this.createNetworkInterface(this.config.gqlServer.connection)
     this.networkInterface = networkInterface
     this.configureNetworkInterface()
     this.client = this.createApolloClient()

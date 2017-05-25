@@ -14,6 +14,11 @@ Easy GraphQL authentication for clients, such as:
 - [lokka](https://github.com/kadirahq/lokka)
 - custom clients
 
+## Included
+
+- `GraphQLConnection` GraphQL server base class to be extended
+- `GraphQLAuth` - GraphQL server authentication
+
 ## GraphQLConnection
 
 The `GraphQLConnection` class can be subclassed as needed.
@@ -29,7 +34,7 @@ You can override this behavior for a custom auth token strategy if needed.
 
 ## GraphQLAuth
 
-Performs authentication with GraphQL server via GraphQL client such as `apollo` or `lokka`
+Performs authentication with GraphQL server via a GraphQL client such as `apollo`, `lokka` or a custom client
 
 ### GraphQL queries
 
@@ -38,7 +43,7 @@ Performs authentication with GraphQL server via GraphQL client such as `apollo` 
 
 ### Service config
 
-- `auth0`
+- `auth`
 - `gqlServer`
 
 #### createUser mutation

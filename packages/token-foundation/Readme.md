@@ -48,6 +48,17 @@ Pass a `name` in the config to tell the logger for which class (or "thing") it i
 
 Contains the default key names used to store Auth tokens for graphQL and Auth0.
 
+### storage
+
+The `keyNames` passed to store will typically come from a `storage` object of the config object being used.
+
+```js
+  storage: { // localstorage
+    authIdTokenKeyName: 'authIdToken', // key to store authIdToken
+    gqlServerTokenKeyName: 'graphcoolToken' // key to store token return by graphQL server
+  }
+```
+
 ## Tests
 
 Tests are written and run using [ava](https://github.com/avajs/ava)

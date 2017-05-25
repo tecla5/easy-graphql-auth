@@ -31,7 +31,7 @@ export class Lock extends Configurable {
       queries,
       store,
       storage,
-      auth0,
+      auth,
       gqlServer,
       client,
       connection,
@@ -49,7 +49,7 @@ export class Lock extends Configurable {
     this.displayMethod = displayMethod || 'getUserInfo'
     let _createLockUi = createLockUi || this.defaultCreateLockUi
     this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
-    this.auth0 = auth0
+    this.auth = auth
 
     // GraphQL client/connection used for mutation queries
     this.client = client
@@ -68,7 +68,12 @@ export class Lock extends Configurable {
     this.dict.title = this.dict.title || title
     this.setupLockConfig()
 
-    this.lock = _createLockUi(auth0, opts).bind(this)
+    if (auth.auth0) {
+      this.lock = _createLockUi(auth.auth0, opts).bind(this)
+    } else {
+      this.configError('missing auth0 entry in auth entry of config object')
+    }
+
     this.onHashParsed()
   }
 
@@ -89,7 +94,7 @@ export class Lock extends Configurable {
   }
 
   defaultCreateLockUi(auth0 = {}, opts) {
-    console.log('create lock', auth0, opts)
+    this.log('create lock', auth0, opts)
     return new this.Auth0Lock(auth0.clientId, auth0.domain, opts)
   }
 
