@@ -26,8 +26,8 @@ See the docs for each of the modules included for more details including install
 
 Each GraphQL connection should have the capability to:
 
-- perform GraphQL queries via `async doQuery({query})`
-- add JWT token to connection via `setJWTtoken({signinToken})`
+- perform GraphQL queries via `async doQuery(query)`
+- add JWT token to connection via `setJWTtoken(signinToken)`
 
 ### GraphQL auth flow
 
@@ -57,7 +57,7 @@ The demo apps serve to illustrate how to leverage the `easy-auth0-lock` lib so e
 
 Please add a demo app for your framework of choice ;)
 
-## Setup
+## Auth0 Lock setup
 
 A typical configuration could look as follows:
 
@@ -66,9 +66,15 @@ import Auth0Lock from 'auth0-lock'
 import {
   createGraphQLAuth
 } from '@tecla5/gql-auth'
+
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
+
 import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
+
 import {
   setup,
   createStore,
@@ -77,14 +83,44 @@ import {
 
 import config from '../config'
 
-export default setup({
+export default setup(config, {
   Auth0Lock,
-  createGraphQLAuth,
+  createGraphQLAuth, // adds graphQL auth
+
+  ApolloClient,
+  createNetworkInterface,
   createConnection,
+
   createStore,
   createLock
-}, config)
+})
 ```
+
+Using `easy-gql-auth0` we can achieve the same with a much simpler configuration, using conventions:
+
+```js
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
+
+import {
+  createConnection
+} from '@tecla5/apollo-conn'
+
+import {
+  createLock
+} from 'easy-gql-auth0'
+
+import config from './config'
+
+let lock = createLock(config, {
+  ApolloClient,
+  createNetworkInterface,
+  createConnection
+})
+```
+
+## UI setup
 
 A typical session component with signin & logout
 
