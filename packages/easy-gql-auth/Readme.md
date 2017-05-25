@@ -78,12 +78,6 @@ Only needs the `authToken`
 
 - `setGraphQLServerToken(signinToken)`
 
-### Error handlers
-
-- `handleError(err)`
-- `handleProfileError(err)`
-- `handleSigninError(err)`
-
 ## GraphQLServerAuth
 
 - `async signin(data)` - start signin
@@ -101,6 +95,34 @@ Only needs the `authToken`
 ### Extract data
 
 `extractSignedInUserToken(signinResult)`
+
+### Events
+
+- `signedInOK`
+- `signinFailure`
+
+*signedInOK*
+
+```js
+({
+  auth0Token,
+  profile,
+  userData,
+  result
+})
+```
+
+*signinFailure*
+
+```js
+({
+  auth0Token,
+  profile,
+  userData,
+  error
+})
+```
+
 
 #### build
 

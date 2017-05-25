@@ -86,6 +86,23 @@ export default {
 }
 ```
 
+### Enabling GraphQL authentication
+
+If you wish to enable GraphQL authentication as part of the auth flow, after initial auth provider (auth0) signin, you must additionally supply a `createGraphQLAuth` factory method (see [easy-gql-auth](https://github.com/tecla5/easy-gql-auth).
+
+```js
+const lock = createLock(config, {
+  Auth0Lock,
+  createConnection,
+  createStore,
+  createGraphQLAuth
+})
+```
+
+Alternatively you can subscribe to the `signedIn` event via `on('signedIn', function)` and then have the observer callback create and run the `GraphQLAuth` to authenticate with your GraphQL server and observe when it has signed in.
+
+## UI config
+
 Then configure UI an event handler to display Auth0 lock modal popup and subscribe to authenticated event.
 
 ```js

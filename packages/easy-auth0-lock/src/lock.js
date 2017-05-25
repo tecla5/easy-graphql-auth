@@ -31,7 +31,6 @@ export class Lock extends Configurable {
       queries,
       store,
       storage,
-      auth,
       gqlServer,
       client,
       connection,
@@ -49,27 +48,25 @@ export class Lock extends Configurable {
     this.displayMethod = displayMethod || 'getUserInfo'
     let _createLockUi = createLockUi || this.defaultCreateLockUi
     this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
-    this.auth = auth
 
     // GraphQL client/connection used for mutation queries
     this.client = client
-    this.connection = connection || createConnection(config)
-    this.hasGraphQLConnection = client || connection
-    this.queries = queries || {}
-    this.gqlServer = gqlServer
+    this.connection = connection
 
-    if (config.createGraphQLServerAuth) {
-      this.gqlServerAuth = config.createGraphQLServerAuth(config)
-    }
+    this.queries = queries || {}
+    this.gqlServer = gqlServer || {}
+
+    this.createConnection = createConnection
+    this._createGraphQLServerAuth = config.createGraphQLServerAuth
 
     this.theme = theme || {}
     this.theme.logo = this.theme.logo || logo
     this.dict = dict || {}
     this.dict.title = this.dict.title || title
     this.setupLockConfig()
-
-    if (auth.auth0) {
-      this.lock = _createLockUi(auth.auth0, opts).bind(this)
+    this.auth0 = extractAuth0config(config)
+    if (this.auth0) {
+      this.lock = _createLockUi(this.auth0, opts).bind(this)
     } else {
       this.configError('missing auth0 entry in auth entry of config object')
     }
@@ -77,8 +74,16 @@ export class Lock extends Configurable {
     this.onHashParsed()
   }
 
+  extractAuth0config(config = {}) {
+    return config.auth.auth0 || config.auth0
+  }
+
   setupLockConfig() {
     this.lockConfig = extend(this.defaultLockConfig, this.lockConfig)
+  }
+
+  get hasGraphQLConnection() {
+    return typeof this.connection === 'object'
   }
 
   get defaultTheme() {
@@ -233,17 +238,34 @@ export class Lock extends Configurable {
     }
   }
 
+  createGraphQLServerAuth() {
+    return this._createGraphQLServerAuth(this.config)
+  }
+
+  get gqlServerAuth() {
+    return this.createGraphQLServerAuth()
+  }
+
+  get hasGqlServerAuth() {
+    return this._createGraphQLServerAuth
+  }
+
   get shouldDoGraphQLServerSignin() {
-    return this.hasGraphQLConnection
+    return this.hasGqlServerAuth
   }
 
   async serverSignin(data) {
     // return if gqlServer not configured
     if (!this.shouldDoGraphQLServerSignin) {
-      this.log('skipping signinGraphQLServer')
+      this.log('skipping GraphQLServer signin')
       return
     }
-    if (this.gqlServerAuth) {
+    if (this.hasGqlServerAuth) {
+      // make graphQL connection if not yet established
+      // doing it here should make sure that auth signin has been completed and
+      // store is populated with authToken needed by graphQL connection transport layer
+      this.connection = this.connection || this.createConnection(this.config)
+
       await this.gqlServerAuth.signin(data)
     } else {
       this.log('Skipping GraphQL Auth. gqlServerAuth instance not found')

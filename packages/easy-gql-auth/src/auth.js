@@ -3,9 +3,12 @@ import {
 } from './connection'
 
 export class GraphQLAuth extends GraphQLConnection {
-  constructor(config, opts) {
+  constructor(config = {}, opts = {}) {
     super(config, opts)
-    this.connection = this.connection || config.connection || opts.createConnection(opts)
+    this.connection = this.connection || config.connection
+    if (opts.createConnection) {
+      this.connection = opts.createConnection(config, opts)
+    }
     this.validateConfig()
   }
 
@@ -72,14 +75,28 @@ export class GraphQLAuth extends GraphQLConnection {
       this.log('Create user', name);
       let userData = this.buildUserData(data)
       if (this.queries.createUser) {
-        await this.doQuery({
+        let result = await this.doQuery({
           query: this.queries.createUser(userData)
         })
+        publish('createdUserOK', {
+          auth0Token,
+          userData,
+          profile,
+          result
+        })
+        return result
       } else {
         this.log('missing createUser query, faking it')
         await this.fakeCreateUser(userData)
       }
-    } catch (err) {
+    } catch (error) {
+      publish('createUserFailure', {
+        auth0Token,
+        userData,
+        profile,
+        result,
+        error
+      })
       this.handleQueryError(err)
     }
   }
@@ -118,9 +135,26 @@ export class GraphQLAuth extends GraphQLConnection {
       return this.fakeSigninUser(profile)
     }
     let userData = this.buildSigninUserData(data)
-    return await this.doQuery({
-      query: this.queries.signinUser(userData)
-    })
+    try {
+      let result = await this.doQuery({
+        query: this.queries.signinUser(userData)
+      })
+      this.publish('signedInOK', {
+        auth0Token,
+        profile,
+        userData,
+        result
+      })
+      return result
+    } catch (error) {
+      this.publish('signedInFailure', {
+        auth0Token,
+        profile,
+        userData,
+        error,
+      })
+      this.handleQueryError(error)
+    }
   }
 
   fakeSigninUser(profile) {
