@@ -1,5 +1,3 @@
-import {
-  auth0
-} from './auth0'
+import auth from './auth'
 
-export const config = auth0
+export default auth

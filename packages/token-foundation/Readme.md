@@ -1,7 +1,7 @@
 # Token foundation for Auth with GraphQL and Auth0
 
-Foundation layer for Authentication with GraphQL via Auth0, compatible
-with GraphQL clients such as:
+Foundation layer for Authentication with GraphQL.
+Compatible with GraphQL clients such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
@@ -10,6 +10,11 @@ with GraphQL clients such as:
 ## Install
 
 `npm i -S @tecla5/token-foundation`
+
+### Used by
+
+- [gql-conn](https://github.com/tecla5/gql-conn)
+- [easy-auth0-lock](https://github.com/tecla5/easy-auth0-lock)
 
 ## Usage
 
@@ -75,4 +80,4 @@ window.localStorage = global.localStorage
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

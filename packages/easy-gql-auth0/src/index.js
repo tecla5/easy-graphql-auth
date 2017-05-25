@@ -3,7 +3,6 @@ import {
   createStore,
   createLock
 } from '@tecla5/easy-auth0-lock'
-import _Auth0Lock from 'auth0-lock'
 
 export function createLock(config, opts = {}) {
   let {

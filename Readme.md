@@ -1,6 +1,6 @@
 # Auth0 integration libs for GraphQL clients and servers
 
-Makes it quick and easy to setup GraphQL servers such as [GraphCool](https://www.graph.cool) with [Auth0](https://auth0.com/) and *GraphQL* clients, such as:
+Makes it quick and easy to setup GraphQL servers such as [GraphCool](https://www.graph.cool) with [Auth0](https://auth0.com/) and GraphQL clients, such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
@@ -9,15 +9,20 @@ See the docs for each of the modules included for more details including install
 
 These libs can be used in combination with the recently updated tutorial project [micro-stripe-example](https://github.com/tecla5/micro-stripe-example) for payments.
 
-Coming soon: *Stripe subscription payments integration*
+Coming soon: *Stripe subscription payments integration* (separate project)
 
-## Modules
+## Modules included
+
+### Base config/token functionality
 
 - `@tecla5/token-foundation` - token storage and common utilities
 
 ### GraphQL connection
 
 - `@tecla5/gql-conn` - GraphQL server connection config and token store
+
+### GraphQL client connections
+
 - `@tecla5/apollo-conn` -  GraphQL server connection via Apollo (built on `gql-conn`)
 - `@tecla5/lokka-conn` - GraphQL server connection via Lokka (built on `gql-conn`)
 
@@ -29,17 +34,20 @@ Each GraphQL connection should have the capability to:
 ### GraphQL auth
 
 - `@tecla5/gql-auth` - GraphQL authentication
-- `@tecla5/easy-gql-auth` - Efficient setup of GraphQL authentication flow
-
-Note that `easy-gql-auth` is designed to work well with *auth0* but can be configuted to support alternative auth providers
 
 ### Auth0
 
 - `@tecla5/easy-auth0-lock` - Efficient setup of GraphQL authentication with Auth0 Lock
 
+`easy-gql-auth0` is designed to work well with *auth0* but can be configuted to support alternative auth providers
+
 `easy-auth0-lock` can be made to work with various Auth0 authentication systems beyond *Lock*, including [passwordless](https://auth0.com/passwordless) with [magic link email](https://auth0.com/docs/connections/passwordless/email) or [sms](https://auth0.com/docs/connections/passwordless/sms).
 
 Notably a `setup` method is included which should facilitate full setup of all the pieces for a full 2-phase Auth provider signin and GraphQL signin flow with all the "bells and whistles".
+
+## Full 2-phase auth flow
+
+- `@tecla5/easy-gql-auth0` - Efficient setup of full Auth0 and GraphQL authentication flow
 
 ## Demo apps
 
