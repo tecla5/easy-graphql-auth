@@ -25,6 +25,12 @@ export class ApolloAuthConnection extends GraphQLConnection {
     return this
   }
 
+  async doQuery(query, opts) {
+    return await this.client.query({
+      query
+    })
+  }
+
   configureNetworkInterface() {
     this.networkInterface.use([this.networkMw()]);
   }

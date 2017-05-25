@@ -8,19 +8,23 @@ export class LokkaAuthConnection extends GraphQLConnection {
 
     this.Lokka = config.Lokka || opts.Lokka
     this.Transport = config.Transport || opts.Transport
-    this.createLokka = config.CreateLokka ||
-      opts.CreateLokka ||
-      this.createLokkaClient
+    this.createClient = config.createClient ||
+      opts.createClient ||
+      this.createClient
 
     this.createTransport = config.createTransport ||
       opts.createTransport ||
-      this.createLokkaTransport
+      this.createTransport
 
     if (opts.bind) {
-      this.createLokka.bind(this)
+      this.createClient.bind(this)
       this.createTransport.bind(this)
     }
-    this.name = 'LokkaConnection'
+    this.name = 'LokkaAuthConnection'
+  }
+
+  async doQuery(query, opts) {
+    return await this.client.query(query)
   }
 
   connect() {
@@ -40,17 +44,17 @@ export class LokkaAuthConnection extends GraphQLConnection {
       headers,
       endpoint
     })
-    this.client = this.createLokka(transport)
+    this.client = this.createClient(transport)
     return this
   }
 
-  createLokkaClient(transport) {
+  createClient(transport) {
     return new this.Lokka({
       transport: transport || this.transport
     })
   }
 
-  createLokkaTransport({
+  createTransport({
     headers,
     endpoint
   }) {

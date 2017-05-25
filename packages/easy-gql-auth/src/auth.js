@@ -5,9 +5,13 @@ import {
 export class GraphQLAuth extends Configurable {
   constructor(config, opts) {
     super(config, opts)
+    this.connection = this.connection || config.connection || opts.createConnection(opts)
+    this.validateConfig()
+  }
 
-    if (!this.client) {
-      this.configError('missing GraphQL client in configuration')
+  validateConfig() {
+    if (!this.connection) {
+      this.configError('missing GraphQL connection in configuration')
     }
   }
 
@@ -83,9 +87,8 @@ export class GraphQLAuth extends Configurable {
   async doQuery({
     query
   }) {
-    return await this.client.query({
-      query
-    })
+    return await this.connection.doQuery(
+      query, opts)
   }
 
   // TODO: simulate GraphCool query mutation result?
