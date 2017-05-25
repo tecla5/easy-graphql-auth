@@ -5,7 +5,6 @@
     "transform-object-rest-spread",
     "transform-async-to-generator",
     "transform-class-properties",
-    "add-module-exports",
-    "compact-reexports"
+    "add-module-exports"
   ]
 }

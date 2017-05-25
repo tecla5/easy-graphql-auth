@@ -106,113 +106,145 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       };return b.d(e, 'a', e), e;
     }, b.o = function (d, e) {
       return Object.prototype.hasOwnProperty.call(d, e);
-    }, b.p = '', b(b.s = 3);
+    }, b.p = '', b(b.s = 4);
   }([function (a, b) {
     'use strict';
     Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' };
-  }, function (a, b) {
-    'use strict';
-    function d(h, j) {
-      if (!(h instanceof j)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 });var f = function () {
-      function h(j, k) {
-        for (var m, l = 0; l < k.length; l++) {
-          m = k[l], m.enumerable = m.enumerable || !1, m.configurable = !0, 'value' in m && (m.writable = !0), Object.defineProperty(j, m.key, m);
-        }
-      }return function (j, k, l) {
-        return k && h(j.prototype, k), l && h(j, l), j;
-      };
-    }();b.createStore = function (h) {
-      var j = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new g(h, j);
-    };var g = b.Store = function () {
-      function h(j) {
-        var k = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, h), this.keyNames = j, this.storage = k.storage || localStorage, this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName, this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName;
-      }return f(h, [{ key: 'removeItem', value: function value(k) {
-          this.storage.removeItem(k);
-        } }, { key: 'getItem', value: function value(k) {
-          return this.storage.getItem(k);
-        } }, { key: 'setItem', value: function value(k, l) {
-          this.storage.setItem(k, l);
-        } }, { key: 'validateKeyNames', value: function value() {
-          for (var k = arguments.length, l = Array(k), m = 0; m < k; m++) {
-            l[m] = arguments[m];
-          }l.map(function (n) {
-            return validateKeyName(n);
-          });
-        } }, { key: 'validateKeyName', value: function value(k) {
-          return 'string' != typeof this.keyNames[k] && this.error('keyNames missing ' + k), this;
-        } }, { key: 'error', value: function value(k) {
-          console.error(k);
-        } }, { key: 'resetAll', value: function value() {
-          this.removeItem(this.auth0TokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
-        } }, { key: 'getAll', value: function value() {
-          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { auth0Token: this.getItem(this.auth0IdTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
-        } }, { key: 'store', value: function value(k, l) {
-          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(k)) throw Error('keyname mismatch for store: ' + k);this.setItem(k, l);
-        } }]), h;
-    }();
   }, function (a, b, c) {
     'use strict';
-    function e(m, n) {
-      if (!(m instanceof n)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var f = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (m) {
-      return typeof m === 'undefined' ? 'undefined' : _typeof(m);
-    } : function (m) {
-      return m && 'function' == typeof Symbol && m.constructor === Symbol && m !== Symbol.prototype ? 'symbol' : typeof m === 'undefined' ? 'undefined' : _typeof(m);
-    },
-        g = function () {
-      function m(n, o) {
-        for (var q, p = 0; p < o.length; p++) {
-          q = o[p], q.enumerable = q.enumerable || !1, q.configurable = !0, 'value' in q && (q.writable = !0), Object.defineProperty(n, q.key, q);
+    function d(l, m) {
+      if (!(l instanceof m)) throw new TypeError('Cannot call a class as a function');
+    }function e(l, m) {
+      if (!l) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return m && ('object' == (typeof m === 'undefined' ? 'undefined' : _typeof(m)) || 'function' == typeof m) ? m : l;
+    }function f(l, m) {
+      if ('function' != typeof m && null !== m) throw new TypeError('Super expression must either be null or a function, not ' + (typeof m === 'undefined' ? 'undefined' : _typeof(m)));l.prototype = Object.create(m && m.prototype, { constructor: { value: l, enumerable: !1, writable: !0, configurable: !0 } }), m && (Object.setPrototypeOf ? Object.setPrototypeOf(l, m) : l.__proto__ = m);
+    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Store = void 0;var h = function () {
+      function l(m, n) {
+        for (var p, o = 0; o < n.length; o++) {
+          p = n[o], p.enumerable = p.enumerable || !1, p.configurable = !0, 'value' in p && (p.writable = !0), Object.defineProperty(m, p.key, p);
         }
-      }return function (n, o, p) {
-        return o && m(n.prototype, o), p && m(n, p), n;
+      }return function (m, n, o) {
+        return n && l(m.prototype, n), o && l(m, o), m;
+      };
+    }();b.createStore = function (l) {
+      var m = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new k(l, m);
+    };var j = c(2),
+        k = b.Store = function (l) {
+      function m(n) {
+        var o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, m);var p = e(this, (m.__proto__ || Object.getPrototypeOf(m)).call(this, 'Store', o));return p.log('create', { keyNames: n, opts: o }), p.keyNames = n.storage || n, p.storage = o.storage || o.keyStore || window.localStorage, p.authTokenKeyName = p.keyNames.authTokenKeyName, p.gqlServerTokenKeyName = p.keyNames.gqlServerTokenKeyName, p;
+      }return f(m, l), h(m, [{ key: 'removeItem', value: function value(o) {
+          this.storage.removeItem(o);
+        } }, { key: 'getItem', value: function value(o) {
+          return this.storage.getItem(o);
+        } }, { key: 'setItem', value: function value(o, p) {
+          this.storage.setItem(o, p);
+        } }, { key: 'validateKeyNames', value: function value() {
+          for (var o = this, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
+            q[r] = arguments[r];
+          }q.map(function (s) {
+            return o.validateKeyName(s);
+          });
+        } }, { key: 'validateKeyName', value: function value(o) {
+          return 'string' != typeof this.keyNames[o] && this.error('keyNames missing ' + o), this;
+        } }, { key: 'error', value: function value(o) {
+          console.error(o);
+        } }, { key: 'resetAll', value: function value() {
+          this.removeItem(this.authTokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
+        } }, { key: 'getAll', value: function value() {
+          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { authToken: this.getItem(this.authTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
+        } }, { key: 'store', value: function value(o, p) {
+          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(o)) throw Error('keyname mismatch for store: ' + o);this.setItem(o, p);
+        } }]), m;
+    }(j.Loggable);
+  }, function (a, b) {
+    'use strict';
+    function d(g, h) {
+      if (!(g instanceof h)) throw new TypeError('Cannot call a class as a function');
+    }Object.defineProperty(b, '__esModule', { value: !0 });var e = function () {
+      function g(h, j) {
+        for (var l, k = 0; k < j.length; k++) {
+          l = j[k], l.enumerable = l.enumerable || !1, l.configurable = !0, 'value' in l && (l.writable = !0), Object.defineProperty(h, l.key, l);
+        }
+      }return function (h, j, k) {
+        return j && g(h.prototype, j), k && g(h, k), h;
       };
     }(),
-        h = c(0),
-        j = function (m) {
-      return m && m.__esModule ? m : { default: m };
-    }(h),
-        k = c(1),
-        l = b.Configurable = function () {
-      function m() {
-        var n = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
-            o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, m), this.validate(n);var p = n.keyNames,
-            q = n.store,
-            r = n.storage;this.config = n, this.io = o.io || console, this.logging = o.logging, this.observers = {}, this.config = n, this.storage = r, this.keyNames = p || r || j.default, this.store = q || this.defaultCreateStore(this.keyNames, o), this.tokens = this.store.getAll(), this.tokens = this.store ? this.store.getAll() : n.tokens;
-      }return g(m, [{ key: 'on', value: function value(o, p) {
-          this.log('on', o, p);var q = this.observers[o] || [];return this.observers[o] = q.concat(p), this;
-        } }, { key: 'publish', value: function value(o, p) {
-          this.log('publish', o, p);var q = this.observers[o] || [];return q ? q.map(function (r) {
-            return r(p);
-          }) : this.log('no observers registered for', o), this;
-        } }, { key: 'handleError', value: function value(o) {
-          throw this.error(o), o;
-        } }, { key: 'enableLog', value: function value() {
+        f = b.Loggable = function () {
+      function g(h) {
+        var j = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, g), this.opts = j, this.io = j.io || console, this.logging = j.logging, this.name = h || j.name;
+      }return e(g, [{ key: 'enableLog', value: function value() {
           return this.logging = !0, this;
         } }, { key: 'disableLog', value: function value() {
           return this.logging = !1, this;
         } }, { key: 'log', value: function value() {
           if (this.logging) {
-            for (var o, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-              q[r] = arguments[r];
-            }(o = this.io).log.apply(o, ['Lock'].concat(q));
+            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
+              l[m] = arguments[m];
+            }(j = this.io).log.apply(j, [this.name].concat(l));
           }
         } }, { key: 'error', value: function value() {
           if (this.logging) {
-            for (var o, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-              q[r] = arguments[r];
-            }(o = this.io).error.apply(o, ['Lock'].concat(q));
+            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
+              l[m] = arguments[m];
+            }(j = this.io).error.apply(j, [this.name].concat(l));
           }
-        } }, { key: 'defaultCreateStore', value: function value(o, p) {
-          return new k.Store(o, p);
-        } }, { key: 'validate', value: function value(o) {
-          if ('object' !== ('undefined' == typeof o ? 'undefined' : f(o))) throw Error('config must be an object');
-        } }]), m;
+        } }]), g;
     }();
   }, function (a, b, c) {
     'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(2);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
+    function e(p, q) {
+      if (!(p instanceof q)) throw new TypeError('Cannot call a class as a function');
+    }function f(p, q) {
+      if (!p) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return q && ('object' == (typeof q === 'undefined' ? 'undefined' : _typeof(q)) || 'function' == typeof q) ? q : p;
+    }function g(p, q) {
+      if ('function' != typeof q && null !== q) throw new TypeError('Super expression must either be null or a function, not ' + (typeof q === 'undefined' ? 'undefined' : _typeof(q)));p.prototype = Object.create(q && q.prototype, { constructor: { value: p, enumerable: !1, writable: !0, configurable: !0 } }), q && (Object.setPrototypeOf ? Object.setPrototypeOf(p, q) : p.__proto__ = q);
+    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var h = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (p) {
+      return typeof p === 'undefined' ? 'undefined' : _typeof(p);
+    } : function (p) {
+      return p && 'function' == typeof Symbol && p.constructor === Symbol && p !== Symbol.prototype ? 'symbol' : typeof p === 'undefined' ? 'undefined' : _typeof(p);
+    },
+        j = function () {
+      function p(q, r) {
+        for (var t, s = 0; s < r.length; s++) {
+          t = r[s], t.enumerable = t.enumerable || !1, t.configurable = !0, 'value' in t && (t.writable = !0), Object.defineProperty(q, t.key, t);
+        }
+      }return function (q, r, s) {
+        return r && p(q.prototype, r), s && p(q, s), q;
+      };
+    }(),
+        k = c(0),
+        l = function (p) {
+      return p && p.__esModule ? p : { default: p };
+    }(k),
+        m = c(2),
+        n = c(1),
+        o = b.Configurable = function (p) {
+      function q() {
+        var r = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
+            s = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, q);var t = f(this, (q.__proto__ || Object.getPrototypeOf(q)).call(this, 'Configurable', s));t.validate(r);var u = r.keyNames,
+            v = r.store,
+            w = r.storage;return t.observers = {}, t.opts = t.opts || s, t.config = r, t.storage = w, t.keyNames = u || w || l.default, t.store = v || t.createStore(t.keyNames, s), t.tokens = t.store.getAll(), t.tokens = t.store ? t.store.getAll() : r.tokens, t;
+      }return g(q, p), j(q, [{ key: 'configError', value: function value(s) {
+          throw this.error(s), Error(s);
+        } }, { key: 'on', value: function value(s, t) {
+          this.log('on', s, t);var u = this.observers[s] || [];return this.observers[s] = u.concat(t), this;
+        } }, { key: 'publish', value: function value(s, t) {
+          this.log('publish', s, t);var u = this.observers[s] || [];return u ? u.map(function (v) {
+            return v(t);
+          }) : this.log('no observers registered for', s), this;
+        } }, { key: 'handleError', value: function value(s) {
+          throw this.error(s), s;
+        } }, { key: 'createStore', value: function value(s, t) {
+          var r = t.createStore;return 'function' == typeof r ? this.createStore(s, t) : this.defaultCreateStore(s, t);
+        } }, { key: 'defaultCreateStore', value: function value(s, t) {
+          return new n.Store(s, t);
+        } }, { key: 'validate', value: function value(s) {
+          if ('object' !== ('undefined' == typeof s ? 'undefined' : h(s))) throw Error('config must be an object');
+        } }]), q;
+    }(m.Loggable);
+  }, function (a, b, c) {
+    'use strict';
+    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(3);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
         return d.Configurable;
       } });var e = c(0);Object.defineProperty(b, 'keyNames', { enumerable: !0, get: function get() {
         return e.keyNames;
@@ -237,6 +269,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.Lock = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -273,60 +307,72 @@ var Lock = exports.Lock = function (_Configurable) {
   //   domain: 'xxx', // Your auth0 domain
   //   clientId: 'xxx' // // Your auth0 client id
   // }
-  function Lock(config) {
+  function Lock() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, Lock);
 
     var _this = _possibleConstructorReturn(this, (Lock.__proto__ || Object.getPrototypeOf(Lock)).call(this, config, opts));
 
-    var _ref = config || {},
-        Auth0Lock = _ref.Auth0Lock,
-        title = _ref.title,
-        logo = _ref.logo,
-        theme = _ref.theme,
-        dict = _ref.dict,
-        keyNames = _ref.keyNames,
-        queries = _ref.queries,
-        store = _ref.store,
-        storage = _ref.storage,
-        auth0 = _ref.auth0,
-        gqlServer = _ref.gqlServer,
-        client = _ref.client,
-        connection = _ref.connection,
-        lockConfig = _ref.lockConfig,
-        createLockUi = _ref.createLockUi,
-        createGraphQLServerAuth = _ref.createGraphQLServerAuth,
-        displayMethod = _ref.displayMethod;
+    var Auth0Lock = config.Auth0Lock,
+        title = config.title,
+        logo = config.logo,
+        theme = config.theme,
+        dict = config.dict,
+        keyNames = config.keyNames,
+        queries = config.queries,
+        store = config.store,
+        storage = config.storage,
+        gqlServer = config.gqlServer,
+        client = config.client,
+        connection = config.connection,
+        lockConfig = config.lockConfig,
+        createLockUi = config.createLockUi,
+        createGraphQLServerAuth = config.createGraphQLServerAuth,
+        displayMethod = config.displayMethod;
+    var createConnection = opts.createConnection;
+
+    _this.Auth0Lock = Auth0Lock || opts.Auth0Lock;
 
     _this.displayMethod = displayMethod || 'getUserInfo';
     var _createLockUi = createLockUi || _this.defaultCreateLockUi;
     _this.lockConfig = lockConfig || auth0.lock || _this.defaultLockConfig;
-    _this.auth0 = auth0;
 
     // GraphQL client/connection used for mutation queries
     _this.client = client;
     _this.connection = connection;
-    _this.hasGraphQLConnection = client || connection;
-    _this.queries = queries || {};
-    _this.gqlServer = gqlServer;
 
-    if (config.createGraphQLServerAuth) {
-      _this.gqlServerAuth = config.createGraphQLServerAuth(config);
-    }
+    _this.queries = queries || {};
+    _this.gqlServer = gqlServer || {};
+
+    _this.createConnection = createConnection;
+    _this._createGraphQLServerAuth = config.createGraphQLServerAuth;
 
     _this.theme = theme || {};
     _this.theme.logo = _this.theme.logo || logo;
     _this.dict = dict || {};
     _this.dict.title = _this.dict.title || title;
     _this.setupLockConfig();
+    _this.auth0 = extractAuth0config(config);
+    if (_this.auth0) {
+      _this.lock = _createLockUi(_this.auth0, opts).bind(_this);
+    } else {
+      _this.configError('missing auth0 entry in auth entry of config object');
+    }
 
-    _this.lock = _createLockUi(auth0, opts);
     _this.onHashParsed();
     return _this;
   }
 
   _createClass(Lock, [{
+    key: 'extractAuth0config',
+    value: function extractAuth0config() {
+      var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return config.auth.auth0 || config.auth0;
+    }
+  }, {
     key: 'setupLockConfig',
     value: function setupLockConfig() {
       this.lockConfig = (0, _deepExtend2.default)(this.defaultLockConfig, this.lockConfig);
@@ -337,8 +383,8 @@ var Lock = exports.Lock = function (_Configurable) {
       var auth0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var opts = arguments[1];
 
-      console.log('create lock', auth0, opts);
-      return new Auth0Lock(auth0.clientId, auth0.domain, opts);
+      this.log('create lock', auth0, opts);
+      return new this.Auth0Lock(auth0.clientId, auth0.domain, opts);
     }
   }, {
     key: 'getAuth0Token',
@@ -474,7 +520,7 @@ var Lock = exports.Lock = function (_Configurable) {
   }, {
     key: 'onAuth0Login',
     value: function () {
-      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(data) {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(data) {
         var auth0Token, profile, errArgs;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -511,16 +557,21 @@ var Lock = exports.Lock = function (_Configurable) {
         }, _callee, this, [[3, 9]]);
       }));
 
-      function onAuth0Login(_x3) {
-        return _ref2.apply(this, arguments);
+      function onAuth0Login(_x5) {
+        return _ref.apply(this, arguments);
       }
 
       return onAuth0Login;
     }()
   }, {
+    key: 'createGraphQLServerAuth',
+    value: function createGraphQLServerAuth() {
+      return this._createGraphQLServerAuth(this.config);
+    }
+  }, {
     key: 'serverSignin',
     value: function () {
-      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(data) {
+      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(data) {
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -530,26 +581,31 @@ var Lock = exports.Lock = function (_Configurable) {
                   break;
                 }
 
-                this.log('skipping signinGraphQLServer');
+                this.log('skipping GraphQLServer signin');
                 return _context2.abrupt('return');
 
               case 3:
-                if (!this.gqlServerAuth) {
-                  _context2.next = 8;
+                if (!this.hasGqlServerAuth) {
+                  _context2.next = 9;
                   break;
                 }
 
-                _context2.next = 6;
+                // make graphQL connection if not yet established
+                // doing it here should make sure that auth signin has been completed and
+                // store is populated with authToken needed by graphQL connection transport layer
+                this.connection = this.connection || this.createConnection(this.config);
+
+                _context2.next = 7;
                 return this.gqlServerAuth.signin(data);
 
-              case 6:
-                _context2.next = 9;
+              case 7:
+                _context2.next = 10;
                 break;
 
-              case 8:
+              case 9:
                 this.log('Skipping GraphQL Auth. gqlServerAuth instance not found');
 
-              case 9:
+              case 10:
               case 'end':
                 return _context2.stop();
             }
@@ -557,8 +613,8 @@ var Lock = exports.Lock = function (_Configurable) {
         }, _callee2, this);
       }));
 
-      function serverSignin(_x4) {
-        return _ref3.apply(this, arguments);
+      function serverSignin(_x6) {
+        return _ref2.apply(this, arguments);
       }
 
       return serverSignin;
@@ -585,6 +641,11 @@ var Lock = exports.Lock = function (_Configurable) {
       this.handleError(err);
     }
   }, {
+    key: 'hasGraphQLConnection',
+    get: function get() {
+      return _typeof(this.connection) === 'object';
+    }
+  }, {
     key: 'defaultTheme',
     get: function get() {
       return this.theme || {};
@@ -604,17 +665,27 @@ var Lock = exports.Lock = function (_Configurable) {
       return this.store.auth0IdTokenKeyName;
     }
   }, {
+    key: 'gqlServerAuth',
+    get: function get() {
+      return this.createGraphQLServerAuth();
+    }
+  }, {
+    key: 'hasGqlServerAuth',
+    get: function get() {
+      return this._createGraphQLServerAuth;
+    }
+  }, {
     key: 'shouldDoGraphQLServerSignin',
     get: function get() {
-      return this.hasGraphQLConnection;
+      return this.hasGqlServerAuth;
     }
   }]);
 
   return Lock;
 }(_tokenFoundation.Configurable);
 
-function createLock(config) {
-  return new Lock(config);
+function createLock(config, opts) {
+  return new Lock(config, opts);
 }
 
 /***/ }),
@@ -628,22 +699,30 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.setup = setup;
-function setup(exe, config) {
+function setup(config) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var createStore = opts.createStore,
+      createConnection = opts.createConnection,
+      createLock = opts.createLock;
+
+
   var lock = void 0,
       connection = void 0,
       client = void 0;
-  if (exe.createStore) {
-    config.store = exe.createStore(config.storage);
+  if (createStore) {
+    var keyNames = config.keyNames || config.storage;
+    config.store = createStore(keyNames, opts);
   }
-  if (exe.createConnector) {
-    connection = exe.createConnection(config);
+
+  if (createConnection) {
+    connection = createConnection(config, opts);
     client = connector.client;
   }
   config.client = client;
   config.connection;
 
-  if (exe.createLock) {
-    lock = exe.createLock(config);
+  if (createLock) {
+    lock = createLock(config, opts);
   }
 
   return {
