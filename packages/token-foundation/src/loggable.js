@@ -1,5 +1,6 @@
 export class Loggable {
   constructor(name, opts = {}) {
+    this.opts = opts
     this.io = opts.io || console
     this.logging = opts.logging
     this.name = name || opts.name

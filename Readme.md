@@ -18,12 +18,12 @@ Coming soon: *Stripe subscription payments integration*
 ### GraphQL connection
 
 - `@tecla5/gql-conn` - GraphQL server connection config and token store
-- `@tecla5/apollo-conn` - connect to GraphQL server via Apollo
-- `@tecla5/lokka-conn` - connect to GraphQL server via Lokka
+- `@tecla5/apollo-conn` -  GraphQL server connection via Apollo (built on `gql-conn`)
+- `@tecla5/lokka-conn` - GraphQL server connection via Lokka (built on `gql-conn`)
 
 Each GraphQL connection should have the capability to:
 
-- perform GraphQL queries via `async doQuery(query)`
+- perform GraphQL queries via `async doQuery({query})`
 - add JWT token to connection via `setJWTtoken({signinToken})`
 
 ### GraphQL auth

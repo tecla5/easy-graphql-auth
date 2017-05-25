@@ -3,7 +3,7 @@ import {
 } from '@tecla5/token-foundation'
 
 export class GraphQLConnection extends Configurable {
-  constructor(config = {}, opts) {
+  constructor(config = {}, opts = {}) {
     super(config, opts)
     let gqlServer = config.gqlServer
     gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri
@@ -25,9 +25,7 @@ export class GraphQLConnection extends Configurable {
     return null
   }
 
-  setJwtToken({
-    signinToken
-  }) {
+  setJwtToken(signinToken, opts = {}) {
     this.log('setJwtToken not yet implemented on GraphQL server Connection :(', {
       signinToken
     })

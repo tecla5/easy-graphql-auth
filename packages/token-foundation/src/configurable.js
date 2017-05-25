@@ -17,6 +17,7 @@ export class Configurable extends Loggable {
     } = config
 
     this.observers = {}
+    this.opts = this.opts || opts
     this.config = config
     this.storage = storage
     this.keyNames = keyNames || storage || defaultKeyNames

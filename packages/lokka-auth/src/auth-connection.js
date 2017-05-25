@@ -51,9 +51,7 @@ export class LokkaAuthConnection extends GraphQLConnection {
     return this
   }
 
-  setJwtToken({
-    signinToken
-  }) {
+  setJwtToken(signinToken, opts = {}) {
     this.connect(signinToken)
   }
 

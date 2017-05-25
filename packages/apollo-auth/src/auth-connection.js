@@ -25,7 +25,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
     return this
   }
 
-  async doQuery(query, opts) {
+  async doQuery(query, opts = {}) {
     return await this.client.query({
       query
     })
@@ -35,9 +35,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
     this.networkInterface.use(this.middleWares);
   }
 
-  setJwtToken({
-    signinToken
-  }) {
+  setJwtToken(signinToken, opts) {
     this.log('Will auto set JWT token on next request header via getItem on store')
   }
 

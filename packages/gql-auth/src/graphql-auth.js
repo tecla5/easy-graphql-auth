@@ -57,9 +57,7 @@ export class GraphQLAuth extends GraphQLConnection {
 
   setJwtToken(signinToken) {
     if (this.connection) {
-      this.connection.setJwtToken({
-        signinToken
-      })
+      this.connection.setJwtToken(signinToken, this.opts)
       this.publish('setJwtToken', {
         signinToken
       })
