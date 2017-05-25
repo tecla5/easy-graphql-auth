@@ -32,15 +32,25 @@ export class ApolloAuthConnection extends GraphQLConnection {
   }
 
   configureNetworkInterface() {
-    this.networkInterface.use([this.networkMw()]);
+    this.networkInterface.use(this.middleWares);
   }
 
-  networkMw() {
+  setJwtToken({
+    signinToken
+  }) {
+    this.log('Will auto set JWT token on next request header via getItem on store')
+  }
+
+  get middleWares() {
+    return [this.networkMw]
+  }
+
+  get networkMw() {
     return {
       applyMiddleware: (req, next) => {
         // Create the header object if needed.
         if (!req.options.headers) {
-          req.options.headers = {};
+          req.options.headers = this.defaultHeaders || {}
         }
         // get the authentication token from local storage if it exists
         req.options.headers.authorization = this.authIdToken

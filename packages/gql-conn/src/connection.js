@@ -21,8 +21,18 @@ export class GraphQLConnection extends Configurable {
     }
   }
 
+  get defaultHeaders() {
+    return null
+  }
+
+  setJwtToken({
+    signinToken
+  }) {
+    this.log('Setting JWT token on connection', signinToken)
+  }
+
   get authTokenKeyName() {
-    return this.keyNames.authIdTokenKeyName
+    return this.keyNames.gqlServerTokenKeyName
   }
 
   get authIdToken() {

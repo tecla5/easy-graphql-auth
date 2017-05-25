@@ -29,6 +29,9 @@ export class GraphQLAuth extends GraphQLConnection {
   setGraphQLServerToken(signinToken) {
     // set graphcool token in localstorage
     this.store.setItem(this.gqlServerTokenKeyName, signinToken)
+    this.publish('storedGraphQLServerToken', {
+      signinToken
+    })
     return this
   }
 
@@ -41,7 +44,28 @@ export class GraphQLAuth extends GraphQLConnection {
     let created = await this.doCreateUser(data)
     const signinResult = await this.doSigninUser(data)
     const signinToken = this.extractSignedInUserToken(signinResult)
+    this.handleReceivedGraphQLServerToken(signinToken)
+  }
+
+  handleReceivedGraphQLServerToken(signinToken) {
+    this.publish('receivedGraphQLServerToken', {
+      signinToken
+    })
     this.setGraphQLServerToken(signinToken)
+    this.setJwtToken(signinToken)
+  }
+
+  setJwtToken(signinToken) {
+    if (this.connection) {
+      this.connection.setJwtToken({
+        signinToken
+      })
+      this.publish('setJwtToken', {
+        signinToken
+      })
+    } else {
+      this.error('missing connection for setting JWT token')
+    }
   }
 
   handleQueryError(err) {

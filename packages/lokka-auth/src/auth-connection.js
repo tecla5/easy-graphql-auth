@@ -27,25 +27,34 @@ export class LokkaAuthConnection extends GraphQLConnection {
     return await this.client.query(query)
   }
 
-  connect() {
-    let headers, transport
-    let authIdToken = this.authIdToken
+  headers(token = null) {
+    let authToken = this.authToken || token
+    return authToken ? createAuthHeader(authToken) : this.defaultHeaders
+  }
 
-    if (!auth0IdToken) {
-      this.configError('missing auth0IdToken for HTTP header')
+  createAuthHeader(authToken) {
+    return {
+      'Authorization': `Bearer ${authToken}`
     }
+  }
 
-    this.headers = headers = {
-      'Authorization': `Bearer ${authIdToken}`
-    }
-
+  connect(token) {
+    let transport
     let endpoint = this.endpoint
+    let headers = this.headers(token) || {}
+
     this.transport = transport = this.createTransport({
       headers,
-      endpoint
+      endpoint: this.endpoint
     })
     this.client = this.createClient(transport)
     return this
+  }
+
+  setJwtToken({
+    signinToken
+  }) {
+    this.connect(signinToken)
   }
 
   createClient(transport) {

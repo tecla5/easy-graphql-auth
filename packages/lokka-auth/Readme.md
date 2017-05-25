@@ -51,7 +51,6 @@ function createConnection(config) {
 }
 ```
 
-
 ## Config object
 
 Use a configuration object of the following form
@@ -66,15 +65,33 @@ export default {
     endpoint: 'xxx' // Your graphcool simple api endpoint url goes here
   },
   storage: { // localstorage
-    auth0IdTokenKeyName: 'xxx', // key to store auth0IdToken
     graphcoolTokenKeyName: 'xxx' // key to store graphcoolToken
-  },
-  auth0: { // from auth0 client app settings
-    domain: 'xxx', // Your auth0 domain
-    clientId: 'xxx' // // Your auth0 client id
   }
 }
 ```
+
+### Methods and Customization options
+
+
+### connect
+
+`connect(token)` creates the initial connection
+
+The `authToken` is expected to be received from the GraphQL server and stored in localStorage on a successful signin with an auth provider.
+
+The default strategy is to create a new `headers` with the Authorization `Bearer` set to the token found in the store (if present) or the incoming token. If there is no `authToken` the default headers are used.
+
+```js
+`'Authorization': `Bearer ${authIdToken}`
+```
+
+Then a new Lokka `Transport` instance is created with this headers enabled for subsequent requests to be authenticated via JWT.
+
+### setJwtToken
+
+- `setJwtToken({signinToken})` used to set JWT token on HTTP header
+
+Calls `connect` with the `signinToken` from the GraphQL server
 
 ## Tests
 

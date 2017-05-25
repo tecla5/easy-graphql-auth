@@ -41,6 +41,12 @@ You can override this behavior for a custom auth token strategy if needed.
 - `authTokenKeyName` the key name used to store the auth token
 - `authIdToken` get the auth token from the store if present
 
+### setJwtToken
+
+- `setJwtToken({signinToken})` used to set JWT token on HTTP header
+
+The `signinToken` is received from the GraphQL server on a successful signin with an auth provider.
+
 ## Tests
 
 Tests are written and run using [ava](https://github.com/avajs/ava)
