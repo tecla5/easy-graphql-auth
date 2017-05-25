@@ -13,11 +13,11 @@ export class GraphQLConnection extends Configurable {
 
   validateConnection() {
     if (typeof this.store !== 'object') {
-      this.configError('missing store for holding auth token')
+      this.configError('missing store for holding signinToken from GraphQL server')
     }
 
     if (typeof this.keyNames !== 'object') {
-      this.configError('missing keyNames object, used to indicate names used to store token keys')
+      this.configError('missing keyNames object, used to indicate store token keys')
     }
   }
 
@@ -28,7 +28,9 @@ export class GraphQLConnection extends Configurable {
   setJwtToken({
     signinToken
   }) {
-    this.log('Setting JWT token on connection', signinToken)
+    this.log('setJwtToken not yet implemented on GraphQL server Connection :(', {
+      signinToken
+    })
   }
 
   get authTokenKeyName() {
