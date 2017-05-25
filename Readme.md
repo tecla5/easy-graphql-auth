@@ -37,7 +37,7 @@ Each GraphQL connection should have the capability to:
 
 - `@tecla5/easy-auth0-lock` - Efficient setup of GraphQL authentication with Auth0 Lock
 
-<img src="https://github.com/tecla5/gc-auth0/raw/master/pics/auth0-lock.png" alt="Auth0 Lock" width="50%" height="50%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/auth0-lock.png" alt="Auth0 Lock" width="100%" height="100%">
 
 `easy-gql-auth0` is designed to work well with *auth0* but can be configuted to support alternative auth providers
 
@@ -49,7 +49,7 @@ Notably a `setup` method is included which should facilitate full setup of all t
 
 - `@tecla5/easy-gql-auth0` - Efficient setup of full Auth0 and GraphQL authentication flow
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow.png" alt="Full auth0 graphQL flow" width="50%" height="50%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow.png" alt="Full auth0 graphQL flow" width="100%" height="100%">
 
 ## Demo apps
 
