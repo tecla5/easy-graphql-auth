@@ -1,6 +1,8 @@
-# GraphCool Auth0 common
+# GraphQL connection config
 
-GraphQL connection settings and token store configuration.
+GraphQL client connection settings and token store configuration.
+
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-client-auth.png" alt="GraphQL Auth" width="50%" height="50%">
 
 ## Install
 

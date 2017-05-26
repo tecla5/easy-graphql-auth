@@ -15,14 +15,15 @@ See the docs for each of the modules included for more details including install
 
 - `@tecla5/token-foundation` - token storage and common utilities
 
-### GraphQL client connection
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/token-foundation.png" alt="GraphQL Auth" width="50%" height="50%">
+
+### GraphQL client (auth) connection
 
 - `@tecla5/gql-conn` - GraphQL server connection config and token store
-
-### GraphQL client auth connection
-
 - `@tecla5/apollo-auth-conn` -  GraphQL server connection via Apollo (built on `gql-conn`)
 - `@tecla5/lokka-auth-conn` - GraphQL server connection via Lokka (built on `gql-conn`)
+
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-client-auth.png" alt="GraphQL Auth" width="50%" height="50%">
 
 Each GraphQL connection should have the capability to:
 
@@ -33,23 +34,25 @@ Each GraphQL connection should have the capability to:
 
 - `@tecla5/gql-auth` - GraphQL authentication
 
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-Auth.png" alt="GraphQL Auth" width="50%" height="50%">
+
 ### Auth0 login (UI)
 
 - `@tecla5/easy-auth0-lock` - Efficient setup of GraphQL authentication with Auth0 Lock
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/auth0-lock-ui.png" alt="Auth0 Lock" width="50%" height="100%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-Lock-Provider.png" alt="Auth0 Lock" width="50%" height="50%">
 
 `easy-gql-auth0` is designed to work well with *auth0* but can be configuted to support alternative auth providers
 
 `easy-auth0-lock` can be made to work with various Auth0 authentication systems beyond *Lock*, including [passwordless](https://auth0.com/passwordless) with [magic link email](https://auth0.com/docs/connections/passwordless/email) or [sms](https://auth0.com/docs/connections/passwordless/sms).
 
-Notably a `setup` method is included which should facilitate full setup of all the pieces for a full 2-phase Auth provider signin and GraphQL signin flow with all the "bells and whistles".
-
 ## Full 2-phase auth flow
 
 - `@tecla5/easy-gql-auth0` - Efficient setup of full Auth0 and GraphQL authentication flow
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow-v3.png" alt="Full auth0 graphQL flow" width="100%" height="100%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow.png" alt="Full auth0 graphQL flow" width="100%" height="100%">
+
+Notably a `setup` method is included which should facilitate full setup of all the pieces for a full 2-phase Auth provider signin and GraphQL signin flow with all the "bells and whistles".
 
 ## Demo apps
 
@@ -66,7 +69,6 @@ Please add a demo app for your framework of choice ;)
 A typical configuration could look as follows:
 
 ```js
-import Auth0Lock from 'auth0-lock'
 import {
   createGraphQLAuth
 } from '@tecla5/gql-auth'
@@ -79,28 +81,36 @@ import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
 
+const clientConfig = {
+  ApolloClient,
+  createNetworkInterface,
+  createConnection,
+}
+
+import Auth0Lock from 'auth0-lock'
 import {
   setup,
   createStore,
   createLock
 } from '@tecla5/easy-auth0-lock'
 
-import config from '../config'
+const lockConfig = {
+  Auth0Lock,
+  createLock
+}
+
+import config from './config'
 
 export default setup(config, {
-  Auth0Lock,
   createGraphQLAuth, // adds graphQL auth
-
-  ApolloClient,
-  createNetworkInterface,
-  createConnection,
-
   createStore,
-  createLock
+
+  clientConfig,
+  lockConfig,
 })
 ```
 
-Using `easy-gql-auth0` we can achieve the same with a much simpler configuration, using conventions:
+Using `easy-gql-auth0` we can achieve the same with a somewhat simpler configuration, using conventions:
 
 ```js
 import ApolloClient, {
@@ -111,6 +121,12 @@ import {
   createConnection
 } from '@tecla5/apollo-conn'
 
+let clientConfig = {
+  ApolloClient,
+  createNetworkInterface,
+  createConnection
+}
+
 import {
   createLock
 } from 'easy-gql-auth0'
@@ -118,18 +134,16 @@ import {
 import config from './config'
 
 let lock = createLock(config, {
-  ApolloClient,
-  createNetworkInterface,
-  createConnection
+  clientConfig
 })
 ```
 
 ## UI setup
 
-A typical session component with signin & logout
+A typical user session component with signin & logout
 
 ```js
-class App extends Component {
+class SessionComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -168,6 +182,9 @@ class App extends Component {
     lock
       .logout()
   }
+
+  // ...
+  // have the component render trigger doLogin and doLogout
 }
 ```
 
@@ -219,4 +236,4 @@ Stay tuned...
 
 ## License
 
-MIT 2017 Tecla5, Kristian Mandrup
+MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

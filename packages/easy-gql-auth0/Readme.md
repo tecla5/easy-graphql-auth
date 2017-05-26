@@ -2,6 +2,8 @@
 
 Makes it super quick and easy to setup a full authentication flow for a GraphQL server with [Auth0](https://auth0.com)
 
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-GraphQL-Flow.png" alt="Auth0 GraphQL Auth flow" width="50%" height="50%">
+
 ## Install
 
 `npm i -S @tecla5/easy-gql-auth0`

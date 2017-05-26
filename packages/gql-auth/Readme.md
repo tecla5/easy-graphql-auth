@@ -6,6 +6,8 @@ Easy GraphQL server authentication for clients, such as:
 - [lokka](https://github.com/kadirahq/lokka)
 - custom clients
 
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-Auth.png" alt="GraphQL Auth" width="50%" height="50%">
+
 ## Install
 
 `npm i -S @tecla5/gql-auth`

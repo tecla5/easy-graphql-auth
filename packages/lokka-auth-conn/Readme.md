@@ -2,9 +2,11 @@
 
 Auth library for connecting to GraphQL server with Lokka using [easy-gql-auth](https://github.com/tecla5/easy-gql-auth) lib
 
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-client-auth.png" alt="GraphQL Auth" width="50%" height="50%">
+
 ## Install
 
-`npm i -S @tecla5/lokka-auth`
+`npm i -S @tecla5/lokka-auth-conn`
 
 ## Usage
 

@@ -2,42 +2,57 @@
 
 Common utilities for integration of GraphCool with Auth0
 
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-Lock.png" alt="Auth0 Lock" width="50%" height="50%">
+
+Retrieves user profile info and auth token from Auth provider
+
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-Lock-Provider.png" alt="Auth0 Lock" width="50%" height="50%">
+
+Stores auth token in store (default: `localStorage`)
+
 ## Install
 
-`npm i -S @tecla5/gql-auth0-common`
+`npm i -S @tecla5/easy-auth0-lock`
 
 ## Usage
 
-Can be used by [GraphCool](https://www.graph.cool) [Auth0](https://auth0.com/) clients, such as:
+Can be used with [GraphCool](https://www.graph.cool) and [Auth0](https://auth0.com/) clients, such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
-- other/custom clients
+- alternative GraphQL clients
 
-## Babel play
+## Included
 
-Experiment with Babel compile via `src/play.js` ;)
+- `Lock` - creates and manages Auth0 Lock
+- `setup` - easy infrastructure setup for Lock
 
-## Auth0Lock
+## Auth0 Lock
 
-You can include it from CDN
+You can include `lock` from CDN
 
 ```html
 <script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
 ```
 
-## Base Connector
-
-The `BaseGCAuth0Connector` class can be subclassed as needed.
-
 ### Quick setup
 
-The `setup` method can be used for a quick setup.
+The `setup` method can be used for easy setup.
 
 ```js
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client'
+
 import {
   createConnection
 } from '@tecla5/apollo-auth0'
+
+const clientConfig = {
+  ApolloClient,
+  createNetworkInterface,
+  createConnection
+}
 
 import {
   setup,
@@ -49,41 +64,12 @@ import config from '../config'
 
 import Auth0Lock from 'auth0-lock'
 
-export default setup({
+export default setup(config, {
   Auth0Lock,
-  createConnection,
+  clientConfig,
   createStore,
   createLock
-}, config)
-```
-
-### Lock & client configuration
-
-You can customize your setup as needed.
-
-```js
-import {
-  createConnection
-} from '@tecla5/apollo-auth'
-
-import {
-  createLock,
-  createStore
-} from '@tecla5/gc-auth0-apollo'
-
-import Auth0Lock from 'auth0-lock'
-import config from '../config'
-
-const lock = createLock(config, {
-  Auth0Lock,
-  createConnection,
-  createStore
 })
-
-export default {
-  lock,
-  client: conn.client
-}
 ```
 
 ### Enabling GraphQL authentication
@@ -93,17 +79,19 @@ If you wish to enable GraphQL authentication as part of the auth flow, after ini
 ```js
 const lock = createLock(config, {
   Auth0Lock,
-  createConnection,
+  clientConfig,
   createStore,
   createGraphQLAuth
 })
 ```
 
-Alternatively you can subscribe to the `signedIn` event via `on('signedIn', function)` and then have the observer callback create and run the `GraphQLAuth` to authenticate with your GraphQL server and observe when it has signed in.
+Alternatively you can subscribe to the `signedIn` event via `on('signedIn', cb)`.
 
-## UI config
+Then have the observer `cb` function create and run the `GraphQLAuth` to authenticate with your GraphQL server and observe when it has signed in , ie. `gqlServerAuth.on('signedInOK', cb)`.
 
-Then configure UI an event handler to display Auth0 lock modal popup and subscribe to authenticated event.
+## UI lock configuration
+
+In the UI, configure an event handler to display Auth0 lock modal popup and subscribe to lock `authenticated` event.
 
 ```js
 $('#login').click(() => {
@@ -113,17 +101,14 @@ $('#login').click(() => {
 })
 ```
 
-By default the `Lock` constructor loads:
-
-- GraphQL `queries` from `./queries`
-- `Store` class from `./storage` (to save/load tokens from `localStorage`)
-
-You can pass in your own `queries` and `store` if you like.
+By default `Lock` uses the `Store` class as key storage.
+You can subclass or pass in your own `store` if you like.
 
 ```js
 const myLock = new Lock({
-  queries: myQueries
-  store: myStore
+  // Store: MyStore, -  custom subclass
+  // createStore, - custom factory method
+  // store: myStore, - custom instance
 })
 ```
 
