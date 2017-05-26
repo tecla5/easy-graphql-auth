@@ -5,8 +5,15 @@ import {
 export class ApolloAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config)
-    this.ApolloClient = config.ApolloClient || opts.ApolloClient
-    this.createNetworkInterface = config.createNetworkInterface || opts.createNetworkInterface
+
+    let {
+      ApolloClient,
+      createNetworkInterface,
+    } = opts.clientConfig
+
+
+    this.ApolloClient = ApolloClient || config.ApolloClient || opts.ApolloClient
+    this.createNetworkInterface = createNetworkInterface || config.createNetworkInterface || opts.createNetworkInterface
     this.name = 'ApolloConnection'
 
     if (!this.ApolloClient) {
@@ -17,7 +24,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
     }
   }
 
-  connect() {
+  connect(opts) {
     let networkInterface = this.createNetworkInterface(this.config.gqlServer.connection)
     this.networkInterface = networkInterface
     this.configureNetworkInterface()
@@ -65,5 +72,5 @@ export class ApolloAuthConnection extends GraphQLConnection {
 }
 
 export function createConnection(config, opts) {
-  return new ApolloConnection(config, opts).connect()
+  return new ApolloConnection(config, opts).connect(opts)
 }

@@ -8,10 +8,10 @@ export class GraphQLConnection extends Configurable {
     let gqlServer = config.gqlServer
     gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri
     this.config.gqlServer = gqlServer
-    this.validateConnection()
+    this.validateConfig()
   }
 
-  validateConnection() {
+  validateConfig() {
     if (typeof this.store !== 'object') {
       this.configError('missing store for holding signinToken from GraphQL server')
     }

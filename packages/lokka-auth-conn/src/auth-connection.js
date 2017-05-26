@@ -5,14 +5,24 @@ import {
 export class LokkaAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
+    let {
+      Lokka,
+      Transport,
+      createTransport,
+      createClient
+    } = opts.clientConfig
 
-    this.Lokka = config.Lokka || opts.Lokka
-    this.Transport = config.Transport || opts.Transport
-    this.createClient = config.createClient ||
+    Lokka = Lokka || config.Lokka || opts.Lokka
+    this.Lokka = Lokka
+
+    Transport = Transport || config.Transport || opts.Transport
+    this.Transport = Transport
+
+    this.createClient = createClient || config.createClient ||
       opts.createClient ||
       this.createClient
 
-    this.createTransport = config.createTransport ||
+    this.createTransport = createTransport || config.createTransport ||
       opts.createTransport ||
       this.createTransport
 

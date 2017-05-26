@@ -22,7 +22,6 @@ export class Lock extends Configurable {
   constructor(config = {}, opts = {}) {
     super(config, opts)
     const {
-      Auth0Lock,
       title,
       logo,
       theme,
@@ -43,10 +42,20 @@ export class Lock extends Configurable {
     let {
       createConnection,
     } = opts
-    this.Auth0Lock = Auth0Lock || opts.Auth0Lock
+
+    if (opts.clientConfig) {
+      createConnection = createConnection || opts.clientConfig.createConnection
+    }
+
+    let {
+      Auth0Lock,
+      createLock
+    } = opts.lockConfig
+
+    this.Auth0Lock = Auth0Lock || config.Auth0Lock || opts.Auth0Lock
 
     this.displayMethod = displayMethod || 'getUserInfo'
-    let _createLockUi = createLockUi || this.defaultCreateLockUi
+    let _createLockUi = createLock || createLockUi || this.defaultCreateLockUi
     this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
 
     // GraphQL client/connection used for mutation queries

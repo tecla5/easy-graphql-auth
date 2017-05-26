@@ -5,9 +5,15 @@ import {
 export class GraphQLAuth extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    this.connection = this.connection || config.connection
-    if (opts.createConnection) {
-      this.connection = opts.createConnection(config, opts)
+    let {
+      createConnection
+    } = opts.clientConfig
+
+    createConnection = createConnection || opts.createConnection
+
+    this.connection = this.connection || config.connection || opts.connection
+    if (createConnection) {
+      this.connection = this.connection || createConnection(config, opts)
     }
     this.validateConfig()
   }
