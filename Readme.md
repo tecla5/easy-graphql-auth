@@ -15,7 +15,7 @@ See the docs for each of the modules included for more details including install
 
 - `@tecla5/token-foundation` - token storage and common utilities
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/token-foundation.png" alt="GraphQL Auth" width="50%" height="50%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/token-foundation.png" alt="GraphQL Auth" width="25%" height="25%">
 
 ### GraphQL client (auth) connection
 
