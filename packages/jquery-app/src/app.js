@@ -1,9 +1,6 @@
 // import 'babel-polyfill'
 
-import {
-  lock,
-  client
-} from './auth/lock'
+import lock from './auth/lock'
 
 class Auth {
   constructor({

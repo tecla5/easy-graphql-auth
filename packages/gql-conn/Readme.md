@@ -20,9 +20,9 @@ Can be used as base functionality for any library that wants to connect to a Gra
 
 This lib is currently used by:
 
-- [easy-gql-auth](https://github.com/tecla5/easy-gql-auth)
-- [apollo-auth](https://github.com/tecla5/apollo-auth)
-- [lokka-auth](https://github.com/tecla5/lokka-auth)
+- [easy-gql-auth0](https://github.com/tecla5/easy-gql-auth0)
+- [apollo-auth-conn](https://github.com/tecla5/apollo-auth-conn)
+- [lokka-auth-conn](https://github.com/tecla5/lokka-auth-conn)
 
 ## Included
 
