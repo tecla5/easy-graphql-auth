@@ -46,7 +46,7 @@ import ApolloClient, {
 
 import {
   createConnection
-} from '@tecla5/apollo-auth0'
+} from '@tecla5/apollo-auth-conn'
 
 const clientConfig = {
   ApolloClient,
@@ -355,7 +355,7 @@ You can subclass and override any of these methods as you see fit.
 import {
   Lock,
   storage
-} from '@tecla5/gc-auth0'
+} from '@tecla5/easy-gql-auth0'
 import config from './config'
 
 class MyLock extends Lock {

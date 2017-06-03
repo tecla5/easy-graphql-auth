@@ -53,7 +53,7 @@ let config = {
   queries
 }
 
-import { createConnection } from '@tecla5/apollo-auth'
+import { createConnection } from '@tecla5/apollo-auth-conn'
 
 let graphQLAuth = createGraphQLAuth(config, {
   createConnection
@@ -167,7 +167,7 @@ Build data to be sent to GraphQL mutation queries
 
 ### GraphQL Queries
 
-Using supplied GraphQL client (see `apollo-auth0` and `lokka-auth0`).
+Using supplied GraphQL client (see `apollo-auth-conn` and `lokka-auth-conn`).
 See [query batching](http://dev.apollodata.com/core/network.html#query-batching)
 
 - `async doQuery({ query })`

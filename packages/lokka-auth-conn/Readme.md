@@ -1,6 +1,6 @@
 # Lokka Auth
 
-Auth library for connecting to GraphQL server with Lokka using [easy-gql-auth](https://github.com/tecla5/easy-gql-auth) lib
+Auth library for connecting to GraphQL server with Lokka using [easy-gql-auth0](https://github.com/tecla5/gc-auth0/packages/easy-gql-auth0) lib
 
 <img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/GraphQL-client-auth.png" alt="GraphQL Auth" width="50%" height="50%">
 
@@ -22,7 +22,7 @@ import {
 
 import {
   createConnection
-} from '@tecla5/lokka-auth'
+} from '@tecla5/lokka-auth-conn'
 import config from './config'
 
 let connection = createConnection(config, {
@@ -37,11 +37,10 @@ You can extend `LokkaAuthConnection` with your own custom configuration and prov
 
 ```js
 import {
-  client,
-  GCAuth0Connector
+  Connection
 } from '@tecla5/gc-auth0-lokka'
 
-class MyAuthConnection extends LokkaAuthConnection {
+class MyAuthConnection extends Connection {
   // ...
   constructor(config) {
     super(config)

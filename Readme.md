@@ -119,7 +119,7 @@ import ApolloClient, {
 
 import {
   createConnection
-} from '@tecla5/apollo-conn'
+} from '@tecla5/apollo-auth-conn'
 
 let clientConfig = {
   ApolloClient,
