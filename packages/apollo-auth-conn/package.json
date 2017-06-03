@@ -1,5 +1,5 @@
 {
-  "name": "@tecla5/apollo-conn",
+  "name": "@tecla5/apollo-auth-conn",
   "version": "0.1.0",
   "description": "Apollo client connection to GraphQL server",
   "main": "dist/bundle.prod.js",
