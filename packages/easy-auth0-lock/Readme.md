@@ -105,6 +105,7 @@ graphQlAuth.on('signedInOK', (data) => {
     userData,
     result
   } = data
+
   console.log('GraphQL signIn successful', {
     profile,
     userData
@@ -114,10 +115,23 @@ graphQlAuth.on('signedInOK', (data) => {
 lock.on('signedIn', (data) => {
   // or signin/signup user with alternative API/backend
   let status = await graphQlAuth.signin(data)
+
   console.log('signedIn', {
     status
   })
 })
+
+// Better yet, catch and react to signup error with remote server/API
+lock.on('signedIn', (data) => {
+  // or signin/signup user with alternative API/backend
+  try {
+    let success = await graphQlAuth.signin(data)
+    mySuccessHandler('graphQlAuth signin success', success)
+  } catch (err) {
+    myErrorHandler('graphQlAuth signin malfunction', err)
+  }
+})
+
 ```
 
 ## UI lock configuration
