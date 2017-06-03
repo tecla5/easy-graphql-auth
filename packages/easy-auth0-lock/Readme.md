@@ -1,6 +1,6 @@
-# GraphCool Auth0 common
+# Easy Auth0 Lock
 
-Common utilities for integration of GraphCool with Auth0
+Makes it easy to use and integrate [Auth0 Lock](https://auth0.com/lock) authentication.
 
 <img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/Auth0-Lock.png" alt="Auth0 Lock" width="50%" height="50%">
 
@@ -16,24 +16,27 @@ Stores auth token in store (default: `localStorage`)
 
 ## Usage
 
-Can be used with [GraphCool](https://www.graph.cool) and [Auth0](https://auth0.com/) clients, such as:
+Designed for easy integration with GraphQL clients, such as:
 
 - [apollo](https://github.com/apollographql)
 - [lokka](https://github.com/kadirahq/lokka)
-- alternative GraphQL clients
+
+Can be also be used with any other backend.
 
 ## Included
 
 - `Lock` - creates and manages Auth0 Lock
 - `setup` - easy infrastructure setup for Lock
 
-## Auth0 Lock
+## Initial Lock setup
 
-You can include `lock` from CDN
+You can include `lock` from CDN in your HTML page.
 
 ```html
 <script src="http://cdn.auth0.com/js/lock/10.16.0/lock.min.js"></script>
 ```
+
+Alternative: import/require it directly in your application scripts.
 
 ### Quick setup
 
@@ -85,9 +88,37 @@ const lock = createLock(config, {
 })
 ```
 
-Alternatively you can subscribe to the `signedIn` event via `on('signedIn', cb)`.
+Alternatively subscribe to the `signedIn` event via `on('signedIn', cb)`.
 
 Then have the observer `cb` function create and run the `GraphQLAuth` to authenticate with your GraphQL server and observe when it has signed in , ie. `gqlServerAuth.on('signedInOK', cb)`.
+
+This approach is the most flexible, and can be used with any backend or API to register the user (profile) after signin.
+
+```js
+const lock = createLock(config, opts)
+const graphQlAuth = createGraphQLAuth(config, opts)
+
+graphQlAuth.on('signedInOK', (data) => {
+  let {
+    authToken,
+    profile,
+    userData,
+    result
+  } = data
+  console.log('GraphQL signIn successful', {
+    profile,
+    userData
+  })
+})
+
+lock.on('signedIn', (data) => {
+  // or signin/signup user with alternative API/backend
+  let status = await graphQlAuth.signin(data)
+  console.log('signedIn', {
+    status
+  })
+})
+```
 
 ## UI lock configuration
 

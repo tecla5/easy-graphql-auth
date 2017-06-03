@@ -51,6 +51,10 @@ export class GraphQLAuth extends GraphQLConnection {
     const signinResult = await this.doSigninUser(data)
     const signinToken = this.extractSignedInUserToken(signinResult)
     this.handleReceivedGraphQLServerToken(signinToken)
+    return {
+      status: signinResult,
+      token: signinToken,
+    }
   }
 
   handleReceivedGraphQLServerToken(signinToken) {
