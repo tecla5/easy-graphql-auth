@@ -1,7 +1,7 @@
 import {
   setup,
   createStore,
-  createLock
+  createLock as makeLock
 } from '@tecla5/easy-auth0-lock'
 
 export function createLock(config, opts = {}) {
@@ -15,6 +15,6 @@ export function createLock(config, opts = {}) {
     Auth0Lock,
     createConnection,
     createStore,
-    createLock
+    createLock: makeLock
   })
 }

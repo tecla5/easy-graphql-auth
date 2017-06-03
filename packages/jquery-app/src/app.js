@@ -3,7 +3,7 @@
 import {
   lock,
   client
-} from './auth0/lock'
+} from './auth/lock'
 
 class Auth {
   constructor({

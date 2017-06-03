@@ -1,6 +1,6 @@
 import {
   createConnection
-} from '@tecla5/apollo-conn'
+} from '@tecla5/apollo-auth-conn'
 import {
   createLock
 } from '@tecla5/easy-gql-auth0'

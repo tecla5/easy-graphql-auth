@@ -9,9 +9,8 @@
   "scripts": {
     "test": "ava",
     "start": "ws",
-    "build:prod": "webpack --progress --colors --env=prod",
-    "build:dev": "webpack --progress --colors --env=dev",
-    "dev": "webpack-dev-server --progress --colors"
+    "build": "webpack --progress --colors --env=app",
+    "dev": "webpack-dev-server --progress --colors --env=app"
   },
   "keywords": [
     "apollo",

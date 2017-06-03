@@ -15,13 +15,20 @@ Now you should be good to go!
 
 ## Development
 
-Install webpack-dev-server
+Enausre you are loading [babel-polyfill](https://stackoverflow.com/questions/33527653/babel-6-regeneratorruntime-is-not-defined-with-async-await) in order for async/await to work.
+
+See `webpack/webpack.app.js` configuration:
+
+```js
+  entry: [
+    'babel-polyfill',
+    path.join(__dirname, '../src/app.js')
+  ],
+```
+
+Install `webpack-dev-server`
 
 `$ npm i -g webpack-dev-server`
-
-Start dev server
-
-`$ npm run dev`
 
 Watch files, compile and trigger reload of dev server
 
@@ -29,11 +36,17 @@ Watch files, compile and trigger reload of dev server
 
 ## Build
 
-Project needs to be compiled using Babel`
+Project needs to be compiled using Babel
 
 `$ npm run build`
 
-## Run file server
+## Start server
+
+Ensure you have built a `dist/app.js` which is used by the HTML file.
+
+Start development server: `$ npm run dev`
+
+## Alternative: Run file server
 
 Start a [local HTTP file server](https://www.npmjs.com/package/local-web-server)
 
@@ -56,20 +69,18 @@ Time to play!
 
 ## Troubleshooting
 
-Currently getting:
+`Super expression must either be null or a function, not undefined`
 
-```bash
-TypeError: Super expression must either be null or a function, not undefined
-```
-
-Have tried with `babel-polyfill` which can be added either in html `<script>` element
+If all else fails try adding `babel-polyfill` directly in html `<script>` element
 or as first statement in included code `import 'babel-polyfill'`
 
 ```html
   <script src="node_modules/babel-polyfill/dist/polyfill.js"></script>
 ```
 
-Might be due to `async` statements or other ES6/ES7 syntax not being transpiled correctly!
+ES7 `await/async` statements and some other ES6/ES7 syntax still needs to be "handled" with extra super magic enchantments!!
+
+Let us know if you find/have better solutions ;)
 
 ## License
 
