@@ -4,14 +4,11 @@ import ApolloClient, {
 } from 'apollo-client'
 import {
   createConnection
-} from '../src/connection.js'
+} from '../src/auth-connection.js'
 import config from './config'
 import './mock-localstorage'
 
 test('createConnection', t => {
-  // console.log({
-  //   config
-  // })
   let conn = createConnection(config, {
     ApolloClient,
     createNetworkInterface
@@ -21,7 +18,8 @@ test('createConnection', t => {
   t.is(typeof conn.store, 'object')
 
   t.deepEqual(conn.keyNames, config.storage)
-  t.deepEqual(conn.connection, config.gqlServer.connection)
+
+  t.deepEqual(conn.networkInterface._uri, config.gqlServer.connection.uri)
   t.is(typeof conn.networkInterface, 'object')
 })
 

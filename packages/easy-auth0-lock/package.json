@@ -2,7 +2,7 @@
   "name": "@tecla5/easy-auth0-lock",
   "version": "0.1.0",
   "description": "Auth0 Lock signin made easy",
-  "main": "dist/bundle.prod.js",
+  "main": "dist/bundle.js",
   "directories": {
     "test": "test"
   },

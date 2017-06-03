@@ -2,7 +2,7 @@
   "name": "@tecla5/easy-gql-auth0",
   "version": "0.1.0",
   "description": "Easy authentication for GraphQL with Auth0",
-  "main": "dist/bundle.prod.js",
+  "main": "dist/bundle.js",
   "directories": {
     "test": "test"
   },
@@ -44,7 +44,8 @@
     "babili": "0.0.12",
     "babili-webpack-plugin": "0.0.11",
     "webpack": "^2.5.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "@tecla5/apollo-auth-conn": "*"
   },
   "babel": {
     "presets": [

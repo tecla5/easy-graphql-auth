@@ -2,6 +2,10 @@ import {
   GraphQLConnection
 } from '@tecla5/gql-conn'
 
+export function createGraphQLAuth(config) {
+  return new GraphQLAuth(config)
+}
+
 export class GraphQLAuth extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
@@ -199,8 +203,4 @@ export class GraphQLAuth extends GraphQLConnection {
       }
     }
   }
-}
-
-export function createGraphQLAuth(config) {
-  return new GraphQLAuth(config)
 }

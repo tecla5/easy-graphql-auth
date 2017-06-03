@@ -1,6 +1,10 @@
 import {
   GraphQLConnection
-} from '@tecla5/gql-auth'
+} from '@tecla5/gql-conn'
+
+export function createConnection(config, opts) {
+  return new ApolloAuthConnection(config, opts).connect(opts)
+}
 
 export class ApolloAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
@@ -9,8 +13,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
     let {
       ApolloClient,
       createNetworkInterface,
-    } = opts.clientConfig
-
+    } = opts.clientConfig || {}
 
     this.ApolloClient = ApolloClient || config.ApolloClient || opts.ApolloClient
     this.createNetworkInterface = createNetworkInterface || config.createNetworkInterface || opts.createNetworkInterface
@@ -69,8 +72,4 @@ export class ApolloAuthConnection extends GraphQLConnection {
       networkInterface: this.networkInterface
     })
   }
-}
-
-export function createConnection(config, opts) {
-  return new ApolloConnection(config, opts).connect(opts)
 }

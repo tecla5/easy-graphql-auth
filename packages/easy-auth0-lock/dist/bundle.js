@@ -109,7 +109,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }, b.p = '', b(b.s = 4);
   }([function (a, b) {
     'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' };
+    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' }, a.exports = b['default'];
   }, function (a, b, c) {
     'use strict';
     function d(l, m) {
@@ -315,8 +315,7 @@ var Lock = exports.Lock = function (_Configurable) {
 
     var _this = _possibleConstructorReturn(this, (Lock.__proto__ || Object.getPrototypeOf(Lock)).call(this, config, opts));
 
-    var Auth0Lock = config.Auth0Lock,
-        title = config.title,
+    var title = config.title,
         logo = config.logo,
         theme = config.theme,
         dict = config.dict,
@@ -333,10 +332,20 @@ var Lock = exports.Lock = function (_Configurable) {
         displayMethod = config.displayMethod;
     var createConnection = opts.createConnection;
 
-    _this.Auth0Lock = Auth0Lock || opts.Auth0Lock;
+
+    if (opts.clientConfig) {
+      createConnection = createConnection || opts.clientConfig.createConnection;
+    }
+
+    var _opts$lockConfig = opts.lockConfig,
+        Auth0Lock = _opts$lockConfig.Auth0Lock,
+        createLock = _opts$lockConfig.createLock;
+
+
+    _this.Auth0Lock = Auth0Lock || config.Auth0Lock || opts.Auth0Lock;
 
     _this.displayMethod = displayMethod || 'getUserInfo';
-    var _createLockUi = createLockUi || _this.defaultCreateLockUi;
+    var _createLockUi = createLock || createLockUi || _this.defaultCreateLockUi;
     _this.lockConfig = lockConfig || auth0.lock || _this.defaultLockConfig;
 
     // GraphQL client/connection used for mutation queries

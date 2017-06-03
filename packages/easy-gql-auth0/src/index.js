@@ -9,7 +9,7 @@ export function createLock(config, opts = {}) {
     createConnection,
     Auth0Lock
   } = opts
-  Auth0Lock = Auth0Lock || config.Auth0Lock || _Auth0Lock
+  Auth0Lock = Auth0Lock || config.Auth0Lock
 
   return setup(config, {
     Auth0Lock,
