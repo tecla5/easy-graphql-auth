@@ -5,10 +5,7 @@ const merge = require('webpack-merge')
 let config = merge.smart(common, {
   entry: './src/app.js',
   output: {
-    filename: 'app.js',
-    library: 'gqlServerAuth',
-    libraryTarget: 'umd',
-    umdNamedDefine: true
+    filename: 'app.js'
   }
 })
 

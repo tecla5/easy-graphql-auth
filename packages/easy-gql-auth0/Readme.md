@@ -52,6 +52,10 @@ logout() {
 }
 ```
 
+## Sample demo app
+
+The `index.html` seeks to demonstrate how to use this lib in a simple app
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup
