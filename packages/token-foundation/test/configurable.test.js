@@ -5,6 +5,7 @@ import {
 
 import config from './config'
 import storage from './storage'
+import './mock-localstorage'
 
 test('Configurable', t => {
   t.is(typeof Configurable, 'function')

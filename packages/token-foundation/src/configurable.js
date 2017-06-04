@@ -34,7 +34,7 @@ export class Configurable extends Loggable {
   configureStorage() {
     this.log('configureStorage')
     this.storage = this.config.storage
-    this.keyNames = this.config.keyNames || storage || defaultKeyNames
+    this.keyNames = this.config.keyNames || this.storage || defaultKeyNames
     this.store = this.config.store || this.createStore()
     return this
   }
@@ -87,7 +87,7 @@ export class Configurable extends Loggable {
     throw err
   }
 
-  createStore(keyNames, opts) {
+  createStore(keyNames, opts = {}) {
     let {
       createStore
     } = opts
