@@ -2,8 +2,9 @@ import {
   GraphQLConnection
 } from '@tecla5/gql-conn'
 
-export function createConnection(config, opts) {
-  return new LokkaAuthConnection(config, opts).connect(opts)
+export function createConnection(config, opts, autoConnect = true) {
+  let connection = new LokkaAuthConnection(config, opts)
+  return autoConnect ? connection.connect(opts) : connection
 }
 
 export class LokkaAuthConnection extends GraphQLConnection {

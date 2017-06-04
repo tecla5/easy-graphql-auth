@@ -6,24 +6,44 @@ import {
   Store
 } from './store'
 
+function isFun(fun) {
+  return typeof fun === 'function'
+}
+
 export class Configurable extends Loggable {
   constructor(config = {}, opts = {}) {
     super('Configurable', opts)
     this.validate(config)
-    let {
-      keyNames,
-      store,
-      storage,
-    } = config
-
-    this.observers = {}
+    this.log('configuring with', {
+      config,
+      opts
+    })
     this.opts = this.opts || opts
     this.config = config
-    this.storage = storage
-    this.keyNames = keyNames || storage || defaultKeyNames
-    this.store = store || this.createStore(this.keyNames, opts)
-    this.tokens = this.store.getAll()
-    this.tokens = this.store ? this.store.getAll() : config.tokens
+    this.configure()
+  }
+
+  configure() {
+    this.log('configure')
+    this.observers = {}
+    this.configureStorage()
+    this.retrieveTokens()
+    return this
+  }
+
+  configureStorage() {
+    this.log('configureStorage')
+    this.storage = this.config.storage
+    this.keyNames = this.config.keyNames || storage || defaultKeyNames
+    this.store = this.config.store || this.createStore()
+    return this
+  }
+
+  retrieveTokens() {
+    this.log('retrieveTokens', {
+      store: this.store
+    })
+    this.tokens = this.store ? this.store.getAll() : {}
   }
 
   extractProperty(containers, name, selfie) {
@@ -36,7 +56,7 @@ export class Configurable extends Loggable {
   }
 
   extractProperties(containers, ...names) {
-    names.map(name => extractProperty(containers, name, true))
+    return names.map(name => extractProperty(containers, name, true))
   }
 
   configError(msg) {
@@ -71,10 +91,18 @@ export class Configurable extends Loggable {
     let {
       createStore
     } = opts
-    if (typeof createStore === 'function') {
-      return this.createStore(keyNames, opts)
-    }
-    return this.defaultCreateStore(keyNames, opts)
+    keyNames = keyNames || this.keyNames
+    opts = opts || this.opts
+    this.log('createStore', {
+      keyNames,
+      opts
+    })
+
+    createStore = isFun(createStore) ? createStore : this.defaultCreateStore
+    this.log('create with', {
+      createStore
+    })
+    return createStore(keyNames, opts)
   }
 
   defaultCreateStore(keyNames, opts) {
