@@ -2,38 +2,46 @@ import {
   GraphQLConnection
 } from '@tecla5/gql-conn'
 
+export function createConnection(config, opts) {
+  return new LokkaAuthConnection(config, opts).connect(opts)
+}
+
 export class LokkaAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    let {
-      Lokka,
-      Transport,
-      createTransport,
-      createClient
-    } = opts.clientConfig
+    const containers = [config, opts, opts.client]
 
-    Lokka = Lokka || config.Lokka || opts.Lokka
-    this.Lokka = Lokka
-
-    Transport = Transport || config.Transport || opts.Transport
-    this.Transport = Transport
-
-    this.createClient = createClient || config.createClient ||
-      opts.createClient ||
-      this.createClient
-
-    this.createTransport = createTransport || config.createTransport ||
-      opts.createTransport ||
-      this.createTransport
+    this.extractProperties(containers, 'Client', 'Transport', 'createClient', 'createTransport')
+    this.Client = this.Client || this.Lokka
 
     if (opts.bind) {
       this.createClient.bind(this)
       this.createTransport.bind(this)
     }
-    this.name = 'LokkaAuthConnection'
   }
 
-  async doQuery(query, opts) {
+  validate() {
+    this.log('validate')
+    if (!this.Client) {
+      this.configError('missing ApolloClient in constructor arguments')
+    }
+    if (!this.createNetworkInterface) {
+      this.configError('missing createNetworkInterface in constructor arguments')
+    }
+  }
+
+  get name() {
+    return 'LokkaAuthConnection'
+  }
+
+  async doQuery(query, opts = {}) {
+    this.log('doQuery', {
+      query,
+      opts
+    })
+    if (!this.client) {
+      this.error('doQuery: missing client')
+    }
     return await this.client.query(query)
   }
 
@@ -49,25 +57,31 @@ export class LokkaAuthConnection extends GraphQLConnection {
   }
 
   connect(token) {
-    let transport
     let endpoint = this.endpoint
     let headers = this.headers(token) || {}
 
-    this.transport = transport = this.createTransport({
+    let transport = this.createTransport({
       headers,
-      endpoint: this.endpoint
+      endpoint
     })
+    this.transport = transport
     this.client = this.createClient(transport)
     return this
   }
 
-  setJwtToken(signinToken, opts = {}) {
-    this.connect(signinToken)
+  setJwtToken(token, opts = {}) {
+    return this.connect(token)
   }
 
   createClient(transport) {
-    return new this.Lokka({
-      transport: transport || this.transport
+    let Client = this.Client
+    transport = transport || this.transport
+    this.log('createApolloClient', {
+      Client,
+      transport
+    })
+    return new Client({
+      transport
     })
   }
 
@@ -88,8 +102,4 @@ export class LokkaAuthConnection extends GraphQLConnection {
       headers
     })
   }
-}
-
-export function createConnection(config, opts) {
-  return new LokkaAuthConnection(config, opts).connect()
 }

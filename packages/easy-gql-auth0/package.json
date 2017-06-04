@@ -45,7 +45,8 @@
     "babili-webpack-plugin": "0.0.11",
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0",
-    "@tecla5/apollo-auth-conn": "*"
+    "@tecla5/apollo-auth-conn": "*",
+    "mock-local-storage": "*"
   },
   "babel": {
     "presets": [

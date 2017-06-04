@@ -26,6 +26,19 @@ export class Configurable extends Loggable {
     this.tokens = this.store ? this.store.getAll() : config.tokens
   }
 
+  extractProperty(containers, name, selfie) {
+    let container = containers.find(container => (container || {})[name])
+    let value = container[name]
+    if (selfie && value) {
+      this[name] = value
+    }
+    return value
+  }
+
+  extractProperties(containers, ...names) {
+    names.map(name => extractProperty(containers, name, true))
+  }
+
   configError(msg) {
     this.error(msg)
     throw Error(msg)

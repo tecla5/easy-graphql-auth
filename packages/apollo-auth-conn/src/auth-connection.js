@@ -8,18 +8,25 @@ export function createConnection(config, opts) {
 
 export class ApolloAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
-    super(config)
+    super(config, opts)
+    this.log('constructor', {
+      config,
+      opts
+    })
+    const containers = [config, opts, opts.client]
+    this.extractProperties(containers, 'ApolloClient', 'Client', 'createNetworkInterface', 'createClient')
+    this.Client = this.Client || this.ApolloClient
+    this.validate()
 
-    let {
+    this.log('extracted', {
       ApolloClient,
-      createNetworkInterface,
-    } = opts.clientConfig || {}
+      createNetworkInterface
+    })
+  }
 
-    this.ApolloClient = ApolloClient || config.ApolloClient || opts.ApolloClient
-    this.createNetworkInterface = createNetworkInterface || config.createNetworkInterface || opts.createNetworkInterface
-    this.name = 'ApolloConnection'
-
-    if (!this.ApolloClient) {
+  validate() {
+    this.log('validate')
+    if (!this.Client) {
       this.configError('missing ApolloClient in constructor arguments')
     }
     if (!this.createNetworkInterface) {
@@ -27,15 +34,35 @@ export class ApolloAuthConnection extends GraphQLConnection {
     }
   }
 
+  get name() {
+    return 'ApolloAuthConnection'
+  }
+
   connect(opts) {
+    this.log('connect', {
+      opts
+    })
     let networkInterface = this.createNetworkInterface(this.config.gqlServer.connection)
-    this.networkInterface = networkInterface
     this.configureNetworkInterface()
-    this.client = this.createApolloClient()
+
+    let client = this.createApolloClient()
+    this.log('connected', {
+      networkInterface,
+      client
+    })
+    this.networkInterface = networkInterface
+    this.client = client
     return this
   }
 
   async doQuery(query, opts = {}) {
+    this.log('doQuery', {
+      query,
+      opts
+    })
+    if (!this.client) {
+      this.error('doQuery: missing client')
+    }
     return await this.client.query({
       query
     })
@@ -67,9 +94,15 @@ export class ApolloAuthConnection extends GraphQLConnection {
     }
   }
 
-  createApolloClient() {
-    return new this.ApolloClient({
-      networkInterface: this.networkInterface
+  createApolloClient(networkInterface) {
+    let Client = this.Client
+    let networkInterface = networkInterface || this.networkInterface
+    this.log('createApolloClient', {
+      Client,
+      networkInterface
+    })
+    return new Client({
+      networkInterface
     })
   }
 }
