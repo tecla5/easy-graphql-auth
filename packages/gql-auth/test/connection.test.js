@@ -5,7 +5,7 @@ import storage from './storage'
 import {
   GraphQLAuth,
   createGraphQLAuth
-} from '../src/auth'
+} from '../src/gql-auth'
 
 import './mock-localstorage'
 

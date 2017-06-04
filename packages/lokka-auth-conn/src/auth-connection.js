@@ -10,8 +10,19 @@ export function createConnection(config, opts, autoConnect = true) {
 export class LokkaAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    const containers = [config, opts, opts.client]
+    this.name = 'LokkaAuthConnection'
+    this.configure()
+  }
 
+  configure() {
+    let config = this.config
+    let opts = this.opts
+    this.log('configure', {
+      config,
+      opts
+    })
+
+    const containers = [config, opts, opts.client]
     this.extractProperties(containers, 'Client', 'Transport', 'createClient', 'createTransport')
     this.Client = this.Client || this.Lokka
 
@@ -19,9 +30,17 @@ export class LokkaAuthConnection extends GraphQLConnection {
       this.createClient.bind(this)
       this.createTransport.bind(this)
     }
+    this.validateConfig()
+
+    this.log('extracted', {
+      Client: this.Client,
+      Transport: this.Transport,
+      createClient: this.createClient,
+      createTransport: this.createTransport
+    })
   }
 
-  validate() {
+  validateConfig() {
     this.log('validate')
     if (!this.Client) {
       this.configError('missing ApolloClient in constructor arguments')
@@ -29,10 +48,6 @@ export class LokkaAuthConnection extends GraphQLConnection {
     if (!this.createNetworkInterface) {
       this.configError('missing createNetworkInterface in constructor arguments')
     }
-  }
-
-  get name() {
-    return 'LokkaAuthConnection'
   }
 
   async doQuery(query, opts = {}) {

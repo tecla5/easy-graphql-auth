@@ -1,4 +1,4 @@
 export {
   GraphQLAuth
 }
-from './graphql-auth'
+from './gql-auth'

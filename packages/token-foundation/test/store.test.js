@@ -4,13 +4,13 @@ import {
 } from '../src/store'
 
 import config from './config'
-import storage from './storage'
+import myStore from './store'
 
 test('Store', t => {
   t.is(typeof Store, 'function')
 
   let store = new Store(config, {
-    keyStore: storage
+    keyStore: myStore
   })
 
   t.is(typeof store, 'object')

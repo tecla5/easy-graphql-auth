@@ -8,4 +8,9 @@ export default {
   setItem() {
     // fake
   },
+  getAll() {
+    return {
+      x: '22'
+    }
+  }
 }

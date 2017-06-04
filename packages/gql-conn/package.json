@@ -2,7 +2,7 @@
   "name": "@tecla5/gql-conn",
   "version": "0.1.0",
   "description": "GraphQL server connection and token store lib",
-  "main": "dist/bundle.prod.js",
+  "main": "dist/bundle.js",
   "directories": {
     "test": "test"
   },

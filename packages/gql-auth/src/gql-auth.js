@@ -2,23 +2,25 @@ import {
   GraphQLConnection
 } from '@tecla5/gql-conn'
 
-export function createGraphQLAuth(config) {
-  return new GraphQLAuth(config)
+export function createGraphQLAuth(config, opts) {
+  return new GraphQLAuth(config, opts)
 }
 
 export class GraphQLAuth extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    let {
-      createConnection
-    } = opts.clientConfig
+    this.name = 'GraphQLAuth'
+    this.configure()
+  }
 
-    createConnection = createConnection || opts.createConnection
+  configure() {
+    let config = this.config
+    let opts = this.opts
 
-    this.connection = this.connection || config.connection || opts.connection
-    if (createConnection) {
-      this.connection = this.connection || createConnection(config, opts)
-    }
+    const containers = [config, opts, opts.client]
+    this.extractProperties(containers, 'createConnection', 'connection')
+
+    this.connection = this.connection || this.createConnection(config, opts)
     this.validateConfig()
   }
 

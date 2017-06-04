@@ -73,11 +73,113 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GraphQLConnection = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _tokenFoundation = __webpack_require__(2);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
+  _inherits(GraphQLConnection, _Configurable);
+
+  function GraphQLConnection() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, GraphQLConnection);
+
+    var _this = _possibleConstructorReturn(this, (GraphQLConnection.__proto__ || Object.getPrototypeOf(GraphQLConnection)).call(this, config, opts));
+
+    var gqlServer = config.gqlServer;
+    gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri;
+    _this.config.gqlServer = gqlServer;
+    _this.validateConfig();
+    return _this;
+  }
+
+  _createClass(GraphQLConnection, [{
+    key: 'validateConfig',
+    value: function validateConfig() {
+      if (_typeof(this.store) !== 'object') {
+        this.configError('missing store for holding signinToken from GraphQL server');
+      }
+
+      if (_typeof(this.keyNames) !== 'object') {
+        this.configError('missing keyNames object, used to indicate store token keys');
+      }
+    }
+  }, {
+    key: 'setJwtToken',
+    value: function setJwtToken(signinToken) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      this.log('setJwtToken not yet implemented on GraphQL server Connection :(', {
+        signinToken: signinToken
+      });
+    }
+  }, {
+    key: 'defaultHeaders',
+    get: function get() {
+      return null;
+    }
+  }, {
+    key: 'authTokenKeyName',
+    get: function get() {
+      return this.keyNames.gqlServerTokenKeyName;
+    }
+  }, {
+    key: 'authToken',
+    get: function get() {
+      return this.store.getItem(this.authTokenKeyName) || null;
+    }
+  }]);
+
+  return GraphQLConnection;
+}(_tokenFoundation.Configurable);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _gqlConnection = __webpack_require__(0);
+
+Object.defineProperty(exports, 'GraphQLConnection', {
+  enumerable: true,
+  get: function get() {
+    return _gqlConnection.GraphQLConnection;
+  }
+});
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106,113 +208,164 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       };return b.d(e, 'a', e), e;
     }, b.o = function (d, e) {
       return Object.prototype.hasOwnProperty.call(d, e);
-    }, b.p = '', b(b.s = 3);
+    }, b.p = '', b(b.s = 4);
   }([function (a, b) {
     'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' };
-  }, function (a, b) {
-    'use strict';
-    function d(h, j) {
-      if (!(h instanceof j)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 });var f = function () {
-      function h(j, k) {
-        for (var m, l = 0; l < k.length; l++) {
-          m = k[l], m.enumerable = m.enumerable || !1, m.configurable = !0, 'value' in m && (m.writable = !0), Object.defineProperty(j, m.key, m);
-        }
-      }return function (j, k, l) {
-        return k && h(j.prototype, k), l && h(j, l), j;
-      };
-    }();b.createStore = function (h) {
-      var j = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new g(h, j);
-    };var g = b.Store = function () {
-      function h(j) {
-        var k = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, h), this.keyNames = j.storage || j, this.storage = k.storage || k.keyStore || localStorage, this.auth0IdTokenKeyName = this.keyNames.auth0IdTokenKeyName, this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName;
-      }return f(h, [{ key: 'removeItem', value: function value(k) {
-          this.storage.removeItem(k);
-        } }, { key: 'getItem', value: function value(k) {
-          return this.storage.getItem(k);
-        } }, { key: 'setItem', value: function value(k, l) {
-          this.storage.setItem(k, l);
-        } }, { key: 'validateKeyNames', value: function value() {
-          for (var k = this, l = arguments.length, m = Array(l), n = 0; n < l; n++) {
-            m[n] = arguments[n];
-          }m.map(function (o) {
-            return k.validateKeyName(o);
-          });
-        } }, { key: 'validateKeyName', value: function value(k) {
-          return 'string' != typeof this.keyNames[k] && this.error('keyNames missing ' + k), this;
-        } }, { key: 'error', value: function value(k) {
-          console.error(k);
-        } }, { key: 'resetAll', value: function value() {
-          this.removeItem(this.auth0TokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
-        } }, { key: 'getAll', value: function value() {
-          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { auth0Token: this.getItem(this.auth0IdTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
-        } }, { key: 'store', value: function value(k, l) {
-          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(k)) throw Error('keyname mismatch for store: ' + k);this.setItem(k, l);
-        } }]), h;
-    }();
+    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' }, a.exports = b['default'];
   }, function (a, b, c) {
     'use strict';
-    function e(m, n) {
-      if (!(m instanceof n)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var f = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (m) {
-      return typeof m === 'undefined' ? 'undefined' : _typeof(m);
-    } : function (m) {
-      return m && 'function' == typeof Symbol && m.constructor === Symbol && m !== Symbol.prototype ? 'symbol' : typeof m === 'undefined' ? 'undefined' : _typeof(m);
-    },
-        g = function () {
-      function m(n, o) {
-        for (var q, p = 0; p < o.length; p++) {
-          q = o[p], q.enumerable = q.enumerable || !1, q.configurable = !0, 'value' in q && (q.writable = !0), Object.defineProperty(n, q.key, q);
+    function d(l, m) {
+      if (!(l instanceof m)) throw new TypeError('Cannot call a class as a function');
+    }function e(l, m) {
+      if (!l) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return m && ('object' == (typeof m === 'undefined' ? 'undefined' : _typeof(m)) || 'function' == typeof m) ? m : l;
+    }function f(l, m) {
+      if ('function' != typeof m && null !== m) throw new TypeError('Super expression must either be null or a function, not ' + (typeof m === 'undefined' ? 'undefined' : _typeof(m)));l.prototype = Object.create(m && m.prototype, { constructor: { value: l, enumerable: !1, writable: !0, configurable: !0 } }), m && (Object.setPrototypeOf ? Object.setPrototypeOf(l, m) : l.__proto__ = m);
+    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Store = void 0;var h = function () {
+      function l(m, n) {
+        for (var p, o = 0; o < n.length; o++) {
+          p = n[o], p.enumerable = p.enumerable || !1, p.configurable = !0, 'value' in p && (p.writable = !0), Object.defineProperty(m, p.key, p);
         }
-      }return function (n, o, p) {
-        return o && m(n.prototype, o), p && m(n, p), n;
+      }return function (m, n, o) {
+        return n && l(m.prototype, n), o && l(m, o), m;
+      };
+    }();b.createStore = function (l) {
+      var m = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new k(l, m);
+    };var j = c(2),
+        k = b.Store = function (l) {
+      function m(n) {
+        var o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, m);var p = e(this, (m.__proto__ || Object.getPrototypeOf(m)).call(this, 'Store', o));return p.log('create', { keyNames: n, opts: o }), p.keyNames = n.storage || n, p.storage = o.storage || o.keyStore || window.localStorage, p.authTokenKeyName = p.keyNames.authTokenKeyName, p.gqlServerTokenKeyName = p.keyNames.gqlServerTokenKeyName, p;
+      }return f(m, l), h(m, [{ key: 'removeItem', value: function value(o) {
+          this.storage.removeItem(o);
+        } }, { key: 'getItem', value: function value(o) {
+          return this.storage.getItem(o);
+        } }, { key: 'setItem', value: function value(o, p) {
+          this.storage.setItem(o, p);
+        } }, { key: 'validateKeyNames', value: function value() {
+          for (var o = this, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
+            q[r] = arguments[r];
+          }q.map(function (s) {
+            return o.validateKeyName(s);
+          });
+        } }, { key: 'validateKeyName', value: function value(o) {
+          return 'string' != typeof this.keyNames[o] && this.error('keyNames missing ' + o), this;
+        } }, { key: 'error', value: function value(o) {
+          console.error(o);
+        } }, { key: 'resetAll', value: function value() {
+          this.removeItem(this.authTokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
+        } }, { key: 'getAll', value: function value() {
+          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { authToken: this.getItem(this.authTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
+        } }, { key: 'store', value: function value(o, p) {
+          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(o)) throw Error('keyname mismatch for store: ' + o);this.setItem(o, p);
+        } }]), m;
+    }(j.Loggable);
+  }, function (a, b) {
+    'use strict';
+    function d(g, h) {
+      if (!(g instanceof h)) throw new TypeError('Cannot call a class as a function');
+    }Object.defineProperty(b, '__esModule', { value: !0 });var e = function () {
+      function g(h, j) {
+        for (var l, k = 0; k < j.length; k++) {
+          l = j[k], l.enumerable = l.enumerable || !1, l.configurable = !0, 'value' in l && (l.writable = !0), Object.defineProperty(h, l.key, l);
+        }
+      }return function (h, j, k) {
+        return j && g(h.prototype, j), k && g(h, k), h;
       };
     }(),
-        h = c(0),
-        j = function (m) {
-      return m && m.__esModule ? m : { default: m };
-    }(h),
-        k = c(1),
-        l = b.Configurable = function () {
-      function m() {
-        var n = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
-            o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, m), this.validate(n);var p = n.keyNames,
-            q = n.store,
-            r = n.storage;this.config = n, this.io = o.io || console, this.logging = o.logging, this.observers = {}, this.config = n, this.storage = r, this.keyNames = p || r || j.default, this.store = q || this.defaultCreateStore(this.keyNames, o), this.tokens = this.store.getAll(), this.tokens = this.store ? this.store.getAll() : n.tokens;
-      }return g(m, [{ key: 'on', value: function value(o, p) {
-          this.log('on', o, p);var q = this.observers[o] || [];return this.observers[o] = q.concat(p), this;
-        } }, { key: 'publish', value: function value(o, p) {
-          this.log('publish', o, p);var q = this.observers[o] || [];return q ? q.map(function (r) {
-            return r(p);
-          }) : this.log('no observers registered for', o), this;
-        } }, { key: 'handleError', value: function value(o) {
-          throw this.error(o), o;
-        } }, { key: 'enableLog', value: function value() {
+        f = b.Loggable = function () {
+      function g(h) {
+        var j = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, g), this.opts = j, this.io = j.io || console, this.logging = j.logging, this.name = h || j.name;
+      }return e(g, [{ key: 'enableLog', value: function value() {
           return this.logging = !0, this;
         } }, { key: 'disableLog', value: function value() {
           return this.logging = !1, this;
         } }, { key: 'log', value: function value() {
           if (this.logging) {
-            for (var o, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-              q[r] = arguments[r];
-            }(o = this.io).log.apply(o, ['Lock'].concat(q));
+            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
+              l[m] = arguments[m];
+            }(j = this.io).log.apply(j, [this.name].concat(l));
           }
         } }, { key: 'error', value: function value() {
           if (this.logging) {
-            for (var o, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-              q[r] = arguments[r];
-            }(o = this.io).error.apply(o, ['Lock'].concat(q));
+            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
+              l[m] = arguments[m];
+            }(j = this.io).error.apply(j, [this.name].concat(l));
           }
-        } }, { key: 'defaultCreateStore', value: function value(o, p) {
-          return new k.Store(o, p);
-        } }, { key: 'validate', value: function value(o) {
-          if ('object' !== ('undefined' == typeof o ? 'undefined' : f(o))) throw Error('config must be an object');
-        } }]), m;
+        } }]), g;
     }();
   }, function (a, b, c) {
     'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(2);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
+    function e(q, r) {
+      if (!(q instanceof r)) throw new TypeError('Cannot call a class as a function');
+    }function f(q, r) {
+      if (!q) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return r && ('object' == (typeof r === 'undefined' ? 'undefined' : _typeof(r)) || 'function' == typeof r) ? r : q;
+    }function g(q, r) {
+      if ('function' != typeof r && null !== r) throw new TypeError('Super expression must either be null or a function, not ' + (typeof r === 'undefined' ? 'undefined' : _typeof(r)));q.prototype = Object.create(r && r.prototype, { constructor: { value: q, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(q, r) : q.__proto__ = r);
+    }function h(q) {
+      return 'function' == typeof q;
+    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var j = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (q) {
+      return typeof q === 'undefined' ? 'undefined' : _typeof(q);
+    } : function (q) {
+      return q && 'function' == typeof Symbol && q.constructor === Symbol && q !== Symbol.prototype ? 'symbol' : typeof q === 'undefined' ? 'undefined' : _typeof(q);
+    },
+        k = function () {
+      function q(r, s) {
+        for (var u, t = 0; t < s.length; t++) {
+          u = s[t], u.enumerable = u.enumerable || !1, u.configurable = !0, 'value' in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
+        }
+      }return function (r, s, t) {
+        return s && q(r.prototype, s), t && q(r, t), r;
+      };
+    }(),
+        l = c(0),
+        m = function (q) {
+      return q && q.__esModule ? q : { default: q };
+    }(l),
+        n = c(2),
+        o = c(1),
+        p = b.Configurable = function (q) {
+      function r() {
+        var s = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
+            t = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, r);var u = f(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, 'Configurable', t));return u.validate(s), u.log('configuring with', { config: s, opts: t }), u.opts = u.opts || t, u.config = s, u.configure(), u;
+      }return g(r, q), k(r, [{ key: 'configure', value: function value() {
+          return this.log('configure'), this.observers = {}, this.configureStorage(), this.retrieveTokens(), this;
+        } }, { key: 'configureStorage', value: function value() {
+          return this.log('configureStorage'), this.storage = this.config.storage, this.keyNames = this.config.keyNames || this.storage || m.default, this.store = this.config.store || this.createStore(), this;
+        } }, { key: 'retrieveTokens', value: function value() {
+          this.log('retrieveTokens', { store: this.store }), this.tokens = this.store ? this.store.getAll() : {};
+        } }, { key: 'extractProperty', value: function value(t, u, v) {
+          var w = t.find(function (y) {
+            return (y || {})[u];
+          }),
+              x = w[u];return v && x && (this[u] = x), x;
+        } }, { key: 'extractProperties', value: function value(t) {
+          for (var u = arguments.length, v = Array(1 < u ? u - 1 : 0), w = 1; w < u; w++) {
+            v[w - 1] = arguments[w];
+          }return v.map(function (x) {
+            return extractProperty(t, x, !0);
+          });
+        } }, { key: 'configError', value: function value(t) {
+          throw this.error(t), Error(t);
+        } }, { key: 'on', value: function value(t, u) {
+          this.log('on', t, u);var v = this.observers[t] || [];return this.observers[t] = v.concat(u), this;
+        } }, { key: 'publish', value: function value(t, u) {
+          this.log('publish', t, u);var v = this.observers[t] || [];return v ? v.map(function (w) {
+            return w(u);
+          }) : this.log('no observers registered for', t), this;
+        } }, { key: 'handleError', value: function value(t) {
+          throw this.error(t), t;
+        } }, { key: 'createStore', value: function value(t) {
+          var u = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {},
+              v = u,
+              s = v.createStore;return t = t || this.keyNames, u = u || this.opts, this.log('createStore', { keyNames: t, opts: u }), s = h(s) ? s : this.defaultCreateStore, this.log('create with', { createStore: s }), s(t, u);
+        } }, { key: 'defaultCreateStore', value: function value(t, u) {
+          return new o.Store(t, u);
+        } }, { key: 'validate', value: function value(t) {
+          if ('object' !== ('undefined' == typeof t ? 'undefined' : j(t))) throw Error('config must be an object');
+        } }]), r;
+    }(n.Loggable);
+  }, function (a, b, c) {
+    'use strict';
+    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(3);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
         return d.Configurable;
       } });var e = c(0);Object.defineProperty(b, 'keyNames', { enumerable: !0, get: function get() {
         return e.keyNames;
@@ -224,332 +377,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   }]);
 });
 //# sourceMappingURL=bundle.prod.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GraphQLAuth = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.createGraphQLAuth = createGraphQLAuth;
-
-var _tokenFoundation = __webpack_require__(0);
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GraphQLAuth = exports.GraphQLAuth = function (_Configurable) {
-  _inherits(GraphQLAuth, _Configurable);
-
-  function GraphQLAuth(config) {
-    _classCallCheck(this, GraphQLAuth);
-
-    return _possibleConstructorReturn(this, (GraphQLAuth.__proto__ || Object.getPrototypeOf(GraphQLAuth)).call(this, config));
-  }
-
-  _createClass(GraphQLAuth, [{
-    key: 'extractSignedInUserToken',
-    value: function extractSignedInUserToken(signinResult) {
-      return signinResult.data.signinUser.token;
-    }
-  }, {
-    key: 'setGraphQLServerToken',
-    value: function setGraphQLServerToken(signinToken) {
-      // set graphcool token in localstorage
-      this.store.setItem(this.gqlServerTokenKeyName, signinToken);
-      return this;
-    }
-  }, {
-    key: 'signin',
-    value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(data) {
-        var auth0Token, profile, created, signinResult, signinToken;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                auth0Token = data.auth0Token, profile = data.profile;
-
-                this.log('Signing into GraphQL server');
-                _context.next = 4;
-                return this.doCreateUser(data);
-
-              case 4:
-                created = _context.sent;
-                _context.next = 7;
-                return this.doSigninUser(data);
-
-              case 7:
-                signinResult = _context.sent;
-                signinToken = this.extractSignedInUserToken(signinResult);
-
-                this.setGraphQLServerToken(signinToken);
-
-              case 10:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function signin(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return signin;
-    }()
-  }, {
-    key: 'handleQueryError',
-    value: function handleQueryError(err) {
-      if (!err.graphQLErrors || err.graphQLErrors[0].code !== errorCode.USER_ALREADY_EXISTS) {
-        this.handleError(err);
-      }
-    }
-  }, {
-    key: 'buildUserData',
-    value: function buildUserData(data) {
-      var auth0Token = data.auth0Token,
-          profile = data.profile;
-
-      return {
-        variables: {
-          authToken: auth0Token,
-          name: profile.name
-        }
-      };
-    }
-  }, {
-    key: 'doCreateUser',
-    value: function () {
-      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(data) {
-        var auth0Token, profile, userData;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                auth0Token = data.auth0Token, profile = data.profile;
-                // create user if necessary
-
-                _context2.prev = 1;
-
-                this.log('Create user', name);
-                userData = this.buildUserData(data);
-
-                if (!this.queries.createUser) {
-                  _context2.next = 9;
-                  break;
-                }
-
-                _context2.next = 7;
-                return this.queries.createUser(userData);
-
-              case 7:
-                _context2.next = 12;
-                break;
-
-              case 9:
-                this.log('missing createUser query, faking it');
-                _context2.next = 12;
-                return this.fakeCreateUser(userData);
-
-              case 12:
-                _context2.next = 17;
-                break;
-
-              case 14:
-                _context2.prev = 14;
-                _context2.t0 = _context2['catch'](1);
-
-                this.handleQueryError(_context2.t0);
-
-              case 17:
-              case 'end':
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this, [[1, 14]]);
-      }));
-
-      function doCreateUser(_x2) {
-        return _ref2.apply(this, arguments);
-      }
-
-      return doCreateUser;
-    }()
-
-    // TODO: simulate GraphCool query mutation result?
-
-  }, {
-    key: 'fakeCreateUser',
-    value: function fakeCreateUser(userData) {
-      return userData;
-    }
-  }, {
-    key: 'buildSigninUserData',
-    value: function buildSigninUserData(_ref3) {
-      var auth0Token = _ref3.auth0Token,
-          profile = _ref3.profile;
-
-      return {
-        variables: {
-          authToken: auth0Token
-        }
-      };
-    }
-
-    // sign in user
-
-  }, {
-    key: 'doSigninUser',
-    value: function () {
-      var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(data) {
-        var auth0Token, profile, userData;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                auth0Token = data.auth0Token, profile = data.profile;
-
-                this.log('signin user', data);
-
-                if (this.queries.signinUser) {
-                  _context3.next = 4;
-                  break;
-                }
-
-                return _context3.abrupt('return', this.fakeSigninUser(profile));
-
-              case 4:
-                userData = this.buildSigninUserData(data);
-                _context3.next = 7;
-                return this.queries.signinUser(userData);
-
-              case 7:
-                return _context3.abrupt('return', _context3.sent);
-
-              case 8:
-              case 'end':
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function doSigninUser(_x3) {
-        return _ref4.apply(this, arguments);
-      }
-
-      return doSigninUser;
-    }()
-  }, {
-    key: 'fakeSigninUser',
-    value: function fakeSigninUser(profile) {
-      this.log('returning fake signedinUser');
-      return {
-        data: {
-          signinUser: {
-            token: '1234'
-          }
-        }
-      };
-    }
-  }, {
-    key: 'gqlServerTokenKeyName',
-    get: function get() {
-      return this.store.gqlServerTokenKeyName;
-    }
-  }]);
-
-  return GraphQLAuth;
-}(_tokenFoundation.Configurable);
-
-function createGraphQLAuth(config) {
-  new GraphQLAuth(config);
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.GraphQLConnection = undefined;
-
-var _tokenFoundation = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
-  _inherits(GraphQLConnection, _Configurable);
-
-  function GraphQLConnection() {
-    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, GraphQLConnection);
-
-    var _this = _possibleConstructorReturn(this, (GraphQLConnection.__proto__ || Object.getPrototypeOf(GraphQLConnection)).call(this, config));
-
-    _this.connection = config.gqlServer.connection;
-    return _this;
-  }
-
-  return GraphQLConnection;
-}(_tokenFoundation.Configurable);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _auth = __webpack_require__(1);
-
-Object.defineProperty(exports, 'GraphQLAuth', {
-  enumerable: true,
-  get: function get() {
-    return _auth.GraphQLAuth;
-  }
-});
-
-var _connection = __webpack_require__(2);
-
-Object.defineProperty(exports, 'GraphQLConnection', {
-  enumerable: true,
-  get: function get() {
-    return _connection.GraphQLConnection;
-  }
-});
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {

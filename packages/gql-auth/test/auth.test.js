@@ -5,7 +5,7 @@ import storage from './storage'
 import {
   GraphQLAuth,
   createGraphQLAuth
-} from '../src/auth'
+} from '../src/gql-auth'
 
 import './mock-localstorage'
 
@@ -14,6 +14,7 @@ test('GraphQLAuth', t => {
   //   config
   // })
   let auth = createGraphQLAuth(config, {
+    logging: true,
     storage
   })
   // console.log({

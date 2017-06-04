@@ -27,27 +27,41 @@ export class Configurable extends Loggable {
     this.log('configure')
     this.observers = {}
     this.configureStorage()
+    this.validateConfig()
     this.retrieveTokens()
     return this
   }
 
   configureStorage() {
+    let config = this.config
+    let opts = this.opts
+    let containers = [config, opts]
+
     this.log('configureStorage')
-    this.storage = this.config.storage
-    this.keyNames = this.config.keyNames || this.storage || defaultKeyNames
-    this.store = this.config.store || this.createStore()
+    this.extractProperties(containers, 'storage', 'keyNames', 'store')
+    this.keyNames = this.keyNames || this.storage || defaultKeyNames
+    this.store = this.store || this.createStore()
     return this
+  }
+
+  validateConfig() {
+    if (!this.store) {
+      this.configError('Missing store. Was not configured!')
+    }
   }
 
   retrieveTokens() {
     this.log('retrieveTokens', {
       store: this.store
     })
-    this.tokens = this.store ? this.store.getAll() : {}
+    if (!isFun(this.store.getAll)) {
+      this.error("Store is missing function getAll to retrieve tokens")
+    }
+    this.tokens = this.store.getAll() || {}
   }
 
   extractProperty(containers, name, selfie) {
-    let container = containers.find(container => (container || {})[name])
+    let container = containers.find(container => (container || {})[name]) || {}
     let value = container[name]
     if (selfie && value) {
       this[name] = value
@@ -56,7 +70,11 @@ export class Configurable extends Loggable {
   }
 
   extractProperties(containers, ...names) {
-    return names.map(name => extractProperty(containers, name, true))
+    return names.reduce((acc, name) => {
+      let value = this.extractProperty(containers, name, true)
+      acc[name] = value
+      return acc
+    }, {})
   }
 
   configError(msg) {

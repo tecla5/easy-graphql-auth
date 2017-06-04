@@ -10,7 +10,14 @@ export function createConnection(config, opts, autoConnect = true) {
 export class ApolloAuthConnection extends GraphQLConnection {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    this.log('constructor', {
+    this.name = 'ApolloAuthConnection'
+    this.configure()
+  }
+
+  configure() {
+    let config = this.config
+    let opts = this.opts
+    this.log('configure', {
       config,
       opts
     })
@@ -20,8 +27,8 @@ export class ApolloAuthConnection extends GraphQLConnection {
     this.validate()
 
     this.log('extracted', {
-      ApolloClient,
-      createNetworkInterface
+      Client: this.Client,
+      createNetworkInterface: this.createNetworkInterface
     })
   }
 
@@ -33,10 +40,6 @@ export class ApolloAuthConnection extends GraphQLConnection {
     if (!this.createNetworkInterface) {
       this.configError('missing createNetworkInterface in constructor arguments')
     }
-  }
-
-  get name() {
-    return 'ApolloAuthConnection'
   }
 
   connect(opts) {
