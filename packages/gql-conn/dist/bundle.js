@@ -111,14 +111,23 @@ var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
 
     var _this = _possibleConstructorReturn(this, (GraphQLConnection.__proto__ || Object.getPrototypeOf(GraphQLConnection)).call(this, config, opts));
 
-    var gqlServer = config.gqlServer;
-    gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri;
-    _this.config.gqlServer = gqlServer;
-    _this.validateConfig();
+    _this.name = 'GraphQLConnection';
+    _this.configure();
     return _this;
   }
 
   _createClass(GraphQLConnection, [{
+    key: 'configure',
+    value: function configure() {
+      var config = this.config;
+
+      var gqlServer = config.gqlServer;
+      gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri;
+
+      this.config.gqlServer = gqlServer;
+      this.validateConfig();
+    }
+  }, {
     key: 'validateConfig',
     value: function validateConfig() {
       if (_typeof(this.store) !== 'object') {
@@ -327,22 +336,25 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         var s = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
             t = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, r);var u = f(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, 'Configurable', t));return u.validate(s), u.log('configuring with', { config: s, opts: t }), u.opts = u.opts || t, u.config = s, u.configure(), u;
       }return g(r, q), k(r, [{ key: 'configure', value: function value() {
-          return this.log('configure'), this.observers = {}, this.configureStorage(), this.retrieveTokens(), this;
+          return this.log('configure'), this.observers = {}, this.configureStorage(), this.validateConfig(), this.retrieveTokens(), this;
         } }, { key: 'configureStorage', value: function value() {
-          return this.log('configureStorage'), this.storage = this.config.storage, this.keyNames = this.config.keyNames || this.storage || m.default, this.store = this.config.store || this.createStore(), this;
+          var t = this.config,
+              u = this.opts;return this.log('configureStorage'), this.extractProperties([t, u], 'storage', 'keyNames', 'store'), this.keyNames = this.keyNames || this.storage || m.default, this.store = this.store || this.createStore(), this;
+        } }, { key: 'validateConfig', value: function value() {
+          this.store || this.configError('Missing store. Was not configured!');
         } }, { key: 'retrieveTokens', value: function value() {
-          this.log('retrieveTokens', { store: this.store }), this.tokens = this.store ? this.store.getAll() : {};
+          this.log('retrieveTokens', { store: this.store }), h(this.store.getAll) || this.error('Store is missing function getAll to retrieve tokens'), this.tokens = this.store.getAll() || {};
         } }, { key: 'extractProperty', value: function value(t, u, v) {
           var w = t.find(function (y) {
             return (y || {})[u];
-          }),
+          }) || {},
               x = w[u];return v && x && (this[u] = x), x;
         } }, { key: 'extractProperties', value: function value(t) {
-          for (var u = arguments.length, v = Array(1 < u ? u - 1 : 0), w = 1; w < u; w++) {
-            v[w - 1] = arguments[w];
-          }return v.map(function (x) {
-            return extractProperty(t, x, !0);
-          });
+          for (var u = this, v = arguments.length, w = Array(1 < v ? v - 1 : 0), x = 1; x < v; x++) {
+            w[x - 1] = arguments[x];
+          }return w.reduce(function (y, z) {
+            var A = u.extractProperty(t, z, !0);return y[z] = A, y;
+          }, {});
         } }, { key: 'configError', value: function value(t) {
           throw this.error(t), Error(t);
         } }, { key: 'on', value: function value(t, u) {

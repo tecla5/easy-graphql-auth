@@ -35,7 +35,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
   validate() {
     this.log('validate')
     if (!this.Client) {
-      this.configError('missing ApolloClient in constructor arguments')
+      this.configError('missing Client (or ApolloClient) in constructor arguments')
     }
     if (!this.createNetworkInterface) {
       this.configError('missing createNetworkInterface in constructor arguments')

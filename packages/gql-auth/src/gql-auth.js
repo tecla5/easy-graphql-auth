@@ -20,6 +20,10 @@ export class GraphQLAuth extends GraphQLConnection {
     const containers = [config, opts, opts.client]
     this.extractProperties(containers, 'createConnection', 'connection')
 
+    if (!this.connection && !this.createConnection) {
+      this.configError('Missing connection or createConnection option')
+    }
+
     this.connection = this.connection || this.createConnection(config, opts)
     this.validateConfig()
   }
