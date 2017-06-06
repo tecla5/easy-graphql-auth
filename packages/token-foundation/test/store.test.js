@@ -5,6 +5,7 @@ import {
 
 import config from './config'
 import myStore from './store'
+import './mock-localstorage'
 
 test('Store', t => {
   t.is(typeof Store, 'function')
@@ -18,8 +19,6 @@ test('Store', t => {
   let x = store.getItem('x')
   t.falsy(x)
 })
-
-import './mock-localstorage'
 
 test('Mock localStorage', t => {
 
