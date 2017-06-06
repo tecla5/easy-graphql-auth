@@ -35,6 +35,8 @@ const data = {
 
 let auth
 
+// run once before all the tests are run.
+// Ensures auth object is created, which is then tested in each test
 test.before(t => {
   let opts = {
     logging: true,
@@ -47,8 +49,6 @@ test.before(t => {
   auth = createGraphQLAuth(config, opts)
 })
 
-// TODO: split up into fine grained tests, for each property being tested!
-// use before or beforeEach to set up auth
 test('GraphQLAuth: is an object', async t => {
   t.is(typeof auth, 'object')
 })
@@ -108,4 +108,28 @@ test('GraphQLAuth: doCreateUser', async t => {
 test('GraphQLAuth: doSigninUser', async t => {
   let result = await auth.doSigninUser(data)
   t.truthy(result, 'user was signed in')
+})
+
+test('GraphQLAuth: fakeSigninUser', t => {
+  let user = auth.fakeSigninUser(profile)
+  t.is(typeof user.data, 'object')
+})
+
+test('GraphQLAuth: fakeCreateUser', t => {
+  let userData = auth.buildUserData(data)
+
+  let user = auth.fakeCreateUser(userData)
+  t.is(typeof user, 'object')
+})
+
+import {
+  signinUser,
+  createUser
+} from './queries'
+
+// TODO: perform actual query on GraphQL server such as GraphCool
+test.skip('GraphQLAuth: doQuery', async t => {
+  let query = signinUser
+  let queryResult = await auth.doQuery(query)
+  t.is(typeof queryResult, 'object')
 })

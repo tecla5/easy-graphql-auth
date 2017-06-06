@@ -140,9 +140,8 @@ export class GraphQLAuth extends GraphQLConnection {
       this.validateQueries()
 
       if (this.queries && this.queries.createUser) {
-        let result = await this.doQuery({
-          query: this.queries.createUser(userData)
-        })
+        let query = this.queries.createUser(userData)
+        let result = await this.doQuery(query)
         this.publish('createdUserOK', {
           authToken,
           userData,
@@ -174,9 +173,7 @@ export class GraphQLAuth extends GraphQLConnection {
     }
   }
 
-  async doQuery({
-    query
-  }) {
+  async doQuery(query, opts = {}) {
     return await this.connection.doQuery(
       query, opts)
   }
@@ -211,9 +208,8 @@ export class GraphQLAuth extends GraphQLConnection {
     }
     let userData = this.buildSigninUserData(data)
     try {
-      let result = await this.doQuery({
-        query: this.queries.signinUser(userData)
-      })
+      let query = this.queries.signinUser(userData)
+      let result = await this.doQuery(query)
       this.publish('signedInOK', {
         authToken,
         profile,
