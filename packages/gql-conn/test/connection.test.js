@@ -12,12 +12,15 @@ test('createConnection', t => {
     logging: true,
     storage
   }
-  let connection = new Connection(config, opts)
+  let conn = new Connection(config, opts)
 
-  t.is(connection.config, config)
-  t.is(connection.opts, opts)
+  t.is(conn.config, config)
+  t.is(conn.opts, opts)
 
   // contains key methods
-  t.is(typeof connection.extractProperty, 'function')
-  t.is(typeof connection.extractProperties, 'function')
+  t.is(typeof conn.extractProperty, 'function')
+  t.is(typeof conn.extractProperties, 'function')
+
+  // created a store via defaultCreateStore
+  t.is(typeof conn.store, 'object')
 })

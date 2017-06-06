@@ -24,20 +24,22 @@ export class Configurable extends Loggable {
   }
 
   configure() {
-    this.log('configure')
+    this.log('Configurable: configure')
     this.observers = {}
     this.configureStorage()
-    this.validateConfig()
-    this.retrieveTokens()
     return this
   }
 
+  postConfig() {
+    this.validateConfig()
+    this.retrieveTokens()
+  }
+
   configureStorage() {
+    this.log('configureStorage')
     let config = this.config
     let opts = this.opts
     let containers = [config, opts]
-
-    this.log('configureStorage')
     this.extractProperties(containers, 'storage', 'keyNames', 'store')
     this.keyNames = this.keyNames || this.storage || defaultKeyNames
     this.store = this.store || this.createStore()
