@@ -7,7 +7,7 @@ Compatible with GraphQL clients such as:
 - [lokka](https://github.com/kadirahq/lokka)
 - custom clients
 
-<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/token-foundation.png" alt="GraphQL Auth" width="100%" height="100%">
+<img src="https://github.com/tecla5/easy-graphql-auth/raw/master/pics/token-foundation.png" alt="GraphQL Auth" width="50%" height="50%">
 
 ## Install
 
@@ -27,7 +27,7 @@ import {
   Loggable,
   Store,
   createStore
-} from '@tecla5/token-foundation`
+} from '@tecla5/token-foundation'
 ```
 
 ### Store
@@ -103,7 +103,7 @@ ok 5 - extractProperties
 # fail 0
 ```
 
-With Test coverage
+### Test coverage
 
 ```bash
 $ nyc ava test/configurable.test.js
