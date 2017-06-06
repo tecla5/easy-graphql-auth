@@ -255,7 +255,19 @@ In local module/project
 
 In local module/project
 
-`$ ava test`
+`$ npm test`
+
+Run specific test
+
+`$ ava test/auth.test.js`
+
+### Code coverage
+
+See [Ava Code coverage](https://github.com/avajs/ava/blob/master/docs/recipes/code-coverage.md) recipe
+
+Install NYC globally
+
+`npm i -g nyc`
 
 ## Publish to npm
 

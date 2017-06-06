@@ -103,6 +103,34 @@ ok 5 - extractProperties
 # fail 0
 ```
 
+With Test coverage
+
+```bash
+$ nyc ava test/configurable.test.js
+TAP version 13
+# Configurable: storage from config
+ok 1 - Configurable: storage from config
+# Configurable: using defaultStore via storage option
+ok 2 - Configurable: using defaultStore via storage option
+# Configurable: pass store
+ok 3 - Configurable: pass store
+# extractProperty
+ok 4 - extractProperty
+# extractProperties
+ok 5 - extractProperties
+
+1..5
+# tests 5
+# pass 5
+# fail 0
+
+-----------------|----------|----------|----------|----------|----------------|
+File             |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+-----------------|----------|----------|----------|----------|----------------|
+All files        |    60.63 |    54.08 |    66.67 |    62.07 |                |
+...
+```
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup
