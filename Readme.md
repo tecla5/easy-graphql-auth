@@ -9,6 +9,15 @@ Designed specifically for [GraphCool](https://www.graph.cool) (SaaS) server but 
 
 See the docs for each of the modules included for more details including installation and usage. Enjoy!!
 
+## Lerna
+
+```bash
+npm install --save-dev npm@4.6.1
+```
+
+set `npmClient` to `node_modules/.bin/npm` in your `lerna.json`
+
+
 ## Modules included
 
 ### Base config/token functionality

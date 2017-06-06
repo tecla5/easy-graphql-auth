@@ -23,7 +23,7 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gql-conn": "*"
+    "@tecla5/gql-conn": "^0.1.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",
@@ -40,7 +40,9 @@
     "babili-webpack-plugin": "0.0.11",
     "mock-local-storage": "^1.0.2",
     "webpack": "^2.6.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "lokka-transport-http": "^1.6.1",
+    "lokka": "^1.7.0"
   },
   "babel": {
     "presets": [

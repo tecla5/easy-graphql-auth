@@ -23,7 +23,7 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gql-conn": "*"
+    "@tecla5/gql-conn": "^0.1.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",

@@ -25,9 +25,10 @@
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/apollo-auth-conn": "*",
-    "@tecla5/easy-auth0-lock": "*",
-    "@tecla5/easy-gql-auth0": "*",
+    "@tecla5/apollo-auth-conn": "^0.1.0",
+    "@tecla5/easy-auth0-lock": "^0.1.0",
+    "@tecla5/easy-gql-auth0": "^0.1.0",
+    "apollo-client": "^1.2.2",
     "deep-extend": "^0.5.0"
   },
   "devDependencies": {

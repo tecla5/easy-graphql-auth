@@ -6,7 +6,16 @@ import {
 } from '@tecla5/easy-gql-auth0'
 import config from '../config'
 
-export default createLock({
-  createConnection,
-  config
+import ApolloClient, {
+  createNetworkInterface
+} from 'apollo-client
+
+const client = {
+  createNetworkInterface,
+  Client: ApolloClient
+}
+
+export default createLock(config, {
+  client,
+  createConnection
 })

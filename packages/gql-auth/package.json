@@ -19,12 +19,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tecla5/easy-gql-auth.git"
+    "url": "https://github.com/tecla5/gql-auth.git"
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
   "dependencies": {
-    "@tecla5/gql-conn": "*"
+    "@tecla5/gql-conn": "^0.1.0"
   },
   "devDependencies": {
     "ava": "^0.19.1",
@@ -47,7 +47,7 @@
     "webpack": "^2.5.1",
     "webpack-merge": "^4.1.0",
     "apollo-client": "^1.2.2",
-    "@tecla5/apollo-auth-conn": "*"
+    "@tecla5/apollo-auth-conn": "^0.1.0"
   },
   "babel": {
     "presets": [
