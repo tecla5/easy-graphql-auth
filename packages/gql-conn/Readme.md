@@ -63,6 +63,24 @@ import localStorage from 'mock-local-storage'
 window.localStorage = global.localStorage
 ```
 
+### Test coverage
+
+```bash
+$ nyc ava test/connection.test.js
+...
+1..1
+# tests 1
+# pass 1
+# fail 0
+
+-------------------|----------|----------|----------|----------|----------------|
+File               |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+-------------------|----------|----------|----------|----------|----------------|
+All files          |    82.76 |       60 |      100 |    80.77 |                |
+ gql-connection.js |    82.76 |       60 |      100 |    80.77 | 35,39,45,48,49 |
+-------------------|----------|----------|----------|----------|----------------|
+```
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

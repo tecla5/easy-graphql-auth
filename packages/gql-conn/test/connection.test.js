@@ -23,4 +23,9 @@ test('createConnection', t => {
 
   // created a store via defaultCreateStore
   t.is(typeof conn.store, 'object')
+
+  // authTokenKeyName
+  t.is(conn.authTokenKeyName, 'graphcoolToken')
+  // authToken
+  t.is(conn.authToken, null)
 })
