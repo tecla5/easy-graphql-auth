@@ -100,6 +100,7 @@ export class Configurable extends Loggable {
 
   publish(eventName, args) {
     this.log('publish', eventName, args)
+    this.observers = this.observers || {}
     let observers = this.observers[eventName] || []
     if (observers) {
       observers.map(observer => observer(args))

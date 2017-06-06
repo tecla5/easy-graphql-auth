@@ -43,6 +43,11 @@ export class GraphQLAuth extends GraphQLConnection {
   }
 
   setGraphQLServerToken(signinToken) {
+    if (!this.store) {
+      this.handleError('Missing store for setting signinToken', {
+        signinToken
+      })
+    }
     // set graphcool token in localstorage
     this.store.setItem(this.gqlServerTokenKeyName, signinToken)
     this.publish('storedGraphQLServerToken', {
@@ -76,14 +81,13 @@ export class GraphQLAuth extends GraphQLConnection {
   }
 
   setJwtToken(signinToken) {
-    if (this.connection) {
-      this.connection.setJwtToken(signinToken, this.opts)
-      this.publish('setJwtToken', {
-        signinToken
-      })
-    } else {
+    if (!this.connection) {
       this.error('missing connection for setting JWT token')
     }
+    this.connection.setJwtToken(signinToken, this.opts)
+    this.publish('setJwtToken', {
+      signinToken
+    })
   }
 
   handleQueryError(err) {
@@ -113,14 +117,19 @@ export class GraphQLAuth extends GraphQLConnection {
       profile
     } = data
     // create user if necessary
+    let result
+    let userData
     try {
-      this.log('Create user', name);
-      let userData = this.buildUserData(data)
-      if (this.queries.createUser) {
+      userData = this.buildUserData(data)
+      this.log('Create user', data);
+
+      this.validateQueries()
+
+      if (this.queries && this.queries.createUser) {
         let result = await this.doQuery({
           query: this.queries.createUser(userData)
         })
-        publish('createdUserOK', {
+        this.publish('createdUserOK', {
           authToken,
           userData,
           profile,
@@ -132,7 +141,7 @@ export class GraphQLAuth extends GraphQLConnection {
         await this.fakeCreateUser(userData)
       }
     } catch (error) {
-      publish('createUserFailure', {
+      this.publish('createUserFailure', {
         authToken,
         userData,
         profile,
@@ -140,6 +149,14 @@ export class GraphQLAuth extends GraphQLConnection {
         error
       })
       this.handleQueryError(err)
+    }
+  }
+
+  validateQueries() {
+    if (typeof this.queries !== 'object') {
+      this.warn('No queries object defined', {
+        queries: this.queries
+      })
     }
   }
 
@@ -173,7 +190,9 @@ export class GraphQLAuth extends GraphQLConnection {
       profile
     } = data
     this.log('signin user', data);
-    if (!this.queries.signinUser) {
+    this.validateQueries()
+
+    if (!(this.queries && this.queries.signinUser)) {
       return this.fakeSigninUser(profile)
     }
     let userData = this.buildSigninUserData(data)
