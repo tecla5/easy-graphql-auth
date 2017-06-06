@@ -83,8 +83,8 @@ window.localStorage = global.localStorage
 ### Example test run
 
 ```bash
-✔ ~/repos/tecla5/gc-auth0/packages/token-foundation [master|✚ 2⚑ 1]
-15:22 $ ava test/configurable.test.js
+✔ ~/repos/tecla5/gc-auth0/packages/token-foundation [master|⚑ 1]
+15:25 $ ava test/configurable.test.js
 TAP version 13
 # Configurable: storage from config
 ok 1 - Configurable: storage from config
@@ -92,12 +92,6 @@ ok 1 - Configurable: storage from config
 ok 2 - Configurable: using defaultStore via storage option
 # Configurable: pass store
 ok 3 - Configurable: pass store
-extracted { xstorage:
-   { authTokenKeyName: 'authToken',
-     gqlServerTokenKeyName: 'gqlServerToken' },
-  storage:
-   { authTokenKeyName: 'authToken',
-     gqlServerTokenKeyName: 'gqlServerToken' } }
 # extractProperty
 ok 4 - extractProperty
 # extractProperties
