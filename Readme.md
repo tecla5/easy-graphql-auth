@@ -2,23 +2,40 @@
 
 Attempts to make it much easier to setup GraphQL servers with [Auth0](https://auth0.com/) (and other Auth providers) via GraphQL clients, such as:
 
-- [apollo](https://github.com/apollographql)
+- [apollo](http://dev.apollodata.com/)
 - [lokka](https://github.com/kadirahq/lokka)
 
 Designed specifically for [GraphCool](https://www.graph.cool) (SaaS) server but well suited for any other GraphQL server.
 
-See the docs for each of the modules included for more details including installation and usage. Enjoy!!
+See the docs for each of the modules included for more details including installation and usage.
 
 ## Lerna
+
+Looks like lerna is broken with npm 5. Please use Node 7.x and npm 4.x
 
 ```bash
 npm install --save-dev npm@4.6.1
 ```
 
-set `npmClient` to `node_modules/.bin/npm` in your `lerna.json`
-
+Set `npmClient` to `node_modules/.bin/npm` in your `lerna.json`
 
 ## Modules included
+
+This project consists of the following modules:
+
+- `@tecla5/token-foundation`
+- `@tecla5/gql-conn`
+- `@tecla5/apollo-auth-conn`
+- `@tecla5/lokka-auth-conn`
+- `@tecla5/gql-auth`
+- `@tecla5/easy-auth0-lock`
+- `@tecla5/easy-gql-auth0`
+
+And the following demo apps:
+
+- `jquery-app`
+- `react-app`
+- `vue-app`
 
 ### Base config/token functionality
 
