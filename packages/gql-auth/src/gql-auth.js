@@ -124,6 +124,7 @@ export class GraphQLAuth extends GraphQLConnection {
     }
   }
 
+  // TODO: make more clean
   async doCreateUser(data) {
     let {
       authToken,
@@ -151,7 +152,7 @@ export class GraphQLAuth extends GraphQLConnection {
         return result
       } else {
         this.log('missing createUser query, faking it')
-        await this.fakeCreateUser(userData)
+        return await this.fakeCreateUser(userData)
       }
     } catch (error) {
       this.publish('createUserFailure', {
