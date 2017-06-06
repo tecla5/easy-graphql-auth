@@ -55,11 +55,6 @@ test('extractProperty', t => {
   })
 
   let s = configured.extractProperty([config], 'storage')
-  console.log('extracted', {
-    xstorage: s,
-    storage
-  })
-
   t.is(s, storage)
 })
 

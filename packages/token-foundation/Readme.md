@@ -80,6 +80,35 @@ import localStorage from 'mock-local-storage'
 window.localStorage = global.localStorage
 ```
 
+### Example test run
+
+```bash
+✔ ~/repos/tecla5/gc-auth0/packages/token-foundation [master|✚ 2⚑ 1]
+15:22 $ ava test/configurable.test.js
+TAP version 13
+# Configurable: storage from config
+ok 1 - Configurable: storage from config
+# Configurable: using defaultStore via storage option
+ok 2 - Configurable: using defaultStore via storage option
+# Configurable: pass store
+ok 3 - Configurable: pass store
+extracted { xstorage:
+   { authTokenKeyName: 'authToken',
+     gqlServerTokenKeyName: 'gqlServerToken' },
+  storage:
+   { authTokenKeyName: 'authToken',
+     gqlServerTokenKeyName: 'gqlServerToken' } }
+# extractProperty
+ok 4 - extractProperty
+# extractProperties
+ok 5 - extractProperties
+
+1..5
+# tests 5
+# pass 5
+# fail 0
+```
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup
