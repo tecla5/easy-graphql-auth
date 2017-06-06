@@ -60,6 +60,14 @@ test('GraphQLAuth: with connection', t => {
     let connection = createConnection(config, opts)
     opts.connection = connection
     let auth = createGraphQLAuth(config, opts)
+
+    let clazzes = ['Configurable', 'GraphQLConnection', 'GraphQLAuth']
+
+    clazzes.map(clazz => {
+      t.truthy(auth.validated[clazz])
+      t.truthy(auth.configured[clazz])
+    })
+
     t.truthy(auth)
     t.pass('all good :)')
   } catch (err) {

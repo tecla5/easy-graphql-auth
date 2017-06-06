@@ -13,6 +13,9 @@ function isFun(fun) {
 export class Configurable extends Loggable {
   constructor(config = {}, opts = {}) {
     super('Configurable', opts)
+    this.configured = {}
+    this.validated = {}
+
     this.validate(config)
     this.log('configuring with', {
       config,
@@ -21,18 +24,22 @@ export class Configurable extends Loggable {
     this.opts = this.opts || opts
     this.config = config
     this.configure()
+    this.postConfig()
   }
 
   configure() {
+    if (this.configured.Configurable) return
     this.log('Configurable: configure')
     this.observers = {}
     this.configureStorage()
+    this.configured.Configurable = true
     return this
   }
 
   postConfig() {
     this.validateConfig()
     this.retrieveTokens()
+    return this
   }
 
   configureStorage() {
@@ -47,9 +54,11 @@ export class Configurable extends Loggable {
   }
 
   validateConfig() {
+    if (this.validated.Configurable) return
     if (!this.store) {
       this.configError('Missing store. Was not configured!')
     }
+    this.validated.Configurable = true
   }
 
   retrieveTokens() {
@@ -60,6 +69,7 @@ export class Configurable extends Loggable {
       this.error("Store is missing function getAll to retrieve tokens")
     }
     this.tokens = this.store.getAll() || {}
+    return this
   }
 
   extractProperty(containers, name, selfie) {

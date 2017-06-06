@@ -15,8 +15,9 @@ export class GraphQLAuth extends GraphQLConnection {
   }
 
   configure() {
-    this.log('GraphQLAuth: configure')
+    this.log('configure')
     super.configure()
+    if (this.configured.GraphQLAuth) return
     let config = this.config
     let opts = this.opts
 
@@ -28,6 +29,8 @@ export class GraphQLAuth extends GraphQLConnection {
     }
 
     this.connection = this.connection || this.createConnection(config, opts)
+    this.configured.GraphQLAuth = true
+    return this
   }
 
   postConfig() {
@@ -37,9 +40,11 @@ export class GraphQLAuth extends GraphQLConnection {
 
   validateConfig() {
     super.validateConfig()
+    if (this.validated.GraphQLAuth) return
     if (!this.connection) {
       this.configError('missing GraphQL connection in configuration')
     }
+    this.validated.GraphQLAuth = true
   }
 
   extractSignedInUserToken(signinResult) {
