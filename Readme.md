@@ -235,13 +235,27 @@ And you will be good to go!
 
 ## Build
 
-`$ lerna run build:dev` - for dev
+Build all modules (or use with lerna `--scope`)
 
-`$ lerna run build:dev` - for prod (minified)
+- `$ lerna run build:dev` - for dev
+- `$ lerna run build:prod` - for prod (minified)
+
+Only for specific module via `--scope`
+
+- `$ lerna run build:prod --scope @tecla5/token-foundation`
+
+In local module/project
+
+- `$ npm run build:dev` - for dev
+- `$ npm run build:prod` - for prod (minified)
 
 ## Test
 
 `$ lerna run test`
+
+In local module/project
+
+`$ ava test`
 
 ## Publish to npm
 
