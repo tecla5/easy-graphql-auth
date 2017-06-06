@@ -1,5 +1,6 @@
 .vscode
 node_modules
 *.log
-play.*
-app.*
+coverage
+.nyc_output
+dist
