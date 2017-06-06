@@ -51,7 +51,7 @@ import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
 
-const clientConfig = {
+const client = {
   ApolloClient,
   createNetworkInterface,
   createConnection
@@ -69,7 +69,7 @@ import Auth0Lock from 'auth0-lock'
 
 export default setup(config, {
   Auth0Lock,
-  clientConfig,
+  client,
   createStore,
   createLock
 })
@@ -82,7 +82,7 @@ If you wish to enable GraphQL authentication as part of the auth flow, after ini
 ```js
 const lock = createLock(config, {
   Auth0Lock,
-  clientConfig,
+  client,
   createStore,
   createGraphQLAuth
 })

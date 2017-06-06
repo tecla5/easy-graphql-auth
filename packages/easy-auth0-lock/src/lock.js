@@ -43,8 +43,8 @@ export class Lock extends Configurable {
       createConnection,
     } = opts
 
-    if (opts.clientConfig) {
-      createConnection = createConnection || opts.clientConfig.createConnection
+    if (opts.client) {
+      createConnection = createConnection || opts.client.createConnection
     }
 
     let {

@@ -107,7 +107,7 @@ import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
 
-const clientConfig = {
+const client = {
   ApolloClient,
   createNetworkInterface,
   createConnection,
@@ -131,7 +131,7 @@ export default setup(config, {
   createGraphQLAuth, // adds graphQL auth
   createStore,
 
-  clientConfig,
+  client,
   lockConfig,
 })
 ```
@@ -147,7 +147,7 @@ import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
 
-let clientConfig = {
+let client = {
   ApolloClient,
   createNetworkInterface,
   createConnection
@@ -160,7 +160,7 @@ import {
 import config from './config'
 
 let lock = createLock(config, {
-  clientConfig
+  client
 })
 ```
 
