@@ -22,17 +22,17 @@ export class ApolloAuthConnection extends GraphQLConnection {
       opts
     })
     const containers = [config, opts, opts.client]
+    this.log('ApolloAuthConnection: extract')
     this.extractProperties(containers, 'ApolloClient', 'Client', 'createNetworkInterface', 'createClient')
     this.Client = this.Client || this.ApolloClient
-    this.validate()
-
     this.log('extracted', {
       Client: this.Client,
       createNetworkInterface: this.createNetworkInterface
     })
+    this.validateConfig()
   }
 
-  validate() {
+  validateConfig() {
     this.log('validate')
     if (!this.Client) {
       this.configError('missing Client (or ApolloClient) in constructor arguments')
@@ -47,6 +47,8 @@ export class ApolloAuthConnection extends GraphQLConnection {
       opts
     })
     let networkInterface = this.createNetworkInterface(this.config.gqlServer.connection)
+    this.networkInterface = networkInterface
+
     this.configureNetworkInterface()
 
     let client = this.createApolloClient()
@@ -54,7 +56,6 @@ export class ApolloAuthConnection extends GraphQLConnection {
       networkInterface,
       client
     })
-    this.networkInterface = networkInterface
     this.client = client
     return this
   }
@@ -92,6 +93,8 @@ export class ApolloAuthConnection extends GraphQLConnection {
           req.options.headers = this.defaultHeaders || {}
         }
         // get the authentication token from local storage if it exists
+
+        // see getter: authToken() in @tecla5/gql-conn module
         req.options.headers.authorization = this.authToken
         next();
       }

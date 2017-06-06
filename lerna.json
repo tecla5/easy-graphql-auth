@@ -3,6 +3,5 @@
   "packages": [
     "packages/*"
   ],
-  "version": "independent",
-  "npmClient": "node_modules/.bin/npm"
+  "version": "independent"
 }

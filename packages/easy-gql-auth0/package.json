@@ -2,7 +2,7 @@
   "name": "@tecla5/easy-gql-auth0",
   "version": "0.1.0",
   "description": "Easy authentication for GraphQL with Auth0",
-  "main": "dist/bundle.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },

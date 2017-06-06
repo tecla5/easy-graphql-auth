@@ -17,6 +17,11 @@ import {
 
 import './mock-localstorage'
 
+const client = {
+  Client: ApolloClient,
+  createNetworkInterface
+}
+
 test('GraphQLAuth: missing connection', t => {
   try {
     createGraphQLAuth(config, {
@@ -33,13 +38,13 @@ test('GraphQLAuth: with createConnection', t => {
     let auth = createGraphQLAuth(config, {
       logging: true,
       storage,
-      Client: ApolloClient,
+      client,
       createConnection
     })
     t.truthy(auth)
     t.pass('all good :)')
   } catch (err) {
-    console.log(err)
+    console.error(err)
     t.fail('should not throw error on missing connection')
   }
 })
@@ -48,7 +53,7 @@ test('GraphQLAuth: with connection', t => {
   try {
     let opts = {
       logging: true,
-      Client: ApolloClient,
+      client,
       storage
     }
 
@@ -58,6 +63,7 @@ test('GraphQLAuth: with connection', t => {
     t.truthy(auth)
     t.pass('all good :)')
   } catch (err) {
+    console.error(err)
     t.fail('should not throw error on missing connection')
   }
 })

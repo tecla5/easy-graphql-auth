@@ -16,6 +16,12 @@ export class Loggable {
     return this
   }
 
+  warn(...msgs) {
+    if (this.logging) {
+      this.io.log('WARNING', this.name, ...msgs)
+    }
+  }
+
   log(...msgs) {
     if (this.logging) {
       this.io.log(this.name, ...msgs)

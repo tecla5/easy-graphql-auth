@@ -61,15 +61,24 @@ export class Configurable extends Loggable {
   }
 
   extractProperty(containers, name, selfie) {
+    this.log('extractProperty', name, {
+      self: selfie
+    })
     let container = containers.find(container => (container || {})[name]) || {}
     let value = container[name]
+    if (!value) {
+      this.warn('no value found for', name)
+    }
     if (selfie && value) {
+      let displayValue = typeof value === 'function' ? value.name : value
+      this.log('extract: set', name, 'to', displayValue)
       this[name] = value
     }
     return value
   }
 
   extractProperties(containers, ...names) {
+    this.log('extractProperties', names)
     return names.reduce((acc, name) => {
       let value = this.extractProperty(containers, name, true)
       acc[name] = value

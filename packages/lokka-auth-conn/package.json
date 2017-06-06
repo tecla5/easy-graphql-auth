@@ -2,7 +2,7 @@
   "name": "@tecla5/lokka-auth-conn",
   "version": "0.1.0",
   "description": "Lokka Auth client connection to GraphQL server",
-  "main": "dist/bundle.prod.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
