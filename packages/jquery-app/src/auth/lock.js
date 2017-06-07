@@ -8,7 +8,7 @@ import config from '../config'
 
 import ApolloClient, {
   createNetworkInterface
-} from 'apollo-client
+} from 'apollo-client'
 
 const client = {
   createNetworkInterface,
