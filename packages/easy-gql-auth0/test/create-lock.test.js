@@ -15,20 +15,49 @@ import {
 
 import './mock-localstorage'
 
-const ApolloClient = {
+// can we mock the graphQL client?!
+const Client = {}
 
+const client = {
+  Client,
+  createConnection,
 }
 
-test('createLock', t => {
+let lock
+
+test.before(t => {
   console.log({
     createStore,
     createLock,
     config
   })
-  let lock = createLock(config, {
-    ApolloClient,
-    createConnection,
+  lock = createLock(config, {
+    client,
     createStore
   })
-  t.is(typeof lock, 'object')
 })
+
+test('has lock methods', t => {
+  // is an instance of Lock from easy-auth0-lock
+  t.is(typeof lock, 'object')
+
+  // it has a getUserInfo method (used to display lock)
+  t.is(typeof lock.showLock, 'function')
+
+  // has a logout function
+  t.is(typeof lock.logout, 'function')
+})
+
+test('extractAuthToken', t => {
+  // TODO
+})
+
+test('async onAuth0Login(data)', async t => {
+  // TODO
+})
+
+test('async serverSignin(data)', async t => {
+  // TODO
+})
+
+// TODO ...
