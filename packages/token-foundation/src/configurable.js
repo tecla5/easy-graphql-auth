@@ -1,16 +1,19 @@
 import defaultKeyNames from './keynames'
 import {
-  Loggable
-} from './loggable'
+  Notifiable
+} from './notifiable'
+
 import {
   Store
 } from './store'
 
-function isFun(fun) {
-  return typeof fun === 'function'
-}
+import {
+  isFun,
+  isObject,
+  isArray
+} from './is-type'
 
-export class Configurable extends Loggable {
+export class Configurable extends Notifiable {
   constructor(config = {}, opts = {}) {
     super('Configurable', opts)
     this.configured = {}
@@ -76,13 +79,17 @@ export class Configurable extends Loggable {
     this.log('extractProperty', name, {
       self: selfie
     })
+    if (!isArray(containers)) {
+      this.handleError('extractProperty: containes must be an Array', containers)
+    }
+
     let container = containers.find(container => (container || {})[name]) || {}
     let value = container[name]
     if (!value) {
       this.warn('no value found for', name)
     }
     if (selfie && value) {
-      let displayValue = typeof value === 'function' ? value.name : value
+      let displayValue = isFun(value) ? value.name : value
       this.log('extract: set', name, 'to', displayValue)
       this[name] = value
     }
@@ -99,27 +106,7 @@ export class Configurable extends Loggable {
   }
 
   configError(msg) {
-    this.error(msg)
-    throw Error(msg)
-  }
-
-  on(eventName, observer) {
-    this.log('on', eventName, observer)
-    let slot = this.observers[eventName] || []
-    this.observers[eventName] = slot.concat(observer)
-    return this
-  }
-
-  publish(eventName, args) {
-    this.log('publish', eventName, args)
-    this.observers = this.observers || {}
-    let observers = this.observers[eventName] || []
-    if (observers) {
-      observers.map(observer => observer(args))
-    } else {
-      this.log('no observers registered for', eventName)
-    }
-    return this
+    this.handleError(msg)
   }
 
   createStore(keyNames, opts = {}) {
@@ -141,12 +128,12 @@ export class Configurable extends Loggable {
   }
 
   defaultCreateStore(keyNames, opts) {
-    return new Store(keyNames, opts)
+    return createStore(keyNames, opts)
   }
 
   validate(config) {
-    if (typeof config !== 'object') {
-      throw Error('config must be an object')
+    if (!isObject(config)) {
+      this.handleError('config must be an object', config)
     }
   }
 }

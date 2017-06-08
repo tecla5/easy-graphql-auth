@@ -1,8 +1,12 @@
 import {
-  Loggable
-} from './loggable'
+  Notifiable
+} from './notifiable'
 
-export class Store extends Loggable {
+export function createStore(keyNames, opts = {}) {
+  return new Store(keyNames, opts)
+}
+
+export class Store extends Notifiable {
   constructor(keyNames, opts = {}) {
     super('Store', opts)
     this.log('create', {
@@ -17,6 +21,10 @@ export class Store extends Loggable {
 
   removeItem(name) {
     this.storage.removeItem(name)
+    this.publish('remove', {
+      name
+    })
+    return this
   }
 
   getItem(name) {
@@ -25,6 +33,11 @@ export class Store extends Loggable {
 
   setItem(name, value) {
     this.storage.setItem(name, value)
+    this.publish('set', {
+      name,
+      value
+    })
+    return this
   }
 
   validateKeyNames(...names) {
@@ -47,6 +60,8 @@ export class Store extends Loggable {
   resetAll() {
     this.removeItem(this.authTokenKeyName)
     this.removeItem(this.gqlServerTokenKeyName)
+    this.publish('reset')
+    return this
   }
 
   getAll(opts = {}) {
@@ -63,8 +78,4 @@ export class Store extends Loggable {
 
     this.setItem(keyName, value)
   }
-}
-
-export function createStore(keyNames, opts = {}) {
-  return new Store(keyNames, opts)
 }
