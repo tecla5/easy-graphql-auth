@@ -6,10 +6,10 @@ import {
 
 const io = {
   log: (name, ...msgs) => {
-    return msgs
+    return [name, msgs].join(' ')
   },
   error: (name, ...msgs) => {
-    return msgs
+    return [name, msgs].join(' ')
   }
 }
 
@@ -23,10 +23,28 @@ test.before(t => {
 
 test('Loggable: log', t => {
   let output = loggable.log('hello')
-  t.is(output[0], 'hello')
+  t.is(output, '[Loggable] INFO: hello')
+})
+
+test('Loggable: warn', t => {
+  let output = loggable.warn('hello')
+  console.log({
+    output
+  })
+  t.is(output, '[Loggable] WARNING: hello')
 })
 
 test('Loggable: error', t => {
   let output = loggable.error('err')
-  t.is(output[0], 'err')
+  t.is(output, '[Loggable] ERROR: err')
+})
+
+test('Loggable: enableLog/disableLog', t => {
+  loggable.disableLog()
+  let disabled = loggable.log('hello')
+  t.is(disabled, undefined)
+
+  loggable.enableLog()
+  let output = loggable.log('hello')
+  t.is(output, '[Loggable] INFO: hello')
 })

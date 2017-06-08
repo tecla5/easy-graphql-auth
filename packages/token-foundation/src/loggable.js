@@ -24,21 +24,26 @@ export class Loggable {
     return this
   }
 
+  label(lv) {
+    lv = lv.toUpperCase()
+    return `[${this.name}] ${lv}:`
+  }
+
   warn(...msgs) {
     if (this.logging) {
-      this.io.log('WARNING', this.name, ...msgs)
+      return this.io.log(this.label('warning'), ...msgs)
     }
   }
 
   log(...msgs) {
     if (this.logging) {
-      return this.io.log(this.name, ...msgs)
+      return this.io.log(this.label('info'), ...msgs)
     }
   }
 
   error(...msgs) {
     if (this.logging) {
-      return this.io.error(this.name, ...msgs)
+      return this.io.error(this.label('error'), ...msgs)
     }
   }
 }
