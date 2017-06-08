@@ -4,13 +4,14 @@ import {
   Loggable
 } from '../src/loggable'
 
+function joined(label, msg, data) {
+  return [label, msg, data].join(' ').trim()
+}
+
 const io = {
-  log: (name, ...msgs) => {
-    return [name, msgs].join(' ')
-  },
-  error: (name, ...msgs) => {
-    return [name, msgs].join(' ')
-  }
+  log: joined,
+  warn: joined,
+  error: joined
 }
 
 let loggable
@@ -28,9 +29,6 @@ test('Loggable: log', t => {
 
 test('Loggable: warn', t => {
   let output = loggable.warn('hello')
-  console.log({
-    output
-  })
   t.is(output, '[Loggable] WARNING: hello')
 })
 
