@@ -6,6 +6,14 @@ export class Loggable {
     this.name = name || opts.name
   }
 
+  handleError(err, ...data) {
+    this.error(err, ...data)
+    if (this.notify) {
+      this.notify('error', data)
+    }
+    throw err
+  }
+
   enableLog() {
     this.logging = true
     return this
@@ -24,13 +32,13 @@ export class Loggable {
 
   log(...msgs) {
     if (this.logging) {
-      this.io.log(this.name, ...msgs)
+      return this.io.log(this.name, ...msgs)
     }
   }
 
   error(...msgs) {
     if (this.logging) {
-      this.io.error(this.name, ...msgs)
+      return this.io.error(this.name, ...msgs)
     }
   }
 }

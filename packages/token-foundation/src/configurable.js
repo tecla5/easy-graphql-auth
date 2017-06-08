@@ -122,11 +122,6 @@ export class Configurable extends Loggable {
     return this
   }
 
-  handleError(err) {
-    this.error(err)
-    throw err
-  }
-
   createStore(keyNames, opts = {}) {
     let {
       createStore
