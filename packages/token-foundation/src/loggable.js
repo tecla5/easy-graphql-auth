@@ -29,21 +29,21 @@ export class Loggable {
     return `[${this.name}] ${lv}:`
   }
 
-  warn(...msgs) {
+  warn(msg, data) {
     if (this.logging) {
-      return this.io.log(this.label('warning'), ...msgs)
+      return this.io.log(this.label('warning'), msg, data)
     }
   }
 
-  log(...msgs) {
+  log(msg, data) {
     if (this.logging) {
-      return this.io.log(this.label('info'), ...msgs)
+      return this.io.log(this.label('info'), msg, data)
     }
   }
 
-  error(...msgs) {
+  error(msg, data) {
     if (this.logging) {
-      return this.io.error(this.label('error'), ...msgs)
+      return this.io.error(this.label('error'), msg, data)
     }
   }
 }
