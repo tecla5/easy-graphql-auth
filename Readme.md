@@ -19,6 +19,16 @@ npm install --save-dev npm@4.6.1
 
 Set `npmClient` to `node_modules/.bin/npm` in your `lerna.json`
 
+### Setup
+
+Recommended global npm binaries/utils:
+
+- [lerna](https://www.npmjs.com/package/lerna) - mono repo package manager
+- [ava](https://www.npmjs.com/package/ava) - futuristic test runner (promises/parallel)
+- [nyc](https://www.npmjs.com/package/nyc) - Istanbul test coverage
+- [webpack](https://www.npmjs.com/package/webpack) - Babel compiler/loader
+- [ncu](https://www.npmjs.com/package/npm-check-updates) - check npm module updates
+
 ## Modules included
 
 This project consists of the following modules:

@@ -7,7 +7,7 @@ let config = merge.smart(common, {
     filename: 'bundle.prod.js'
   },
   plugins: [
-    new BabiliPlugin(),
+    new BabiliPlugin()
   ]
 })
 
