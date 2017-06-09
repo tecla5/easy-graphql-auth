@@ -28,6 +28,9 @@ Recommended global npm binaries/utils:
 - [nyc](https://www.npmjs.com/package/nyc) - Istanbul test coverage
 - [webpack](https://www.npmjs.com/package/webpack) - Babel compiler/loader
 - [ncu](https://www.npmjs.com/package/npm-check-updates) - check npm module updates
+- [now](https://www.npmjs.com/package/now) - simple micro services
+
+`npm -g lerna ava nyc webpack ncu now`
 
 ## Modules included
 
