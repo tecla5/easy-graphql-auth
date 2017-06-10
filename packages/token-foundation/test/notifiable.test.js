@@ -7,7 +7,7 @@ import {
 let notifiable
 test.before(t => {
   notifiable = new Notifiable('Notifiable', {
-    logging: true
+    // logging: true
   })
 })
 
@@ -73,4 +73,71 @@ test('Notifiable: subscribe to and notify failure', t => {
 
   notifiable.onFailure('hello', observer)
   notifiable.notifyFailure('hello', 'hi')
+})
+
+test('Notifiable: publishCriteria string', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  notifiable.on('hello', observer)
+  notifiable.publishCriteria('hello', 'hi')
+})
+
+test('Notifiable: publishCriteria object', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  notifiable.on('hello', observer)
+  notifiable.publishCriteria({
+    event: 'hello'
+  }, 'hi')
+})
+
+test('Notifiable: notify', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  notifiable.on('hello', observer)
+  notifiable.notify('hello', 'hi')
+})
+
+
+test('Notifiable: onStatus object', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  notifiable.onStatus({
+    event: 'hello',
+    status: 'success'
+  }, observer)
+
+  notifiable.publishCriteria({
+    event: 'hello',
+    status: 'success'
+  }, 'hi')
+})
+
+
+test('Notifiable: onAll - not array', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  try {
+    notifiable.onAll('bye', observer)
+  } catch (err) {
+    t.pass('not an array of event')
+  }
+})
+
+test('Notifiable: onAll', t => {
+  let observer = (data) => {
+    t.is(data, 'hi')
+  }
+  notifiable.onAll(['hello', 'bye'], observer)
+
+  notifiable.publishCriteria({
+    event: 'hello'
+  }, 'hi')
+
+  notifiable.publishCriteria('bye', 'hi')
 })

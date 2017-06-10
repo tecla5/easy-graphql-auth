@@ -46,3 +46,12 @@ test('Loggable: enableLog/disableLog', t => {
   let output = loggable.log('hello')
   t.is(output, '[Loggable] INFO: hello')
 })
+
+test('Loggable: handleError', t => {
+  try {
+    let error = new Error('oops')
+    loggable.handleError(error, 'hello')
+  } catch (err) {
+    t.is(err, error)
+  }
+})

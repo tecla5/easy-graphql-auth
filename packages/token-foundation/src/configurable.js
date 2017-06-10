@@ -4,7 +4,8 @@ import {
 } from './notifiable'
 
 import {
-  Store
+  Store,
+  createStore
 } from './store'
 
 import {
