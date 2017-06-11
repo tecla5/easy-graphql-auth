@@ -63,6 +63,7 @@ export class GraphQLConnection extends Configurable {
 
   isGqlQuery(query) {
     if (typeof query !== 'object') return false
+    // see: https://www.npmjs.com/package/graphql-tag
     if (query.kind === 'Document') return true
     return false
   }
@@ -72,7 +73,8 @@ export class GraphQLConnection extends Configurable {
       this.handleError('toGqlQuery: bad query', queryStr)
     }
     if (typeof this.gql !== 'function') {
-      this.error('Please see: https://www.npmjs.com/package/graphql')
+      this.log('Try: https://www.npmjs.com/package/graphql-tag')
+      this.error('Also see: https://www.npmjs.com/package/graphql')
       this.handleError('missing gql function to convert query string to GraphQL query')
     }
     return this.gql(query, opts)

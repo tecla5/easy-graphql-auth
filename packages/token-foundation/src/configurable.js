@@ -105,13 +105,17 @@ export class Configurable extends Notifiable {
     return value
   }
 
-  extractProperties(containers, ...names) {
+  extractProps(selfie, containers, ...names) {
     this.log('extractProperties', names)
     return names.reduce((acc, name) => {
-      let value = this.extractProperty(containers, name, true)
+      let value = this.extractProperty(containers, name, selfie)
       acc[name] = value
       return acc
     }, {})
+  }
+
+  extractProperties(containers, ...names) {
+    return this.extractProps(true, containers, ...names)
   }
 
   configError(msg) {

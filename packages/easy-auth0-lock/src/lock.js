@@ -1,13 +1,15 @@
 import {
-  Store,
   Configurable,
-  keyNames
 } from '@tecla5/token-foundation'
 
 import extend from 'deep-extend'
 
 const errorCode = {
   USER_ALREADY_EXISTS: 3023
+}
+
+export function createLock(config, opts) {
+  return new Lock(config, opts)
 }
 
 export class Lock extends Configurable {
@@ -19,68 +21,101 @@ export class Lock extends Configurable {
   //   domain: 'xxx', // Your auth0 domain
   //   clientId: 'xxx' // // Your auth0 client id
   // }
+
+  // config = {
+  //   title,
+  //   logo,
+  //   theme,
+  //   dict,
+  //   keyNames,
+  //   queries,
+  //   store,
+  //   storage,
+  //   gqlServer,
+  //   client,
+  //   connection,
+  //   lock,
+  //   createLockUi,
+  //   createGraphQLServerAuth,
+  //   displayMethod
+  // }
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    const {
-      title,
-      logo,
-      theme,
-      dict,
-      keyNames,
-      queries,
-      store,
-      storage,
-      gqlServer,
-      client,
-      connection,
-      lockConfig,
-      createLockUi,
-      createGraphQLServerAuth,
-      displayMethod
-    } = config
-
-    let {
-      createConnection,
-    } = opts
-
-    if (opts.client) {
-      createConnection = createConnection || opts.client.createConnection
-    }
-
-    let {
-      Auth0Lock,
-      createLock
-    } = opts.lockConfig
-
-    this.Auth0Lock = Auth0Lock || config.Auth0Lock || opts.Auth0Lock
-
-    this.displayMethod = displayMethod || 'getUserInfo'
-    let _createLockUi = createLock || createLockUi || this.defaultCreateLockUi
-    this.lockConfig = lockConfig || auth0.lock || this.defaultLockConfig
-
-    // GraphQL client/connection used for mutation queries
-    this.client = client
-    this.connection = connection
-
-    this.queries = queries || {}
-    this.gqlServer = gqlServer || {}
-
-    this.createConnection = createConnection
-    this._createGraphQLServerAuth = config.createGraphQLServerAuth
-
-    this.theme = theme || {}
-    this.theme.logo = this.theme.logo || logo
-    this.dict = dict || {}
-    this.dict.title = this.dict.title || title
-    this.setupLockConfig()
-    this.auth0 = extractAuth0config(config)
-    if (this.auth0) {
-      this.lock = _createLockUi(this.auth0, opts).bind(this)
-    } else {
-      this.configError('missing auth0 entry in auth entry of config object')
-    }
-
+    this.configure()
+    this.postConfig()
     this.onHashParsed()
+  }
+
+  configure(force) {
+    if (this.configured.Lock && !force) return
+    super.configure()
+    let config = this.config
+    let opts = this.opts
+
+    const containers = [config, opts, opts.lock]
+    this.extractProperties(containers, 'Auth0Lock', 'createLockUi')
+
+    this.displayMethod = this.config.displayMethod || this.defaultDisplayMethod
+
+    let {
+      theme,
+      logo,
+      dict,
+      title
+    } = this.extractProps(false, containers, 'theme', 'logo', 'title', 'dict')
+
+    this.lockConfig = config.lock || opts.lock || {}
+
+    dict = dict || {}
+    theme = theme || {}
+
+    dict.title = dict.title || title
+    theme.dict = dict || {}
+    theme.logo = theme.logo || logo
+
+    this.dict = dict || {}
+    this.theme = theme || {}
+
+    this.setupLockConfig()
+
+    this.auth0Config = this.extractAuth0config(config)
+
+    this.configured.Lock = true
+    return this
+  }
+
+  createLock() {
+    if (!this.auth0Config) {
+      this.configError('missing Auth0 configuration')
+    }
+    this.lock = this.createLockUi(this.auth0Config, opts).bind(this)
+  }
+
+  postConfig() {
+    this.validateConfig()
+    this.createLock()
+    return this
+  }
+
+  get defaultDisplayMethod() {
+    return 'getUserInfo'
+  }
+
+  validateConfig(force) {
+    if (this.validated.Lock && !force) return
+    super.validateConfig(force)
+
+    if (!this.auth0Config) {
+      this.configError('missing auth0Config')
+    }
+    if (!this.Auth0Lock) {
+      this.configError('missing Auth0Lock')
+    }
+    if (!this.createLockUi) {
+      this.configError('missing createLockUi')
+    }
+    this.validated.Lock = true
+    return this
   }
 
   extractAuth0config(config = {}) {
@@ -89,10 +124,6 @@ export class Lock extends Configurable {
 
   setupLockConfig() {
     this.lockConfig = extend(this.defaultLockConfig, this.lockConfig)
-  }
-
-  get hasGraphQLConnection() {
-    return typeof this.connection === 'object'
   }
 
   get defaultTheme() {
@@ -107,9 +138,9 @@ export class Lock extends Configurable {
     }
   }
 
-  defaultCreateLockUi(auth0 = {}, opts) {
-    this.log('create lock', auth0, opts)
-    return new this.Auth0Lock(auth0.clientId, auth0.domain, opts)
+  createLockUi(auth0Config = {}, opts) {
+    this.log('create lock', auth0Config, opts)
+    return new this.Auth0Lock(auth0Config.clientId, auth0Config.domain, opts)
   }
 
   get auth0IdTokenKeyName() {
@@ -178,7 +209,7 @@ export class Lock extends Configurable {
   }
 
   // display lock popup
-  showLock(config) {
+  showLock(config = {}) {
     let displayConfig = config || this.defaultLockConfig
     displayConfig = Object.assign({}, displayConfig, this.lockConfig || {})
     this.log('showLock', displayConfig);
@@ -247,38 +278,8 @@ export class Lock extends Configurable {
     }
   }
 
-  createGraphQLServerAuth() {
-    return this._createGraphQLServerAuth(this.config)
-  }
-
-  get gqlServerAuth() {
-    return this.createGraphQLServerAuth()
-  }
-
-  get hasGqlServerAuth() {
-    return this._createGraphQLServerAuth
-  }
-
-  get shouldDoGraphQLServerSignin() {
-    return this.hasGqlServerAuth
-  }
-
   async serverSignin(data) {
-    // return if gqlServer not configured
-    if (!this.shouldDoGraphQLServerSignin) {
-      this.log('skipping GraphQLServer signin')
-      return
-    }
-    if (this.hasGqlServerAuth) {
-      // make graphQL connection if not yet established
-      // doing it here should make sure that auth signin has been completed and
-      // store is populated with authToken needed by graphQL connection transport layer
-      this.connection = this.connection || this.createConnection(this.config)
-
-      await this.gqlServerAuth.signin(data)
-    } else {
-      this.log('Skipping GraphQL Auth. gqlServerAuth instance not found')
-    }
+    this.log('serverSignin', data)
   }
 
   signedInFailure(data) {
@@ -299,8 +300,4 @@ export class Lock extends Configurable {
   handleSigninError(err) {
     this.handleError(err)
   }
-}
-
-export function createLock(config, opts) {
-  return new Lock(config, opts)
 }

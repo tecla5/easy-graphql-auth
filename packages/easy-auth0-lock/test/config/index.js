@@ -1,3 +1,2 @@
 import auth from './auth'
-
-export default auth0
+export default auth

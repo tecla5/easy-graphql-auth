@@ -14,10 +14,9 @@ export class GraphQLAuth extends GraphQLConnection {
     this.postConfig()
   }
 
-  configure() {
-    this.log('configure')
+  configure(force) {
+    if (this.configured.GraphQLAuth && !force) return
     super.configure()
-    if (this.configured.GraphQLAuth) return
     let config = this.config
     let opts = this.opts
 
@@ -38,9 +37,9 @@ export class GraphQLAuth extends GraphQLConnection {
     this.validateConfig()
   }
 
-  validateConfig() {
+  validateConfig(force) {
     super.validateConfig()
-    if (this.validated.GraphQLAuth) return
+    if (this.validated.GraphQLAuth && !force) return
     if (!this.connection) {
       this.configError('missing GraphQL connection in configuration')
     }
