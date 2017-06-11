@@ -74,13 +74,7 @@ export class LokkaAuthConnection extends GraphQLConnection {
   }
 
   async doQuery(query, opts = {}) {
-    this.log('doQuery', {
-      query,
-      opts
-    })
-    if (!this.client) {
-      this.handleError('doQuery: missing client')
-    }
+    query = this.prepareQuery(query, opts = {})
     return await this.client.query(query)
   }
 

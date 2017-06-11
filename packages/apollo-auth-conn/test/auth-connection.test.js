@@ -12,7 +12,7 @@ let conn, opts
 
 test.before(t => {
   opts = {
-    logging: true,
+    logging: false,
     Client: ApolloClient,
     createNetworkInterface
   }
@@ -57,6 +57,30 @@ test('configure: bind custom factory methods', t => {
   opts.bind = true
   conn = createConnection(config, opts)
   t.pass('factory methods were bound to class instance')
+})
+
+test('doQuery: with client', t => {
+  let query = 'select * from users'
+  try {
+    conn.createClient()
+    conn.doQuery(query)
+    t.pass('yay!')
+  } catch (err) {
+    // console.log({
+    //   err
+    // })
+    t.fail('oops!')
+  }
+})
+
+test('doQuery: missing client', t => {
+  let query = 'select * from users'
+  try {
+    conn.client = null
+    conn.doQuery(query)
+  } catch (err) {
+    t.pass('yay!')
+  }
 })
 
 test('connect - empty storage', t => {})

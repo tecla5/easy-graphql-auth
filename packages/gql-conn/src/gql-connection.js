@@ -34,6 +34,50 @@ export class GraphQLConnection extends Configurable {
     return this
   }
 
+  prepareQuery(query, opts = {}) {
+    this.log('doQuery', {
+      query,
+      opts
+    })
+    if (!this.client) {
+      this.handleError('doQuery: missing client')
+    }
+
+    if (!query) {
+      this.handleError('doQuery: query is not defined', query)
+    }
+
+    if (this.isGqlQuery(query)) {
+      query = this.toGqlQuery(query)
+    }
+    return query
+  }
+
+  async doQuery(query, opts = {}) {
+    this.log('doQuery', {
+      query,
+      opts
+    })
+    this.handleError('doQuery: must be implemented by subclass')
+  }
+
+  isGqlQuery(query) {
+    if (typeof query !== 'object') return false
+    if (query.kind === 'Document') return true
+    return false
+  }
+
+  toGqlQuery(queryStr, opts) {
+    if (typeof query !== 'string') {
+      this.handleError('toGqlQuery: bad query', queryStr)
+    }
+    if (typeof this.gql !== 'function') {
+      this.error('Please see: https://www.npmjs.com/package/graphql')
+      this.handleError('missing gql function to convert query string to GraphQL query')
+    }
+    return this.gql(query, opts)
+  }
+
   postConfig() {
     this.validateConfig()
     this.configured.GraphQLConnection = true

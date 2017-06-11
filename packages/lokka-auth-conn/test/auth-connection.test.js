@@ -152,6 +152,9 @@ test('doQuery: with client', t => {
     conn.doQuery(query)
     t.pass('yay!')
   } catch (err) {
+    // console.log({
+    //   err
+    // })
     t.fail('oops!')
   }
 })
