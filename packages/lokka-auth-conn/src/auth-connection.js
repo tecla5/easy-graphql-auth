@@ -12,9 +12,12 @@ export class LokkaAuthConnection extends GraphQLConnection {
     super(config, opts)
     this.name = 'LokkaAuthConnection'
     this.configure()
+    this.postConfig()
   }
 
-  configure() {
+  configure(force) {
+    if (this.configured.LokkaConn && !force) return
+    super.configure()
     let config = this.config
     let opts = this.opts
     this.log('configure', {
@@ -23,14 +26,19 @@ export class LokkaAuthConnection extends GraphQLConnection {
     })
 
     const containers = [config, opts, opts.client]
-    this.extractProperties(containers, 'Client', 'Transport', 'createClient', 'createTransport')
+    this.extractProperties(containers, 'Lokka', 'Client', 'Transport', 'createClient', 'createTransport')
     this.Client = this.Client || this.Lokka
+
+    // if (!this.config.gqlServer) {
+    //   this.configError('missing gqlServer object in configuration')
+    // }
+    // note: gqlServer.endpoint will be configured by GraphQLConnection
+    this.endpoint = this.config.gqlServer.endpoint
 
     if (opts.bind) {
       this.createClient.bind(this)
       this.createTransport.bind(this)
     }
-    this.validateConfig()
 
     this.log('extracted', {
       Client: this.Client,
@@ -38,16 +46,31 @@ export class LokkaAuthConnection extends GraphQLConnection {
       createClient: this.createClient,
       createTransport: this.createTransport
     })
+    this.configured.ApolloConn = true
+    return this
   }
 
-  validateConfig() {
-    this.log('validate')
+  postConfig() {
+    this.validateConfig()
+    return this
+  }
+
+  validateConfig(force = false) {
+    if (this.validated.ApolloConn && !force) return
+    this.validated.ApolloConn = false
+
     if (!this.Client) {
-      this.configError('missing ApolloClient in constructor arguments')
+      this.configError('missing Client/Lokka')
     }
-    if (!this.createNetworkInterface) {
-      this.configError('missing createNetworkInterface in constructor arguments')
+    if (!this.createTransport) {
+      this.configError('missing createTransport')
     }
+
+    if (!this.endpoint) {
+      this.configError('missing endpoint')
+    }
+
+    this.validated.ApolloConn = true
   }
 
   async doQuery(query, opts = {}) {
@@ -56,14 +79,14 @@ export class LokkaAuthConnection extends GraphQLConnection {
       opts
     })
     if (!this.client) {
-      this.error('doQuery: missing client')
+      this.handleError('doQuery: missing client')
     }
     return await this.client.query(query)
   }
 
   headers(token = null) {
     let authToken = this.authToken || token
-    return authToken ? createAuthHeader(authToken) : this.defaultHeaders
+    return authToken ? this.createAuthHeader(authToken) : this.defaultHeaders
   }
 
   createAuthHeader(authToken) {
@@ -80,8 +103,7 @@ export class LokkaAuthConnection extends GraphQLConnection {
       headers,
       endpoint
     })
-    this.transport = transport
-    this.client = this.createClient(transport)
+    this.createClient(transport)
     return this
   }
 
@@ -96,15 +118,19 @@ export class LokkaAuthConnection extends GraphQLConnection {
       Client,
       transport
     })
-    return new Client({
+    return this.client = new Client({
       transport
     })
+
   }
 
-  createTransport({
-    headers,
-    endpoint
-  }) {
+  createTransport(opts = {}) {
+    let {
+      headers,
+      endpoint
+    } = opts
+
+    this.log('createTransport', opts)
     endpoint = endpoint || this.endpoint
     headers = headers || this.headers
     if (!endpoint) {
@@ -114,7 +140,7 @@ export class LokkaAuthConnection extends GraphQLConnection {
       this.configError('missing headers')
     }
 
-    return new this.Transport(endpoint, {
+    return this.transport = new this.Transport(endpoint, {
       headers
     })
   }

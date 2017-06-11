@@ -12,9 +12,12 @@ export class ApolloAuthConnection extends GraphQLConnection {
     super(config, opts)
     this.name = 'ApolloAuthConnection'
     this.configure()
+    this.postConfig()
   }
 
   configure() {
+    super.configure()
+    if (this.configured.ApolloConn) return
     let config = this.config
     let opts = this.opts
     this.log('configure', {
@@ -29,17 +32,31 @@ export class ApolloAuthConnection extends GraphQLConnection {
       Client: this.Client,
       createNetworkInterface: this.createNetworkInterface
     })
-    this.validateConfig()
+    if (opts.bind) {
+      this.createClient.bind(this)
+      this.createNetworkInterface.bind(this)
+    }
+
+    this.configured.ApolloConn = true
+    return this
   }
 
-  validateConfig() {
-    this.log('validate')
+  postConfig() {
+    this.validateConfig()
+    return this
+  }
+
+  validateConfig(force) {
+    if (this.validated.ApolloConn && !force) return
+    this.validated.ApolloConn = false
     if (!this.Client) {
       this.configError('missing Client (or ApolloClient) in constructor arguments')
     }
     if (!this.createNetworkInterface) {
       this.configError('missing createNetworkInterface in constructor arguments')
     }
+    this.validated.ApolloConn = true
+    return this
   }
 
   connect(opts) {
@@ -51,7 +68,7 @@ export class ApolloAuthConnection extends GraphQLConnection {
 
     this.configureNetworkInterface()
 
-    let client = this.createApolloClient()
+    let client = this.createClient()
     this.log('connected', {
       networkInterface,
       client
@@ -101,14 +118,14 @@ export class ApolloAuthConnection extends GraphQLConnection {
     }
   }
 
-  createApolloClient(networkInterface) {
+  createClient(networkInterface) {
     let Client = this.Client
     networkInterface = networkInterface || this.networkInterface
-    this.log('createApolloClient', {
+    this.log('createClient', {
       Client,
       networkInterface
     })
-    return new Client({
+    return this.client = new Client({
       networkInterface
     })
   }

@@ -21,15 +21,22 @@ export class GraphQLConnection extends Configurable {
     let config = this.config
 
     let gqlServer = config.gqlServer
+    if (!gqlServer) {
+      this.configError('missing gqlServer object in configuration')
+    }
+
+    this.log('gqlServer config', {
+      gqlServer
+    })
     gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri
 
-    this.config.gqlServer = gqlServer
-    this.configured.GraphQLConnection = true
+    this.config.gqlServer = gqlServer || {}
     return this
   }
 
   postConfig() {
     this.validateConfig()
+    this.configured.GraphQLConnection = true
   }
 
   validateConfig(force) {
