@@ -57,10 +57,18 @@ export class Configurable extends Notifiable {
     return this
   }
 
-  validateConfig() {
-    if (this.validated.Configurable) return
-    if (!this.store) {
-      this.configError('Missing store. Was not configured!')
+  validateConfig(force = false) {
+    if (this.validated.Configurable && !force) return
+    this.log('validateConfig', {
+      store: this.store,
+      keyNames: this.keyNames
+    })
+    if (typeof this.store !== 'object') {
+      this.configError('missing store for holding auth tokens')
+    }
+
+    if (typeof this.keyNames !== 'object') {
+      this.configError('missing keyNames object, used to indicate store token keys')
     }
     this.validated.Configurable = true
   }

@@ -2,6 +2,10 @@ import {
   Configurable
 } from '@tecla5/token-foundation'
 
+export function createConnection(config, opts) {
+  return new GraphQLConnection(config, opts)
+}
+
 export class GraphQLConnection extends Configurable {
   constructor(config = {}, opts = {}) {
     super(config, opts)
@@ -28,16 +32,10 @@ export class GraphQLConnection extends Configurable {
     this.validateConfig()
   }
 
-  validateConfig() {
-    super.validateConfig()
-    if (this.validated.GraphQLConnection) return
-    if (typeof this.store !== 'object') {
-      this.configError('missing store for holding signinToken from GraphQL server')
-    }
-
-    if (typeof this.keyNames !== 'object') {
-      this.configError('missing keyNames object, used to indicate store token keys')
-    }
+  validateConfig(force) {
+    if (this.validated.GraphQLConnection && !force) return
+    this.validated.GraphQLConnection = false
+    super.validateConfig(force)
     this.validated.GraphQLConnection = true
   }
 

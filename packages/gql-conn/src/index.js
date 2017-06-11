@@ -1,4 +1,5 @@
 export {
-  GraphQLConnection
+  GraphQLConnection,
+  createConnection
 }
 from './gql-connection'
