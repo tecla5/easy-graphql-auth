@@ -73,7 +73,7 @@ export class Lock extends Configurable {
     dict = dict || {}
     theme = theme || {}
 
-    dict.title = dict.title || title
+    dict.title = dict.title || title || this.defaultTitle
     theme.dict = dict || {}
     theme.logo = theme.logo || logo
 
@@ -86,6 +86,10 @@ export class Lock extends Configurable {
 
     this.configured.Lock = true
     return this
+  }
+
+  get defaultTitle() {
+    return 'Sign in'
   }
 
   createLock() {
@@ -122,10 +126,10 @@ export class Lock extends Configurable {
     return this
   }
 
-  extractAuth0config(config = {}) {
+  extractAuth0config(config) {
     config = config || this.config
     if (isObj(config.auth)) {
-      return config.auth.auth0 || {}
+      return config.auth.auth0 || config.auth || {}
     }
     return config.auth0 || {}
   }
@@ -136,7 +140,7 @@ export class Lock extends Configurable {
   }
 
   get defaultTheme() {
-    return this.theme || {}
+    return {}
   }
 
   get defaultLockConfig() {
@@ -153,7 +157,11 @@ export class Lock extends Configurable {
   }
 
   get auth0IdTokenKeyName() {
-    return this.store.auth0IdTokenKeyName
+    let name = this.store.auth0IdTokenKeyName
+    if (!name) {
+      this.handleError('store missing auth0IdTokenKeyName', this.store)
+    }
+    return name
   }
 
   get auth0Token() {

@@ -38,6 +38,7 @@ test('Lock: extractAuth0config', t => {
   let configuration = newConfiguration()
   let lock = newLock(configuration)
   let auth0config = lock.extractAuth0config()
+
   t.is(auth0config.domain, 'my-domain.eu.auth0.com')
 })
 
@@ -45,17 +46,22 @@ test('Lock: defaultTheme', t => {
   let configuration = newConfiguration()
   let lock = newLock(configuration)
   let theme = lock.defaultTheme
-  t.is(theme, {})
+
+  t.deepEqual(theme, {})
 })
 
 test('Lock: defaultLockConfig', t => {
   let configuration = newConfiguration()
   let lock = newLock(configuration)
   let lockConfig = lock.defaultLockConfig
+  // console.log({
+  //   lockConfig
+  // })
+
   t.deepEqual(lockConfig, {
-    theme: {}
-  }, {
-    languageDictionary: {}
+    languageDictionary: {
+      title: lock.defaultTitle
+    }
   })
 })
 
@@ -70,13 +76,15 @@ test('Lock: defaultLockConfig : with dict', t => {
   let lock = newLock(configuration)
   let lockConfig = lock.defaultLockConfig
   t.deepEqual(lockConfig, {
-    theme: {}
-  }, {
     languageDictionary: dict
   })
 })
 
 test('Lock: setupLockConfig', t => {
+  let dict = {
+    title: 'Welcome'
+  }
+
   let configuration = newConfiguration({
     dict,
     lock: {
