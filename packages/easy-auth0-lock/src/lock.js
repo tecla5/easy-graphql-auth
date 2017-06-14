@@ -119,11 +119,13 @@ export class Lock extends Configurable {
   }
 
   extractAuth0config(config = {}) {
+    config = config || this.config
     return config.auth.auth0 || config.auth0
   }
 
   setupLockConfig() {
     this.lockConfig = extend(this.defaultLockConfig, this.lockConfig)
+    return this
   }
 
   get defaultTheme() {
@@ -147,11 +149,11 @@ export class Lock extends Configurable {
     return this.store.auth0IdTokenKeyName
   }
 
-  getAuth0Token() {
+  get auth0Token() {
     return this.store.getItem(this.auth0IdTokenKeyName)
   }
 
-  setAuth0Token(auth0Token) {
+  set auth0Token(auth0Token) {
     this.store.setItem(this.auth0IdTokenKeyName, auth0Token);
     return this
   }
@@ -162,7 +164,7 @@ export class Lock extends Configurable {
         authResult
       });
       if (authResult == null) {
-        if (this.getAuth0Token() == null) {
+        if (this.auth0Token == null) {
           this.showLock();
         }
       } else {
@@ -170,7 +172,7 @@ export class Lock extends Configurable {
           authResult
         });
         if (authResult.idToken) {
-          this.setAuth0Token(authResult.idToken)
+          this.auth0Token = authResult.idToken
           this.log('success', authResult);
         } else {
           this.error('authResult missing idToken')

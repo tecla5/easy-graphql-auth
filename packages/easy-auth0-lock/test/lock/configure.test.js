@@ -100,4 +100,131 @@ test('Lock: configuration - dict', t => {
   t.is(lock.dict, dict)
 })
 
-// TODO: ...
+test('Lock: configure(true) - forced', t => {
+  let title = 'Please log in'
+  let configuration = newConfiguration({
+    title
+  })
+  let lock = newLock(configuration)
+  t.is(lock.dict.title, title)
+
+  let newTitle = 'New log in'
+
+  lock.opts.title = newTitle
+  lock.configure(true)
+
+  t.is(lock.dict.title, newTitle)
+})
+
+test('Lock: configure() - unforced', t => {
+  let title = 'Please log in'
+  let configuration = newConfiguration({
+    title
+  })
+  let lock = newLock(configuration)
+  t.is(lock.dict.title, title)
+
+  let newTitle = 'New log in'
+
+  lock.opts.title = newTitle
+  lock.configure() // no effect
+
+  // keeps old title, no re-configuration
+  t.is(lock.dict.title, title)
+})
+
+
+test('Lock: defaultDisplayMethod', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  t.is(lock.defaultDisplayMethod, 'getUserInfo')
+})
+
+test('Lock: extractAuth0config', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  let auth0config = lock.extractAuth0config()
+  t.is(auth0config.domain, 'my-domain.eu.auth0.com')
+})
+
+test('Lock: defaultTheme', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  let theme = lock.defaultTheme
+  t.is(theme, {})
+})
+
+test('Lock: defaultLockConfig', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  let lockConfig = lock.defaultLockConfig
+  t.deepEqual(lockConfig, {
+    theme: {}
+  }, {
+    languageDictionary: {}
+  })
+})
+
+test('Lock: defaultLockConfig : with dict', t => {
+  let dict = {
+    title: 'Welcome'
+  }
+
+  let configuration = newConfiguration({
+    dict
+  })
+  let lock = newLock(configuration)
+  let lockConfig = lock.defaultLockConfig
+  t.deepEqual(lockConfig, {
+    theme: {}
+  }, {
+    languageDictionary: dict
+  })
+})
+
+test('Lock: setupLockConfig', t => {
+  let configuration = newConfiguration({
+    dict,
+    lock: {
+      x: 2
+    }
+  })
+  let lock = newLock(configuration)
+  lock.setupLockConfig()
+  t.is(lock.lockConfig.x, 2)
+})
+
+test('Lock: auth0IdTokenKeyName', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  let tokenName = lock.auth0IdTokenKeyName
+  t.is(tokenName, 'authToken')
+})
+
+test('Lock: auth0Token (setter/getter)', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  lock.auth0Token = 'xyz'
+  let token = lock.auth0Token
+  t.is(token, 'xyz')
+})
+
+test('Lock: createLockUi(auth0Config = {}, opts)', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  let config = {
+    clientId: 'xyz123',
+    domain: 'tecla5.com'
+  }
+  let opts = {}
+  let lockUi = lock.createLockUi(config, opts)
+  t.truthy(lockUi instanceof FakeAuth0Lock)
+})
+
+test('Lock: onHashParsed()', t => {
+  let configuration = newConfiguration()
+  let lock = newLock(configuration)
+  lock.onHashParsed()
+
+  t.fail('TODO')
+})
