@@ -185,14 +185,15 @@ export class Lock extends Configurable {
   logout() {
     this.log('logout');
     this.resetTokens()
-    this.resetStorage()
-    this.publish('loggedOut')
+    this.resetStore()
     this.loggedOut()
     return this
   }
 
   loggedOut() {
     this.log('logged out');
+    this.notifySuccess('logout', true)
+    return this
   }
 
   resetTokens() {
@@ -200,12 +201,14 @@ export class Lock extends Configurable {
     this.tokens = {
       auth0Token: null
     }
+    this.notifySuccess('tokens:reset', true)
     return this
   }
 
-  resetStorage() {
+  resetStore() {
     this.log('resetStorage');
     this.store.resetAll()
+    this.notifySuccess('store:reset', true)
     return this
   }
 
@@ -288,16 +291,16 @@ export class Lock extends Configurable {
       profile
     } = data
     this.log('signedInFailure', err)
-    this.publish('signedInFailure', data)
     this.handleSigninError(data)
   }
 
   signedInOk(data) {
     this.log('signedInOk', data)
-    this.publish('signedIn', data)
+    this.notifySuccess('signin', data)
   }
 
   handleSigninError(err) {
-    this.handleError(err)
+    this.notifyError('signin', err)
+    // this.handleError(err)
   }
 }

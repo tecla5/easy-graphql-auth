@@ -9,20 +9,23 @@ import {
 import './mock-localstorage'
 import config from './config'
 
-import Auth0Lock from 'auth0-lock'
+import {
+  FakeAuth0Lock
+} from './fake-auth0-lock'
+
 
 test.before(t => {
   console.log({
     createStore,
     createLock,
     config,
-    Auth0Lock
+    Auth0Lock: FakeAuth0Lock
   })
 
   lock = createLock(config, {
     // client,
     createStore,
-    Auth0Lock
+    Auth0Lock: FakeAuth0Lock
   })
 })
 
