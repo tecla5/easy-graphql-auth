@@ -196,8 +196,7 @@ export class Lock extends Configurable {
   resetTokens() {
     this.log('resetTokens')
     this.tokens = {
-      auth0Token: null,
-      graphcoolToken: null,
+      auth0Token: null
     }
     return this
   }
@@ -266,7 +265,6 @@ export class Lock extends Configurable {
     } = data
     this.log('onAuth0Login', data)
     this.setAuth0Token(auth0Token)
-    // once authenticated, signin to graphcool
     try {
       await this.serverSignin(data)
       this.signedInOk(data)
