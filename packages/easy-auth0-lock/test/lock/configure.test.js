@@ -112,9 +112,21 @@ test('Lock: configure(true) - forced', t => {
   let newTitle = 'New log in'
 
   lock.opts.title = newTitle
+  lock.configured.Lock = false
   lock.configure(true)
 
+  t.truthy(lock.configured.Lock)
+  // keeps old title
+  t.is(lock.dict.title, title)
+
+  lock.config.title = newTitle
+  lock.configured.Lock = false
+  lock.configure(true)
+
+  t.truthy(lock.configured.Lock)
+  // re-configure title
   t.is(lock.dict.title, newTitle)
+
 })
 
 test('Lock: configure() - unforced', t => {

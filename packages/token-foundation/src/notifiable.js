@@ -6,6 +6,7 @@ export class Notifiable extends Loggable {
   constructor(name, opts) {
     super(name, opts)
     this.topic = opts.topic || this.defaultTopic
+    this.notifyError = this.notifyFailure
     this.observers = {}
   }
 

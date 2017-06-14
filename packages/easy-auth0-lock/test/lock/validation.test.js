@@ -63,7 +63,7 @@ test('Lock: configuration - validated via postConfig', t => {
   t.truthy(lock.validated.Lock)
 })
 
-test('Lock: validateConfig(true) - postConfig, no re-validation', t => {
+test('Lock: postConfig, re-validation', t => {
   let title = 'Please log in'
   let configuration = newConfiguration({
     title
@@ -75,8 +75,8 @@ test('Lock: validateConfig(true) - postConfig, no re-validation', t => {
   lock.validated.Lock = false
   lock.postConfig()
 
-  // ensure NOT re-validated
-  t.falsy(lock.validated.Lock)
+  // ensure re-validated
+  t.truthy(lock.validated.Lock)
 })
 
 

@@ -73,9 +73,13 @@ export class Lock extends Configurable {
     dict = dict || {}
     theme = theme || {}
 
-    dict.title = dict.title || title || this.defaultTitle
+    console.log({
+      title
+    })
+
+    dict.title = title || dict.title || this.defaultTitle
     theme.dict = dict || {}
-    theme.logo = theme.logo || logo
+    theme.logo = logo || theme.logo
 
     this.dict = dict || {}
     this.theme = theme || {}
@@ -317,7 +321,7 @@ export class Lock extends Configurable {
   }
 
   handleSigninError(err) {
-    this.notifyError('signin', err)
+    this.notifyFailure('signin', err)
     // this.handleError(err)
   }
 }
