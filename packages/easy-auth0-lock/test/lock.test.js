@@ -13,24 +13,26 @@ import {
   FakeAuth0Lock
 } from './fake-auth0-lock'
 
+const Auth0Lock = FakeAuth0Lock
 
+let lock
 test.before(t => {
   console.log({
     createStore,
     createLock,
     config,
-    Auth0Lock: FakeAuth0Lock
+    Auth0Lock
   })
 
   lock = createLock(config, {
     // client,
     createStore,
-    Auth0Lock: FakeAuth0Lock
+    Auth0Lock
   })
 })
 
 test('lock', t => {
-  t.is(createLock, 'function')
-  t.is(Lock, 'function')
-  t.is(Auth0Lock, 'function')
+  t.is(typeof createLock, 'function')
+  t.is(typeof Lock, 'function')
+  t.is(typeof Auth0Lock, 'function')
 })

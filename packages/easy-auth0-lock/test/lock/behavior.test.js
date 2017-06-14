@@ -13,6 +13,7 @@ import baseConfig from '../config'
 import {
   FakeAuth0Lock
 } from '../fake-auth0-lock'
+const Auth0Lock = FakeAuth0Lock
 
 function newLock(configuration) {
   return createLock(configuration, {
@@ -23,7 +24,7 @@ function newLock(configuration) {
 
 function newConfiguration(config) {
   return Object.assign({}, baseConfig, config, {
-    Auth0Lock: FakeAuth0Lock
+    Auth0Lock
   })
 }
 

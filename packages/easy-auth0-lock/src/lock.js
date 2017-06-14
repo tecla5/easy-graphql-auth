@@ -4,6 +4,10 @@ import {
 
 import extend from 'deep-extend'
 
+function isObj(val) {
+  return typeof val === 'object' && val !== null
+}
+
 const errorCode = {
   USER_ALREADY_EXISTS: 3023
 }
@@ -88,7 +92,7 @@ export class Lock extends Configurable {
     if (!this.auth0Config) {
       this.configError('missing Auth0 configuration')
     }
-    this.lock = this.createLockUi(this.auth0Config, opts).bind(this)
+    this.lock = this.createLockUi(this.auth0Config, this.opts) //.bind(this)
   }
 
   postConfig() {
@@ -120,7 +124,10 @@ export class Lock extends Configurable {
 
   extractAuth0config(config = {}) {
     config = config || this.config
-    return config.auth.auth0 || config.auth0
+    if (isObj(config.auth)) {
+      return config.auth.auth0 || {}
+    }
+    return config.auth0 || {}
   }
 
   setupLockConfig() {
