@@ -265,6 +265,51 @@ import localStorage from 'mock-local-storage'
 window.localStorage = global.localStorage
 ```
 
+### Queries
+
+Sample GraphQL queries to pass in `config` object
+
+```js
+import gql from 'graphql-tag';
+
+const createUser = gql `
+  mutation createUser($authToken: String!, $name: String){
+    createUser(
+      authProvider: {
+        auth0: {
+          idToken: $authToken,
+        }
+      },
+      name: $name
+    ) {
+      id,
+      auth0UserId
+    }
+  }
+`
+
+const signinUser = gql `
+  mutation signinUser($authToken: String!){
+    signinUser(
+      auth0: {
+        idToken: $authToken
+      }
+    ) {
+      token
+      user {
+        id,
+        auth0UserId
+      }
+    }
+  }
+`
+
+export default {
+  createUser,
+  signinUser
+}
+```
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

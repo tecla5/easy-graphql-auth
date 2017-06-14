@@ -14,19 +14,10 @@ Stores auth token in store (default: `localStorage`)
 
 `npm i -S @tecla5/easy-auth0-lock`
 
-## Usage
-
-Designed for easy integration with GraphQL clients, such as:
-
-- [apollo](https://github.com/apollographql)
-- [lokka](https://github.com/kadirahq/lokka)
-
-Can be also be used with any other backend.
-
 ## Included
 
 - `Lock` - creates and manages Auth0 Lock
-- `setup` - easy infrastructure setup for Lock
+- `setup` - easy infrastructure setup for Auth0 Lock
 
 ## Initial Lock setup
 
@@ -38,25 +29,13 @@ You can include `lock` from CDN in your HTML page.
 
 Alternative: import/require it directly in your application scripts.
 
+`import Auth0Lock from 'auth0-lock'`
+
 ### Quick setup
 
 The `setup` method can be used for easy setup.
 
 ```js
-import ApolloClient, {
-  createNetworkInterface
-} from 'apollo-client'
-
-import {
-  createConnection
-} from '@tecla5/apollo-auth-conn'
-
-const client = {
-  ApolloClient,
-  createNetworkInterface,
-  createConnection
-}
-
 import {
   setup,
   createStore,
@@ -69,7 +48,6 @@ import Auth0Lock from 'auth0-lock'
 
 export default setup(config, {
   Auth0Lock,
-  client,
   createStore,
   createLock
 })
@@ -77,18 +55,9 @@ export default setup(config, {
 
 ### Enabling GraphQL authentication
 
-If you wish to enable GraphQL authentication as part of the auth flow, after initial auth provider (auth0) signin, you must additionally supply a `createGraphQLAuth` factory method (see [easy-gql-auth](https://github.com/tecla5/easy-gql-auth).
+If you wish to enable GraphQL authentication as part of the auth flow, after initial auth provider (auth0) signin:
 
-```js
-const lock = createLock(config, {
-  Auth0Lock,
-  client,
-  createStore,
-  createGraphQLAuth
-})
-```
-
-Alternatively subscribe to the `signedIn` event via `on('signedIn', cb)`.
+Subscribe to the `signedIn` event via `on('signedIn', cb)`.
 
 Then have the observer `cb` function create and run the `GraphQLAuth` to authenticate with your GraphQL server and observe when it has signed in , ie. `gqlServerAuth.on('signedInOK', cb)`.
 
@@ -131,7 +100,6 @@ lock.on('signedIn', (data) => {
     myErrorHandler('graphQlAuth signin malfunction', err)
   }
 })
-
 ```
 
 ## UI lock configuration
@@ -232,11 +200,6 @@ lock.prototype.createProfileReceivedCb = function() {
   // custom factory method
   createLockUi,
 
-  // factory to create GraphQLServerAuth instance
-  createGraphQLServerAuth,
-  // GraphQL queries obj
-  queries,
-
   // names of keys to store
   keyNames,
   // (local) storage config obj
@@ -244,8 +207,7 @@ lock.prototype.createProfileReceivedCb = function() {
   // store to use for storage
   store,
   // service configs (tokens etc)
-  auth0,
-  gqlServer
+  auth0
 }
 ```
 
@@ -262,40 +224,10 @@ lock.prototype.createProfileReceivedCb = function() {
 ### Service config
 
 - `auth0`
-- `gqlServer`
-
-#### createUser mutation
-
-Pass whichever profile attributes such as `name`
-
-```js
-  mutation createUser($authToken: String!, $name: String){
-    createUser(
-      ...
-    )
-  }
-```
-
-#### signinUser mutation
-
-Only needs the `authToken`
-
-```js
-  mutation signinUser($authToken: String!){
-    signinUser(
-      ...
-    )
-  }
-```
 
 ### Getters
 
 - `auth0IdTokenKeyName`
-- `shouldDoGraphQLServerSignin` (bool)
-
-`shouldDoGraphQLServerSignin` is used to determine if GraphQL server signin should be performed after successful auth0 signin.
-
-By default tests if `.connection` or `.client` is set (passed by config object in constructor).
 
 ### Logout
 
@@ -337,33 +269,12 @@ You can also add custom pub/sub events using `on` and `publish`
 
 - `resetStorage()`
 - `setAuth0Token(auth0Token)`
-- `setGraphQLServerToken(signinToken)`
 
 ### Error handlers
 
 - `handleError(err)`
 - `handleProfileError(err)`
 - `handleSigninError(err)`
-
-### Async functions
-
-- `async serverSignin(({auth0Token, profile})`
-
-Creates a `GraphQLServerAuth` instance and attempts to signin to GraphQL server
-
-## GraphQLServerAuth
-
-- `async signin(data)` - start signin
-
-### Getters/Setters
-
-- `gqlServerTokenKeyName`
-- `setGraphQLServerToken(signinToken)`
-
-### Mutation queries
-
-- `async doCreateUser({auth0Token, profile})`
-- `async doSigninUser({auth0Token,profile})`
 
 ### Error handlers
 
@@ -378,20 +289,6 @@ Creates a `GraphQLServerAuth` instance and attempts to signin to GraphQL server
 
 `extractSignedInUserToken(signinResult)`
 
-#### build
-
-Build data to be sent to GraphQL mutation queries
-
-- `buildSigninUserData({auth0Token, profile})`
-- `buildUserData({auth0Token, profile})`
-
-### Fake data
-
-Allow use of fake data if no GraphQL queries defined
-
-- `fakeCreateUser(userData)`
-- `fakeSigninUser(profile)`
-
 ## Custom lock
 
 You can subclass and override any of these methods as you see fit.
@@ -400,7 +297,7 @@ You can subclass and override any of these methods as you see fit.
 import {
   Lock,
   storage
-} from '@tecla5/easy-gql-auth0'
+} from '@tecla5/easy-auth0-lock'
 import config from './config'
 
 class MyLock extends Lock {
@@ -473,51 +370,6 @@ export function isTokenExpired(token) {
     return false
   }
   return !(date.valueOf() > (new Date().valueOf() + (offsetSeconds * 1000)))
-}
-```
-
-### Queries
-
-Sample GraphQL queries to pass in `config` object
-
-```js
-import gql from 'graphql-tag';
-
-const createUser = gql `
-  mutation createUser($authToken: String!, $name: String){
-    createUser(
-      authProvider: {
-        auth0: {
-          idToken: $authToken,
-        }
-      },
-      name: $name
-    ) {
-      id,
-      auth0UserId
-    }
-  }
-`
-
-const signinUser = gql `
-  mutation signinUser($authToken: String!){
-    signinUser(
-      auth0: {
-        idToken: $authToken
-      }
-    ) {
-      token
-      user {
-        id,
-        auth0UserId
-      }
-    }
-  }
-`
-
-export default {
-  createUser,
-  signinUser
 }
 ```
 
