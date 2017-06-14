@@ -151,30 +151,32 @@ export class Lock extends Configurable {
     }
   }
 
-  createLockUi(auth0Config = {}, opts) {
-    this.log('create lock', auth0Config, opts)
-    return new this.Auth0Lock(auth0Config.clientId, auth0Config.domain, opts)
+  createLockUi(authConfig = {}, opts) {
+    this.log('create lock', authConfig, opts)
+    return new this.Auth0Lock(authConfig.clientId, authConfig.domain, opts)
   }
 
-  get auth0IdTokenKeyName() {
-    let name = this.store.auth0IdTokenKeyName
+  get authTokenKeyName() {
+    let name = this.store.authTokenKeyName
     if (!name) {
-      this.handleError('store missing auth0IdTokenKeyName', this.store)
+      this.handleError('store missing authTokenKeyName', this.store)
     }
     return name
   }
 
   get auth0Token() {
-    return this.store.getItem(this.auth0IdTokenKeyName)
+    return this.store.getItem(this.authTokenKeyName)
   }
 
   set auth0Token(auth0Token) {
-    this.store.setItem(this.auth0IdTokenKeyName, auth0Token);
+    this.store.setItem(this.authTokenKeyName, auth0Token);
     return this
   }
 
   onHashParsed() {
+    if (this.hashWasParsed) return
     this.lock.on('hash_parsed', (authResult) => {
+      this.hashWasParsed = true
       this.log('hash parsed', {
         authResult
       });

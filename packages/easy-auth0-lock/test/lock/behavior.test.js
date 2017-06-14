@@ -15,11 +15,13 @@ import {
 } from '../fake-auth0-lock'
 const Auth0Lock = FakeAuth0Lock
 
-function newLock(configuration) {
-  return createLock(configuration, {
+function newLock(configuration, opts = {}) {
+  opts = Object.assign({}, opts, {
     createStore,
     Auth0Lock
   })
+
+  return createLock(configuration, opts)
 }
 
 function newConfiguration(config) {
@@ -99,7 +101,7 @@ test('Lock: setupLockConfig', t => {
 test('Lock: auth0IdTokenKeyName', t => {
   let configuration = newConfiguration()
   let lock = newLock(configuration)
-  let tokenName = lock.auth0IdTokenKeyName
+  let tokenName = lock.authTokenKeyName
   t.is(tokenName, 'authToken')
 })
 
@@ -125,10 +127,11 @@ test('Lock: createLockUi(auth0Config = {}, opts)', t => {
 
 test('Lock: onHashParsed()', t => {
   let configuration = newConfiguration()
-  let lock = newLock(configuration)
+  let lock = newLock(configuration, {
+    logging: true
+  })
+  // no effect, already happened
   lock.onHashParsed()
-
-  t.fail('TODO')
 })
 
 // Test Notifiable methods (superclass)
@@ -151,7 +154,7 @@ test('Lock: nofifySuccess', t => {
     t.fail('no signin failure!')
   })
 
-  lock.nofifySuccess('signin', 2)
+  lock.notifySuccess('signin', 2)
 })
 
 test('Lock: nofifyFailure', t => {
@@ -164,5 +167,5 @@ test('Lock: nofifyFailure', t => {
     t.is(data, 2)
   })
 
-  lock.nofifyFailure('signin', 2)
+  lock.notifyFailure('signin', 2)
 })
