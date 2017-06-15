@@ -2,6 +2,9 @@ import test from 'ava'
 import {
   Configurable
 } from '../src/configurable'
+import {
+  Store
+} from '../src/store'
 
 import config from './config'
 import myStore from './store'
@@ -47,6 +50,34 @@ test('Configurable: pass store', t => {
   t.is(configured.store, myStore)
 })
 
+class MyStore extends Store {
+  constructor(keyNames = {}, opts = {}) {
+    super(keyNames, opts)
+    this.name = 'MyStore'
+  }
+}
+
+function myCreateStore(keyNames, opts) {
+  return new MyStore(keyNames, opts)
+}
+
+test('Configurable: createStore', t => {
+  t.is(typeof Configurable, 'function')
+  const configured = new Configurable(config, {
+    store: myStore
+  })
+  t.is(configured.store, myStore)
+})
+
+
+test('Configurable: pass createStore', t => {
+  t.is(typeof Configurable, 'function')
+  const configured = new Configurable(config, {
+    createStore: myCreateStore
+  })
+
+  t.is(configured.store.name, 'MyStore')
+})
 
 test('extractProperty', t => {
   let storage = config.storage

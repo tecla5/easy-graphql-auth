@@ -73,10 +73,6 @@ export class Lock extends Configurable {
     dict = dict || {}
     theme = theme || {}
 
-    console.log({
-      title
-    })
-
     dict.title = title || dict.title || this.defaultTitle
     theme.dict = dict || {}
     theme.logo = logo || theme.logo

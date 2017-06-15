@@ -2,6 +2,12 @@ import {
   Notifiable
 } from './notifiable'
 
+import defaultKeyNames from './keyNames'
+
+function isObj(val) {
+  return typeof val === 'object' && val !== null
+}
+
 export function createStore(keyNames, opts = {}) {
   return new Store(keyNames, opts)
 }
@@ -9,14 +15,86 @@ export function createStore(keyNames, opts = {}) {
 export class Store extends Notifiable {
   constructor(keyNames, opts = {}) {
     super('Store', opts)
+    this.configured = {}
+    this.validated = {}
+    this.keyNames = keyNames
+    this.opts = opts
     this.log('create', {
-      keyNames,
-      opts
+      keyNames: this.keyNames,
+      opts: this.opts
     })
-    this.keyNames = keyNames.storage || keyNames
-    this.storage = opts.storage || opts.keyStore || window.localStorage
-    this.authTokenKeyName = this.keyNames.authTokenKeyName
-    this.gqlServerTokenKeyName = this.keyNames.gqlServerTokenKeyName
+    this.configure()
+    this.postConfigure()
+  }
+
+  configure(force) {
+    if (this.configured.Store && !force) return
+    this.configured.Store = false
+    let keyNames = this.keyNames
+    let opts = this.opts
+    try {
+      this.keyNames = (keyNames || {}).storage || keyNames || this.defaultKeyNames
+      this.configureKeyNames()
+
+      this.storage = opts.store || opts.keyStore || this.localStorage
+      this.configured.Store = true
+    } catch (err) {
+      this.handleError('Store.configure', {
+        opts,
+        keyNames,
+        errMsg: err.message,
+        cause: err
+      })
+    }
+  }
+
+  get defaultKeyNames() {
+    return defaultKeyNames
+  }
+
+  configureKeyNames(keyNames) {
+    keyNames = keyNames || this.keyNames
+    if (!isObj(keyNames)) {
+      this.handleError('keyNames must be an Object', {
+        keyNames,
+        defaultKeyNames: this.defaultKeyNames
+      })
+    }
+    this.authTokenKeyName = keyNames.authTokenKeyName
+    this.gqlServerTokenKeyName = keyNames.gqlServerTokenKeyName
+  }
+
+  postConfigure() {
+    this.validateConfig()
+  }
+
+  validateConfig() {
+    this.validated.Store = false
+    this.log('validateConfig')
+    this.validateKeyNames()
+    this.validated.Store = true
+  }
+
+  validateKeyNames() {
+    this.validateKeyName('authTokenKeyName')
+    this.validateKeyName('gqlServerTokenKeyName')
+  }
+
+  validateKeyName(keyName) {
+    if (!this[keyName]) {
+      this.handleError(`Store: key ${keyName} not defined`, {
+        keyNames: this.keyNames,
+        store: this
+      })
+    }
+  }
+
+  get localStorage() {
+    try {
+      return window.localStorage
+    } catch (err) {
+      this.handleError('missing global window Object to retrieve localStorage')
+    }
   }
 
   removeItem(name) {
@@ -51,11 +129,6 @@ export class Store extends Notifiable {
     return this
   }
 
-
-  error(msg) {
-    console.error(msg)
-    // throw Error(msg)
-  }
 
   resetAll() {
     this.removeItem(this.authTokenKeyName)

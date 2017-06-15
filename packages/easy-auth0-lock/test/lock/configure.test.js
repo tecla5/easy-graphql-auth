@@ -116,7 +116,7 @@ test('Lock: configure(true) - forced', t => {
   lock.configure(true)
 
   t.truthy(lock.configured.Lock)
-  // keeps old title
+  // keeps old title, since config has higher precedence than opts
   t.is(lock.dict.title, title)
 
   lock.config.title = newTitle

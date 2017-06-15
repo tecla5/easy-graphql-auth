@@ -5,9 +5,15 @@ import {
 export class Notifiable extends Loggable {
   constructor(name, opts) {
     super(name, opts)
+    this.notifyLog = opts.notifyLog
     this.topic = opts.topic || this.defaultTopic
     this.notifyError = this.notifyFailure
     this.observers = {}
+  }
+
+  log(msg, data) {
+    if (this.notifyLog === false) return
+    super.log(msg, data)
   }
 
   get defaultTopic() {

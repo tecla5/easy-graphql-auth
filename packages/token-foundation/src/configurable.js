@@ -53,7 +53,7 @@ export class Configurable extends Notifiable {
     let containers = [config, opts]
     this.extractProperties(containers, 'storage', 'keyNames', 'store')
     this.keyNames = this.keyNames || this.storage || defaultKeyNames
-    this.store = this.store || this.createStore()
+    this.store = this.store || this.createStore(this.keyNames, this.opts)
     return this
   }
 

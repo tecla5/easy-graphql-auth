@@ -6,8 +6,8 @@ export class Loggable {
     this.name = name || opts.name
   }
 
-  handleError(err, ...data) {
-    this.error(err, ...data)
+  handleError(err, data) {
+    this.error(err, data)
     if (this.notify) {
       this.notify('error', data)
     }

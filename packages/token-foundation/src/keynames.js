@@ -1,4 +1,4 @@
 export default {
-  auth0IdTokenKeyName: 'auth0Token',
-  gqlServerTokenStorageKey: 'graphCoolToken'
+  authTokenKeyName: 'auth0Token',
+  gqlServerTokenKeyName: 'graphCoolToken'
 }

@@ -7,19 +7,24 @@ import {
   createStore
 } from '@tecla5/token-foundation'
 
+import './mock-localstorage'
 import {
-  createConnection
-} from '@tecla5/apollo-auth-conn'
+  FakeAuth0Lock
+} from './fake-auth0-lock'
+
+const Auth0Lock = FakeAuth0Lock
 
 test('setup', t => {
   let config = {}
   let opts = {
+    Auth0Lock,
     createStore,
-    createConnection
+    logging: true,
+    notifyLog: false
   }
 
   let {
     lock
   } = setup(config, opts)
-  t.is(lock, 'function')
+  t.is(typeof lock, 'object')
 })
