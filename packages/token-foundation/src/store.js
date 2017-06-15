@@ -30,10 +30,10 @@ export class Store extends Notifiable {
   configure(force) {
     if (this.configured.Store && !force) return
     this.configured.Store = false
-    let keyNames = this.keyNames
+    let keyNames = this.keyNames || {}
     let opts = this.opts
     try {
-      this.keyNames = (keyNames || {}).storage || keyNames || this.defaultKeyNames
+      this.keyNames = Object.assign({}, this.defaultKeyNames, keyNames.storage || keyNames)
       this.configureKeyNames()
 
       this.storage = opts.store || opts.keyStore || this.localStorage
@@ -60,8 +60,10 @@ export class Store extends Notifiable {
         defaultKeyNames: this.defaultKeyNames
       })
     }
+    // TODO: set in this.keys object instead
     this.authTokenKeyName = keyNames.authTokenKeyName
     this.gqlServerTokenKeyName = keyNames.gqlServerTokenKeyName
+    this.serverTokenKeyName = keyNames.serverTokenKeyName
   }
 
   postConfigure() {
@@ -71,22 +73,28 @@ export class Store extends Notifiable {
   validateConfig() {
     this.validated.Store = false
     this.log('validateConfig')
-    this.validateKeyNames()
+    this.validateAllKeyNames()
     this.validated.Store = true
   }
 
-  validateKeyNames() {
+  // TODO: iterate and validate keys in store
+  validateAllKeyNames() {
     this.validateKeyName('authTokenKeyName')
-    this.validateKeyName('gqlServerTokenKeyName')
+    this.validateKeyName('gqlServerTokenKeyName', 'warn')
+    this.validateKeyName('serverTokenKeyName', 'warn')
   }
 
-  validateKeyName(keyName) {
+  validateKeyName(keyName, method) {
     if (!this[keyName]) {
-      this.handleError(`Store: key ${keyName} not defined`, {
+      this[method](`Store: key ${keyName} not defined`, {
         keyNames: this.keyNames,
         store: this
       })
     }
+  }
+
+  validateKeyNames(...names) {
+    names.map(name => this.validateKeyName(name))
   }
 
   get localStorage() {
@@ -118,29 +126,22 @@ export class Store extends Notifiable {
     return this
   }
 
-  validateKeyNames(...names) {
-    names.map(name => this.validateKeyName(name))
-  }
-
-  validateKeyName(name) {
-    if (typeof this.keyNames[name] !== 'string') {
-      this.error(`keyNames missing ${name}`)
-    }
-    return this
-  }
-
-
+  // TODO: iterate and remove keys in store
   resetAll() {
     this.removeItem(this.authTokenKeyName)
     this.removeItem(this.gqlServerTokenKeyName)
+    this.removeItem(this.serverTokenKeyName)
+
     this.publish('reset')
     return this
   }
 
+  // TODO: iterate and (reduce) return keys in store
   getAll(opts = {}) {
     return {
       authToken: this.getItem(this.authTokenKeyName),
       gqlServerToken: this.getItem(this.gqlServerTokenKeyName),
+      serverToken: this.getItem(this.serverTokenKeyName),
     }
   }
 
