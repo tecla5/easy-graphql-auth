@@ -17,20 +17,50 @@ import ApolloClient, {
 
 import {
   createConnection
-} from '@tecla5/apollo-conn'
+} from '@tecla5/apollo-auth-conn'
 
 import {
   createLock
-} from 'easy-gql-auth0'
+} from '@tecla5/easy-gql-auth0'
 
 import config from './config'
 
-let lock = createLock(config, {
-  ApolloClient,
+import {
+  GraphQLAuth
+} from '@tecla5/gql-auth'
+
+const client = {
+  Client,
   createNetworkInterface,
   createConnection
+}
+
+let lock = createLock(config, {
+  // serverSignin,
+  // GraphQLAuth
+  ServerAuth: GraphQLAuth,
+  client
 })
 ```
+
+### Server signin
+
+`createLock` will add a default `serverSignin` method to lock that will be called on successful Auth0 login.
+
+#### Customized server signin
+
+You can pass your own custom `serverSignin` method or simply pass a `ServerAuth` (or `GraphQLAuth`) option which will be assumed to be a class (or constructor function).
+This will then be used to instantiate a `ServerAuth` (server signin) instance.
+
+```js
+  async function serverSignin(authResult) {
+    this.gqlAuth = new ServerAuth(this.config, this.opts)
+    let result = await this.signin(authResult)
+    return result
+  }
+```
+
+Note: The `serverSignin` method will have `this` bound to the lock instance.
 
 ## Ui config
 

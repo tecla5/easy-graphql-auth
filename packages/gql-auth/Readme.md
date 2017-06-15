@@ -130,12 +130,17 @@ Only needs the `authToken`
 
 `extractSignedInUserToken(signinResult)`
 
-### Events
+### Events pub/sub
 
-- `signedInOK`
-- `signinFailure`
+- `jwt:token` - set JWT token
+- `server:signin` - signed in with token on server
+- `token:stored` - token stored on server
+- `token:received` - token received from server
+- `user:create` - user created on server
 
-*signedInOK*
+#### server:signin
+
+*success*
 
 ```js
 ({
@@ -146,7 +151,7 @@ Only needs the `authToken`
 })
 ```
 
-*signinFailure*
+*failure*
 
 ```js
 ({
@@ -156,7 +161,6 @@ Only needs the `authToken`
   error
 })
 ```
-
 
 #### build
 

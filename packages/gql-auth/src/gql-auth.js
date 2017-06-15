@@ -62,7 +62,7 @@ export class GraphQLAuth extends GraphQLConnection {
     }
     // set graphcool token in localstorage
     this.store.setItem(this.gqlServerTokenKeyName, signinToken)
-    this.publish('storedGraphQLServerToken', {
+    this.notifySuccess('token:stored', {
       signinToken
     })
     return this
@@ -85,7 +85,7 @@ export class GraphQLAuth extends GraphQLConnection {
   }
 
   handleReceivedGraphQLServerToken(signinToken) {
-    this.publish('receivedGraphQLServerToken', {
+    this.notifySuccess('token:received', {
       signinToken
     })
     this.setGraphQLServerToken(signinToken)
@@ -97,7 +97,7 @@ export class GraphQLAuth extends GraphQLConnection {
       this.error('missing connection for setting JWT token')
     }
     this.connection.setJwtToken(signinToken, this.opts)
-    this.publish('setJwtToken', {
+    this.notifySuccess('jwt:token', {
       signinToken
     })
   }
@@ -141,7 +141,7 @@ export class GraphQLAuth extends GraphQLConnection {
       if (this.queries && this.queries.createUser) {
         let query = this.queries.createUser(userData)
         let result = await this.doQuery(query)
-        this.publish('createdUserOK', {
+        this.notifySuccess('user:create', {
           authToken,
           userData,
           profile,
@@ -153,7 +153,7 @@ export class GraphQLAuth extends GraphQLConnection {
         return await this.fakeCreateUser(userData)
       }
     } catch (error) {
-      this.publish('createUserFailure', {
+      this.notifyFailure('user:create', {
         authToken,
         userData,
         profile,
@@ -209,7 +209,7 @@ export class GraphQLAuth extends GraphQLConnection {
     try {
       let query = this.queries.signinUser(userData)
       let result = await this.doQuery(query)
-      this.publish('signedInOK', {
+      this.notifySuccess('server:signin', {
         authToken,
         profile,
         userData,
@@ -217,7 +217,7 @@ export class GraphQLAuth extends GraphQLConnection {
       })
       return result
     } catch (error) {
-      this.publish('signedInFailure', {
+      this.notifyFailure('server:signin', {
         authToken,
         profile,
         userData,

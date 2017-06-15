@@ -58,16 +58,43 @@ test('has lock methods', t => {
   t.is(typeof lock.logout, 'function')
 })
 
+let profile = {
+  name: 'kris',
+  email: 'kris@gmail.com'
+}
+
+let authResult = {
+  profile,
+  auth0Token: 'xyz123'
+}
+
 test('extractAuthToken', t => {
-  // TODO
+  let authToken = lock.extractAuthToken(authResult)
 })
 
 test('async onAuth0Login(data)', async t => {
-  // TODO
+  lock.onAuth0Login(authResult)
+  // this.setAuth0Token(auth0Token)
+  // try {
+  //   await this.serverSignin(data)
+  //   this.signedInOk(data)
+  // } catch (err) {
+  //   let errArgs = Object.assign(data, {
+  //     err
+  //   })
+  //   this.signedInFailure(data)
+  // }
+  // this.notifyFailure('signin', data)
+  // this.notifySuccess('signin', data)
+
+  lock.onSuccess('signin', (data) => {
+    t.is(data, authResult)
+  })
 })
 
 test('async serverSignin(data)', async t => {
-  // TODO
+  let result = await lock.serverSignin(authResult)
+  lock.onSuccess('signin', (data) => {
+    t.is(data, authResult)
+  })
 })
-
-// TODO ...
