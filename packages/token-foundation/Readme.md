@@ -62,7 +62,8 @@ The `keyNames` passed to store will typically come from a `storage` object of th
 ```js
   storage: { // localstorage
     authTokenKeyName: 'authToken', // key to store authToken
-    gqlServerTokenKeyName: 'gqlAuthToken' // key to store token return by graphQL server
+    gqlServerTokenKeyName: 'gqlAuthToken', // key to store token from graphQL server
+    serverTokenKeyName: 'serverAuthToken' // key to store token from server
   }
 ```
 
@@ -130,6 +131,10 @@ File             |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
 All files        |    60.63 |    54.08 |    66.67 |    62.07 |                |
 ...
 ```
+
+## TODO
+
+Better handling of key names in `Store` (see `store.js`)
 
 ## License
 
