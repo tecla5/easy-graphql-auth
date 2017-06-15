@@ -2,12 +2,17 @@ import {
   createLock as defaultCreateLock
 } from './lock'
 
+import {
+  createStore as defaultCreateStore
+} from '@tecla5/token-foundation'
+
 export function setup(config, opts = {}) {
   let {
     createStore,
     createLock
   } = opts
 
+  createStore = createStore || defaultCreateStore
   createLock = createLock || defaultCreateLock
 
   if (!createLock) {

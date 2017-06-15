@@ -14,11 +14,25 @@ import {
 
 const Auth0Lock = FakeAuth0Lock
 
-test('setup', t => {
+test('setup: with createStore', t => {
   let config = {}
   let opts = {
     Auth0Lock,
     createStore,
+    logging: true,
+    notifyLog: false
+  }
+
+  let {
+    lock
+  } = setup(config, opts)
+  t.is(typeof lock, 'object')
+})
+
+test('setup: using default createStore', t => {
+  let config = {}
+  let opts = {
+    Auth0Lock,
     logging: true,
     notifyLog: false
   }
