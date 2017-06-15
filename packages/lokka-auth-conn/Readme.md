@@ -71,8 +71,7 @@ export default {
 }
 ```
 
-### Methods and Customization options
-
+## Methods and Customization options
 
 ### connect
 
@@ -93,6 +92,13 @@ Then a new Lokka `Transport` instance is created with this headers enabled for s
 - `setJwtToken(signinToken)` used to set JWT token on HTTP header
 
 Calls `connect` with the `signinToken` from the GraphQL server
+
+### Environment variables
+
+Set the following environment variables and you should be good to go...
+
+- `gqlServer_tokenKeyName`
+- `gqlServer_endpoint`
 
 ## Tests
 

@@ -43,6 +43,13 @@ let lock = createLock(config, {
 })
 ```
 
+### Environment variables
+
+Set the following environment variables and you should be good to go...
+
+- `gqlServer_tokenKeyName`
+- `gqlServer_endpoint`
+
 ### Server signin
 
 `createLock` will add a default `serverSignin` method to lock that will be called on successful Auth0 login.

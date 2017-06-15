@@ -70,6 +70,13 @@ let result = await graphQLAuth.signin({authToken, profile})
 
 Callin `signin` willl execute the registered GraphQL mutation `queries` on the GraphQL server. The queries will be expected to save the `authToken` on the authenticated user. The flow will then expect to receive an `authToken` from the graphQL server which it will save in the token store and add to the `connection` header as a JWT token, for use on subsequent requests to the GraphQL server.
 
+### Environment variables
+
+Set the following environment variables and you should be good to go...
+
+- `gqlServer_tokenKeyName`
+- `gqlServer_endpoint`
+
 ### GraphQL queries
 
 - `createUser`
@@ -267,51 +274,6 @@ To mock `localStorage` for unit testing in node env:
 global.window = {}
 import localStorage from 'mock-local-storage'
 window.localStorage = global.localStorage
-```
-
-### Queries
-
-Sample GraphQL queries to pass in `config` object
-
-```js
-import gql from 'graphql-tag';
-
-const createUser = gql `
-  mutation createUser($authToken: String!, $name: String){
-    createUser(
-      authProvider: {
-        auth0: {
-          idToken: $authToken,
-        }
-      },
-      name: $name
-    ) {
-      id,
-      auth0UserId
-    }
-  }
-`
-
-const signinUser = gql `
-  mutation signinUser($authToken: String!){
-    signinUser(
-      auth0: {
-        idToken: $authToken
-      }
-    ) {
-      token
-      user {
-        id,
-        auth0UserId
-      }
-    }
-  }
-`
-
-export default {
-  createUser,
-  signinUser
-}
 ```
 
 ## License

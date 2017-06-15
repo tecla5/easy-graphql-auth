@@ -28,7 +28,7 @@ export class GraphQLConnection extends Configurable {
     this.log('gqlServer config', {
       gqlServer
     })
-    gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri
+    gqlServer.endpoint = process.env.gqlServer_endpoint || gqlServer.endpoint || gqlServer.connection.uri
 
     this.config.gqlServer = gqlServer || {}
     return this
@@ -103,7 +103,7 @@ export class GraphQLConnection extends Configurable {
   }
 
   get authTokenKeyName() {
-    return this.keyNames.gqlServerTokenKeyName
+    return process.env.gqlServer_tokenKeyName || this.keyNames.gqlServerTokenKeyName
   }
 
   get authToken() {

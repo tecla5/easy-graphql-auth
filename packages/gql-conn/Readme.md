@@ -49,6 +49,13 @@ You can override this behavior for a custom auth token strategy if needed.
 
 The `signinToken` is received from the GraphQL server on a successful signin with an auth provider.
 
+### Environment variables
+
+Set the following environment variables and you should be good to go...
+
+- `gqlServer_tokenKeyName`
+- `gqlServer_endpoint`
+
 ## Tests
 
 Tests are written and run using [ava](https://github.com/avajs/ava)

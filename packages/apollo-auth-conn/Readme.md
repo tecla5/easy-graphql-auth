@@ -32,6 +32,13 @@ const connection = createConnection(config, {
 })
 ```
 
+### Environment variables
+
+Set the following environment variables and you should be good to go...
+
+- `gqlServer_tokenKeyName`
+- `gqlServer_endpoint`
+
 ## Customization
 
 You can extend `ApolloConnection` with your own custom configuration and provide a custom factory method `createConnection` on the config object as shown here:
