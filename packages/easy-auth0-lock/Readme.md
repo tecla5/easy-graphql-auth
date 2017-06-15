@@ -379,6 +379,25 @@ Tests are written and run using [ava](https://github.com/avajs/ava)
 
 `$ npm test`
 
+The folder `fakes` contains mocks useful for testing in a Node.js environment:
+
+- fake `Auth0Lock` class
+- fake `localstorage`
+
+A typical test setup:
+
+```js
+import {
+  FakeAuth0Lock
+} from '@tecla5/easy-auth0-lock/fakes/fake-auth0-lock'
+
+import from '@tecla5/easy-auth0-lock/fakes/mock-localstorage'
+
+const Auth0Lock = FakeAuth0Lock
+```
+
+Good to go!!
+
 ## License
 
 MIT - [Tecla5](http://tecla5.com) 2017, Kristian Mandrup

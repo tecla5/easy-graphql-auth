@@ -13,6 +13,15 @@ import {
   createConnection
 } from '@tecla5/apollo-auth-conn'
 
+// import Auth0Lock from 'auth0-lock'
+
+import {
+  FakeAuth0Lock
+} from '@tecla5/easy-auth0-lock/fakes/fake-auth0-lock'
+const Auth0Lock = FakeAuth0Lock
+
+import '@tecla5/easy-auth0-lock/fakes/mock-localstorage'
+
 import './mock-localstorage'
 
 // can we mock the graphQL client?!
@@ -33,7 +42,8 @@ test.before(t => {
   })
   lock = createLock(config, {
     client,
-    createStore
+    createStore,
+    Auth0Lock
   })
 })
 
