@@ -67,7 +67,7 @@ This approach is the most flexible, and can be used with any backend or API to r
 const lock = createLock(config, opts)
 const graphQlAuth = createGraphQLAuth(config, opts)
 
-graphQlAuth.on('signedInOK', (data) => {
+graphQlAuth.onSuccess('signin', (data) => {
   let {
     authToken,
     profile,
@@ -81,7 +81,19 @@ graphQlAuth.on('signedInOK', (data) => {
   })
 })
 
-lock.on('signedIn', (data) => {
+lock.onFailure('signin', (data) => {
+  let {
+    error
+  } = data
+  log.error(error)
+}
+
+lock.onSuccess('signin', (data) => {
+  let {
+    auth0Token,
+    profile
+  } = data
+
   // or signin/signup user with alternative API/backend
   let status = await graphQlAuth.signin(data)
 

@@ -153,6 +153,8 @@ import localStorage from 'mock-local-storage'
 window.localStorage = global.localStorage
 ```
 
+You can also use [localstorage-memory](https://www.npmjs.com/package/localstorage-memory)
+
 ### Test coverage
 
 ```bash
