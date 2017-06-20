@@ -2,7 +2,7 @@ import {
   Notifiable
 } from './notifiable'
 
-import defaultKeyNames from './keyNames'
+import defaultKeyNames from './keynames'
 
 function isObj(val) {
   return typeof val === 'object' && val !== null

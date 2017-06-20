@@ -1,26 +1,23 @@
 import test from 'ava'
 import config from './config'
 import storage from './storage'
-
-import ApolloClient, {
-  createNetworkInterface
-} from 'apollo-client'
+import jQuery from 'jquery'
 
 import {
-  GraphQLAuth,
-  createGraphQLAuth
-} from '../src/gql-auth'
+  HttpAuth,
+  createHttpAuth
+} from '../src/http-auth'
 
 import {
-  createConnection
-} from '@tecla5/apollo-auth-conn'
+  createConnection,
+  HttpAuthConn,
+  FetchAuthConn,
+  AjaxAuthConn
+} from '@tecla5/http-auth-conn'
 
 import './mock-localstorage'
 
-const client = {
-  Client: ApolloClient,
-  createNetworkInterface
-}
+const client = jQuery
 
 const profile = {
   name: 'kris',
@@ -46,42 +43,42 @@ test.before(t => {
 
   let connection = createConnection(config, opts)
   opts.connection = connection
-  auth = createGraphQLAuth(config, opts)
+  auth = createHttpAuth(config, opts)
 })
 
-test('GraphQLAuth: is an object', async t => {
+test('HttpAuth: is an object', async t => {
   t.is(typeof auth, 'object')
 })
 
-const clazzes = ['Configurable', 'GraphQLConnection', 'GraphQLAuth']
+const clazzes = ['Configurable', 'HttpConnection', 'HttpAuth']
 
-test('GraphQLAuth: is fully configured and validated', async t => {
+test('HttpAuth: is fully configured and validated', async t => {
   clazzes.map(clazz => {
     t.truthy(auth.validated[clazz])
     t.truthy(auth.configured[clazz])
   })
 })
 
-test('GraphQLAuth: gqlServerTokenKeyName', t => {
-  t.is(auth.gqlServerTokenKeyName, 'gqlAuthToken')
+test('HttpAuth: serverTokenKeyName', t => {
+  t.is(auth.serverTokenKeyName, 'gqlAuthToken')
 })
 
-test('GraphQLAuth: has graphQL client connection', t => {
+test('HttpAuth: has graphQL client connection', t => {
   t.truthy(auth.connection)
 })
 
-test('GraphQLAuth: can save and retrieve token from store', t => {
-  auth.setGraphQLServerToken(signinToken)
-  let tokenValue = auth.store.getItem(auth.gqlServerTokenKeyName)
+test('HttpAuth: can save and retrieve token from store', t => {
+  auth.setServerToken(signinToken)
+  let tokenValue = auth.store.getItem(auth.serverTokenKeyName)
   t.is(tokenValue, signinToken)
 })
 
 
-test('GraphQLAuth: has graphQL client connection', t => {
+test('HttpAuth: has graphQL client connection', t => {
   t.truthy(auth.connection)
 })
 
-test('GraphQLAuth: buildSigninUserData', t => {
+test('HttpAuth: buildSigninUserData', t => {
   let signinData = auth.buildSigninUserData(data)
   let {
     variables
@@ -90,7 +87,7 @@ test('GraphQLAuth: buildSigninUserData', t => {
 })
 
 
-test('GraphQLAuth: buildUserData', async t => {
+test('HttpAuth: buildUserData', async t => {
   let userData = auth.buildUserData(data)
   let {
     variables
@@ -100,22 +97,22 @@ test('GraphQLAuth: buildUserData', async t => {
   t.is(variables.name, 'kris')
 })
 
-test('GraphQLAuth: doCreateUser', async t => {
+test('HttpAuth: doCreateUser', async t => {
   let result = await auth.doCreateUser(data)
   t.truthy(result, 'user was created')
 })
 
-test('GraphQLAuth: doSigninUser', async t => {
+test('HttpAuth: doSigninUser', async t => {
   let result = await auth.doSigninUser(data)
   t.truthy(result, 'user was signed in')
 })
 
-test('GraphQLAuth: fakeSigninUser', t => {
+test('HttpAuth: fakeSigninUser', t => {
   let user = auth.fakeSigninUser(profile)
   t.is(typeof user.data, 'object')
 })
 
-test('GraphQLAuth: fakeCreateUser', t => {
+test('HttpAuth: fakeCreateUser', t => {
   let userData = auth.buildUserData(data)
 
   let user = auth.fakeCreateUser(userData)
@@ -127,8 +124,8 @@ import {
   createUser
 } from './queries'
 
-// TODO: perform actual query on GraphQL server such as GraphCool
-test('GraphQLAuth: doQuery', async t => {
+// TODO: perform actual query on Http server such as GraphCool
+test('HttpAuth: doQuery', async t => {
   let query = signinUser
   try {
     let queryResult = await auth.doQuery(query)

@@ -1,17 +1,22 @@
-export function createFeathersAuth(config, opts) {
-  return new FeathersAuth(config, opts)
+import {
+  Configurable
+} from '@tecla5/token-foundation'
+
+
+export function createHttpAuth(config, opts) {
+  return new HttpAuth(config, opts)
 }
 
-export class FeathersAuth extends HttpConnection {
+export class HttpAuth extends Configurable {
   constructor(config = {}, opts = {}) {
     super(config, opts)
-    this.name = 'FeathersAuth'
+    this.name = 'HttpAuth'
     this.configure()
     this.postConfig()
   }
 
   configure(force) {
-    if (this.configured.FeathersAuth && !force) return
+    if (this.configured.HttpAuth && !force) return
     super.configure()
     let config = this.config
     let opts = this.opts
@@ -24,7 +29,7 @@ export class FeathersAuth extends HttpConnection {
     }
 
     this.connection = this.connection || this.createConnection(config, opts)
-    this.configured.FeathersAuth = true
+    this.configured.HttpAuth = true
     return this
   }
 
@@ -35,11 +40,11 @@ export class FeathersAuth extends HttpConnection {
 
   validateConfig(force) {
     super.validateConfig()
-    if (this.validated.FeathersAuth && !force) return
+    if (this.validated.HttpAuth && !force) return
     if (!this.connection) {
       this.configError('missing Feathers connection in configuration')
     }
-    this.validated.FeathersAuth = true
+    this.validated.HttpAuth = true
   }
 
   extractSignedInUserToken(signinResult) {

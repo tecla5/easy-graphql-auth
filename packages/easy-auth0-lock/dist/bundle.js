@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,182 +81,44 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-(function (b, c) {
-  'object' == ( false ? 'undefined' : _typeof(exports)) && 'object' == ( false ? 'undefined' : _typeof(module)) ? module.exports = c() :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (c),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : 'object' == (typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) ? exports.tokenFoundation = c() : b.tokenFoundation = c();
-})(undefined, function () {
-  return function (a) {
-    function b(d) {
-      if (c[d]) return c[d].exports;var e = c[d] = { i: d, l: !1, exports: {} };return a[d].call(e.exports, e, e.exports, b), e.l = !0, e.exports;
-    }var c = {};return b.m = a, b.c = c, b.i = function (d) {
-      return d;
-    }, b.d = function (d, e, f) {
-      b.o(d, e) || Object.defineProperty(d, e, { configurable: !1, enumerable: !0, get: f });
-    }, b.n = function (d) {
-      var e = d && d.__esModule ? function () {
-        return d['default'];
-      } : function () {
-        return d;
-      };return b.d(e, 'a', e), e;
-    }, b.o = function (d, e) {
-      return Object.prototype.hasOwnProperty.call(d, e);
-    }, b.p = '', b(b.s = 4);
-  }([function (a, b) {
-    'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' }, a.exports = b['default'];
-  }, function (a, b, c) {
-    'use strict';
-    function d(l, m) {
-      if (!(l instanceof m)) throw new TypeError('Cannot call a class as a function');
-    }function e(l, m) {
-      if (!l) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return m && ('object' == (typeof m === 'undefined' ? 'undefined' : _typeof(m)) || 'function' == typeof m) ? m : l;
-    }function f(l, m) {
-      if ('function' != typeof m && null !== m) throw new TypeError('Super expression must either be null or a function, not ' + (typeof m === 'undefined' ? 'undefined' : _typeof(m)));l.prototype = Object.create(m && m.prototype, { constructor: { value: l, enumerable: !1, writable: !0, configurable: !0 } }), m && (Object.setPrototypeOf ? Object.setPrototypeOf(l, m) : l.__proto__ = m);
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Store = void 0;var h = function () {
-      function l(m, n) {
-        for (var p, o = 0; o < n.length; o++) {
-          p = n[o], p.enumerable = p.enumerable || !1, p.configurable = !0, 'value' in p && (p.writable = !0), Object.defineProperty(m, p.key, p);
-        }
-      }return function (m, n, o) {
-        return n && l(m.prototype, n), o && l(m, o), m;
-      };
-    }();b.createStore = function (l) {
-      var m = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new k(l, m);
-    };var j = c(2),
-        k = b.Store = function (l) {
-      function m(n) {
-        var o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, m);var p = e(this, (m.__proto__ || Object.getPrototypeOf(m)).call(this, 'Store', o));return p.log('create', { keyNames: n, opts: o }), p.keyNames = n.storage || n, p.storage = o.storage || o.keyStore || window.localStorage, p.authTokenKeyName = p.keyNames.authTokenKeyName, p.gqlServerTokenKeyName = p.keyNames.gqlServerTokenKeyName, p;
-      }return f(m, l), h(m, [{ key: 'removeItem', value: function value(o) {
-          this.storage.removeItem(o);
-        } }, { key: 'getItem', value: function value(o) {
-          return this.storage.getItem(o);
-        } }, { key: 'setItem', value: function value(o, p) {
-          this.storage.setItem(o, p);
-        } }, { key: 'validateKeyNames', value: function value() {
-          for (var o = this, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-            q[r] = arguments[r];
-          }q.map(function (s) {
-            return o.validateKeyName(s);
-          });
-        } }, { key: 'validateKeyName', value: function value(o) {
-          return 'string' != typeof this.keyNames[o] && this.error('keyNames missing ' + o), this;
-        } }, { key: 'error', value: function value(o) {
-          console.error(o);
-        } }, { key: 'resetAll', value: function value() {
-          this.removeItem(this.authTokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
-        } }, { key: 'getAll', value: function value() {
-          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { authToken: this.getItem(this.authTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
-        } }, { key: 'store', value: function value(o, p) {
-          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(o)) throw Error('keyname mismatch for store: ' + o);this.setItem(o, p);
-        } }]), m;
-    }(j.Loggable);
-  }, function (a, b) {
-    'use strict';
-    function d(g, h) {
-      if (!(g instanceof h)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 });var e = function () {
-      function g(h, j) {
-        for (var l, k = 0; k < j.length; k++) {
-          l = j[k], l.enumerable = l.enumerable || !1, l.configurable = !0, 'value' in l && (l.writable = !0), Object.defineProperty(h, l.key, l);
-        }
-      }return function (h, j, k) {
-        return j && g(h.prototype, j), k && g(h, k), h;
-      };
-    }(),
-        f = b.Loggable = function () {
-      function g(h) {
-        var j = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, g), this.opts = j, this.io = j.io || console, this.logging = j.logging, this.name = h || j.name;
-      }return e(g, [{ key: 'enableLog', value: function value() {
-          return this.logging = !0, this;
-        } }, { key: 'disableLog', value: function value() {
-          return this.logging = !1, this;
-        } }, { key: 'log', value: function value() {
-          if (this.logging) {
-            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
-              l[m] = arguments[m];
-            }(j = this.io).log.apply(j, [this.name].concat(l));
-          }
-        } }, { key: 'error', value: function value() {
-          if (this.logging) {
-            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
-              l[m] = arguments[m];
-            }(j = this.io).error.apply(j, [this.name].concat(l));
-          }
-        } }]), g;
-    }();
-  }, function (a, b, c) {
-    'use strict';
-    function e(p, q) {
-      if (!(p instanceof q)) throw new TypeError('Cannot call a class as a function');
-    }function f(p, q) {
-      if (!p) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return q && ('object' == (typeof q === 'undefined' ? 'undefined' : _typeof(q)) || 'function' == typeof q) ? q : p;
-    }function g(p, q) {
-      if ('function' != typeof q && null !== q) throw new TypeError('Super expression must either be null or a function, not ' + (typeof q === 'undefined' ? 'undefined' : _typeof(q)));p.prototype = Object.create(q && q.prototype, { constructor: { value: p, enumerable: !1, writable: !0, configurable: !0 } }), q && (Object.setPrototypeOf ? Object.setPrototypeOf(p, q) : p.__proto__ = q);
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var h = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (p) {
-      return typeof p === 'undefined' ? 'undefined' : _typeof(p);
-    } : function (p) {
-      return p && 'function' == typeof Symbol && p.constructor === Symbol && p !== Symbol.prototype ? 'symbol' : typeof p === 'undefined' ? 'undefined' : _typeof(p);
-    },
-        j = function () {
-      function p(q, r) {
-        for (var t, s = 0; s < r.length; s++) {
-          t = r[s], t.enumerable = t.enumerable || !1, t.configurable = !0, 'value' in t && (t.writable = !0), Object.defineProperty(q, t.key, t);
-        }
-      }return function (q, r, s) {
-        return r && p(q.prototype, r), s && p(q, s), q;
-      };
-    }(),
-        k = c(0),
-        l = function (p) {
-      return p && p.__esModule ? p : { default: p };
-    }(k),
-        m = c(2),
-        n = c(1),
-        o = b.Configurable = function (p) {
-      function q() {
-        var r = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
-            s = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, q);var t = f(this, (q.__proto__ || Object.getPrototypeOf(q)).call(this, 'Configurable', s));t.validate(r);var u = r.keyNames,
-            v = r.store,
-            w = r.storage;return t.observers = {}, t.opts = t.opts || s, t.config = r, t.storage = w, t.keyNames = u || w || l.default, t.store = v || t.createStore(t.keyNames, s), t.tokens = t.store.getAll(), t.tokens = t.store ? t.store.getAll() : r.tokens, t;
-      }return g(q, p), j(q, [{ key: 'configError', value: function value(s) {
-          throw this.error(s), Error(s);
-        } }, { key: 'on', value: function value(s, t) {
-          this.log('on', s, t);var u = this.observers[s] || [];return this.observers[s] = u.concat(t), this;
-        } }, { key: 'publish', value: function value(s, t) {
-          this.log('publish', s, t);var u = this.observers[s] || [];return u ? u.map(function (v) {
-            return v(t);
-          }) : this.log('no observers registered for', s), this;
-        } }, { key: 'handleError', value: function value(s) {
-          throw this.error(s), s;
-        } }, { key: 'createStore', value: function value(s, t) {
-          var r = t.createStore;return 'function' == typeof r ? this.createStore(s, t) : this.defaultCreateStore(s, t);
-        } }, { key: 'defaultCreateStore', value: function value(s, t) {
-          return new n.Store(s, t);
-        } }, { key: 'validate', value: function value(s) {
-          if ('object' !== ('undefined' == typeof s ? 'undefined' : h(s))) throw Error('config must be an object');
-        } }]), q;
-    }(m.Loggable);
-  }, function (a, b, c) {
-    'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(3);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
-        return d.Configurable;
-      } });var e = c(0);Object.defineProperty(b, 'keyNames', { enumerable: !0, get: function get() {
-        return e.keyNames;
-      } });var f = c(1);Object.defineProperty(b, 'Store', { enumerable: !0, get: function get() {
-        return f.Store;
-      } }), Object.defineProperty(b, 'createStore', { enumerable: !0, get: function get() {
-        return f.createStore;
-      } });
-  }]);
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-//# sourceMappingURL=bundle.prod.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)(module)))
+
+var _configurable = __webpack_require__(7);
+
+Object.defineProperty(exports, 'Configurable', {
+  enumerable: true,
+  get: function get() {
+    return _configurable.Configurable;
+  }
+});
+
+var _keynames = __webpack_require__(1);
+
+Object.defineProperty(exports, 'keyNames', {
+  enumerable: true,
+  get: function get() {
+    return _keynames.keyNames;
+  }
+});
+
+var _store = __webpack_require__(4);
+
+Object.defineProperty(exports, 'Store', {
+  enumerable: true,
+  get: function get() {
+    return _store.Store;
+  }
+});
+Object.defineProperty(exports, 'createStore', {
+  enumerable: true,
+  get: function get() {
+    return _store.createStore;
+  }
+});
 
 /***/ }),
 /* 1 */
@@ -268,17 +130,36 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = {
+  authTokenKeyName: 'auth0Token',
+  gqlServerTokenKeyName: 'gqlServerAuthToken', // for GraphQL servers
+  serverTokenKeyName: 'serverAuthToken' // for misc servers/storage systems
+};
+module.exports = exports['default'];
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.Lock = undefined;
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.createLock = createLock;
 
 var _tokenFoundation = __webpack_require__(0);
 
-var _deepExtend = __webpack_require__(6);
+var _deepExtend = __webpack_require__(12);
 
 var _deepExtend2 = _interopRequireDefault(_deepExtend);
 
@@ -292,9 +173,17 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function isObj(val) {
+  return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null;
+}
+
 var errorCode = {
   USER_ALREADY_EXISTS: 3023
 };
+
+function createLock(config, opts) {
+  return new Lock(config, opts);
+}
 
 var Lock = exports.Lock = function (_Configurable) {
   _inherits(Lock, _Configurable);
@@ -307,6 +196,24 @@ var Lock = exports.Lock = function (_Configurable) {
   //   domain: 'xxx', // Your auth0 domain
   //   clientId: 'xxx' // // Your auth0 client id
   // }
+
+  // config = {
+  //   title,
+  //   logo,
+  //   theme,
+  //   dict,
+  //   keyNames,
+  //   queries,
+  //   store,
+  //   storage,
+  //   gqlServer,
+  //   client,
+  //   connection,
+  //   lock,
+  //   createLockUi,
+  //   createGraphQLServerAuth,
+  //   displayMethod
+  // }
   function Lock() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -315,108 +222,121 @@ var Lock = exports.Lock = function (_Configurable) {
 
     var _this = _possibleConstructorReturn(this, (Lock.__proto__ || Object.getPrototypeOf(Lock)).call(this, config, opts));
 
-    var title = config.title,
-        logo = config.logo,
-        theme = config.theme,
-        dict = config.dict,
-        keyNames = config.keyNames,
-        queries = config.queries,
-        store = config.store,
-        storage = config.storage,
-        gqlServer = config.gqlServer,
-        client = config.client,
-        connection = config.connection,
-        lockConfig = config.lockConfig,
-        createLockUi = config.createLockUi,
-        createGraphQLServerAuth = config.createGraphQLServerAuth,
-        displayMethod = config.displayMethod;
-    var createConnection = opts.createConnection;
-
-
-    if (opts.clientConfig) {
-      createConnection = createConnection || opts.clientConfig.createConnection;
-    }
-
-    var _opts$lockConfig = opts.lockConfig,
-        Auth0Lock = _opts$lockConfig.Auth0Lock,
-        createLock = _opts$lockConfig.createLock;
-
-
-    _this.Auth0Lock = Auth0Lock || config.Auth0Lock || opts.Auth0Lock;
-
-    _this.displayMethod = displayMethod || 'getUserInfo';
-    var _createLockUi = createLock || createLockUi || _this.defaultCreateLockUi;
-    _this.lockConfig = lockConfig || auth0.lock || _this.defaultLockConfig;
-
-    // GraphQL client/connection used for mutation queries
-    _this.client = client;
-    _this.connection = connection;
-
-    _this.queries = queries || {};
-    _this.gqlServer = gqlServer || {};
-
-    _this.createConnection = createConnection;
-    _this._createGraphQLServerAuth = config.createGraphQLServerAuth;
-
-    _this.theme = theme || {};
-    _this.theme.logo = _this.theme.logo || logo;
-    _this.dict = dict || {};
-    _this.dict.title = _this.dict.title || title;
-    _this.setupLockConfig();
-    _this.auth0 = extractAuth0config(config);
-    if (_this.auth0) {
-      _this.lock = _createLockUi(_this.auth0, opts).bind(_this);
-    } else {
-      _this.configError('missing auth0 entry in auth entry of config object');
-    }
-
+    _this.configure();
+    _this.postConfig();
     _this.onHashParsed();
     return _this;
   }
 
   _createClass(Lock, [{
-    key: 'extractAuth0config',
-    value: function extractAuth0config() {
-      var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    key: 'configure',
+    value: function configure(force) {
+      if (this.configured.Lock && !force) return;
+      _get(Lock.prototype.__proto__ || Object.getPrototypeOf(Lock.prototype), 'configure', this).call(this);
+      var config = this.config;
+      var opts = this.opts;
 
-      return config.auth.auth0 || config.auth0;
+      var containers = [config, opts, opts.lock];
+      this.extractProperties(containers, 'Auth0Lock', 'createLockUi');
+
+      this.displayMethod = this.config.displayMethod || this.defaultDisplayMethod;
+
+      var _extractProps = this.extractProps(false, containers, 'theme', 'logo', 'title', 'dict'),
+          theme = _extractProps.theme,
+          logo = _extractProps.logo,
+          dict = _extractProps.dict,
+          title = _extractProps.title;
+
+      this.lockConfig = config.lock || opts.lock || {};
+
+      dict = dict || {};
+      theme = theme || {};
+
+      dict.title = title || dict.title || this.defaultTitle;
+      theme.dict = dict || {};
+      theme.logo = logo || theme.logo;
+
+      this.dict = dict || {};
+      this.theme = theme || {};
+
+      this.setupLockConfig();
+
+      this.auth0Config = this.extractAuth0config(config);
+
+      this.configured.Lock = true;
+      return this;
+    }
+  }, {
+    key: 'createLock',
+    value: function createLock() {
+      if (!this.auth0Config) {
+        this.configError('missing Auth0 configuration');
+      }
+      this.lock = this.createLockUi(this.auth0Config, this.opts //.bind(this)
+      );
+    }
+  }, {
+    key: 'postConfig',
+    value: function postConfig() {
+      this.validateConfig();
+      this.createLock();
+      return this;
+    }
+  }, {
+    key: 'validateConfig',
+    value: function validateConfig(force) {
+      if (this.validated.Lock && !force) return;
+      _get(Lock.prototype.__proto__ || Object.getPrototypeOf(Lock.prototype), 'validateConfig', this).call(this, force);
+
+      if (!this.auth0Config) {
+        this.configError('missing auth0Config');
+      }
+      if (!this.Auth0Lock) {
+        this.configError('missing Auth0Lock');
+      }
+      if (!this.createLockUi) {
+        this.configError('missing createLockUi');
+      }
+      this.validated.Lock = true;
+      return this;
+    }
+  }, {
+    key: 'extractAuth0config',
+    value: function extractAuth0config(config) {
+      config = config || this.config;
+      if (isObj(config.auth)) {
+        return config.auth.auth0 || config.auth || {};
+      }
+      return config.auth0 || {};
     }
   }, {
     key: 'setupLockConfig',
     value: function setupLockConfig() {
       this.lockConfig = (0, _deepExtend2.default)(this.defaultLockConfig, this.lockConfig);
+      return this;
     }
   }, {
-    key: 'defaultCreateLockUi',
-    value: function defaultCreateLockUi() {
-      var auth0 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    key: 'createLockUi',
+    value: function createLockUi() {
+      var authConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var opts = arguments[1];
 
-      this.log('create lock', auth0, opts);
-      return new this.Auth0Lock(auth0.clientId, auth0.domain, opts);
-    }
-  }, {
-    key: 'getAuth0Token',
-    value: function getAuth0Token() {
-      return this.store.getItem(this.auth0IdTokenKeyName);
-    }
-  }, {
-    key: 'setAuth0Token',
-    value: function setAuth0Token(auth0Token) {
-      this.store.setItem(this.auth0IdTokenKeyName, auth0Token);
-      return this;
+      this.log('create lock', authConfig, opts);
+      return new this.Auth0Lock(authConfig.clientId, authConfig.domain, opts);
     }
   }, {
     key: 'onHashParsed',
     value: function onHashParsed() {
       var _this2 = this;
 
+      if (this.hashWasParsed) return;
       this.lock.on('hash_parsed', function (authResult) {
+        _this2.hashWasParsed = true;
         _this2.log('hash parsed', {
           authResult: authResult
         });
         if (authResult == null) {
-          if (_this2.getAuth0Token() == null) {
+          if (_this2.auth0Token == null) {
             _this2.showLock();
           }
         } else {
@@ -424,7 +344,7 @@ var Lock = exports.Lock = function (_Configurable) {
             authResult: authResult
           });
           if (authResult.idToken) {
-            _this2.setAuth0Token(authResult.idToken);
+            _this2.auth0Token = authResult.idToken;
             _this2.log('success', authResult);
           } else {
             _this2.error('authResult missing idToken');
@@ -438,8 +358,7 @@ var Lock = exports.Lock = function (_Configurable) {
     value: function logout() {
       this.log('logout');
       this.resetTokens();
-      this.resetStorage();
-      this.publish('loggedOut');
+      this.resetStore();
       this.loggedOut();
       return this;
     }
@@ -447,22 +366,25 @@ var Lock = exports.Lock = function (_Configurable) {
     key: 'loggedOut',
     value: function loggedOut() {
       this.log('logged out');
+      this.notifySuccess('logout', true);
+      return this;
     }
   }, {
     key: 'resetTokens',
     value: function resetTokens() {
       this.log('resetTokens');
       this.tokens = {
-        auth0Token: null,
-        graphcoolToken: null
+        auth0Token: null
       };
+      this.notifySuccess('tokens:reset', true);
       return this;
     }
   }, {
-    key: 'resetStorage',
-    value: function resetStorage() {
+    key: 'resetStore',
+    value: function resetStore() {
       this.log('resetStorage');
       this.store.resetAll();
+      this.notifySuccess('store:reset', true);
       return this;
     }
 
@@ -470,7 +392,9 @@ var Lock = exports.Lock = function (_Configurable) {
 
   }, {
     key: 'showLock',
-    value: function showLock(config) {
+    value: function showLock() {
+      var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       var displayConfig = config || this.defaultLockConfig;
       displayConfig = Object.assign({}, displayConfig, this.lockConfig || {});
       this.log('showLock', displayConfig);
@@ -539,7 +463,6 @@ var Lock = exports.Lock = function (_Configurable) {
 
                 this.log('onAuth0Login', data);
                 this.setAuth0Token(auth0Token);
-                // once authenticated, signin to graphcool
                 _context.prev = 3;
                 _context.next = 6;
                 return this.serverSignin(data);
@@ -573,11 +496,6 @@ var Lock = exports.Lock = function (_Configurable) {
       return onAuth0Login;
     }()
   }, {
-    key: 'createGraphQLServerAuth',
-    value: function createGraphQLServerAuth() {
-      return this._createGraphQLServerAuth(this.config);
-    }
-  }, {
     key: 'serverSignin',
     value: function () {
       var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee2(data) {
@@ -585,36 +503,9 @@ var Lock = exports.Lock = function (_Configurable) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (this.shouldDoGraphQLServerSignin) {
-                  _context2.next = 3;
-                  break;
-                }
+                this.log('serverSignin', data);
 
-                this.log('skipping GraphQLServer signin');
-                return _context2.abrupt('return');
-
-              case 3:
-                if (!this.hasGqlServerAuth) {
-                  _context2.next = 9;
-                  break;
-                }
-
-                // make graphQL connection if not yet established
-                // doing it here should make sure that auth signin has been completed and
-                // store is populated with authToken needed by graphQL connection transport layer
-                this.connection = this.connection || this.createConnection(this.config);
-
-                _context2.next = 7;
-                return this.gqlServerAuth.signin(data);
-
-              case 7:
-                _context2.next = 10;
-                break;
-
-              case 9:
-                this.log('Skipping GraphQL Auth. gqlServerAuth instance not found');
-
-              case 10:
+              case 1:
               case 'end':
                 return _context2.stop();
             }
@@ -635,29 +526,35 @@ var Lock = exports.Lock = function (_Configurable) {
           profile = data.profile;
 
       this.log('signedInFailure', err);
-      this.publish('signedInFailure', data);
       this.handleSigninError(data);
     }
   }, {
     key: 'signedInOk',
     value: function signedInOk(data) {
       this.log('signedInOk', data);
-      this.publish('signedIn', data);
+      this.notifySuccess('signin', data);
     }
   }, {
     key: 'handleSigninError',
     value: function handleSigninError(err) {
-      this.handleError(err);
+      this.notifyFailure('signin', err
+      // this.handleError(err)
+      );
     }
   }, {
-    key: 'hasGraphQLConnection',
+    key: 'defaultTitle',
     get: function get() {
-      return _typeof(this.connection) === 'object';
+      return 'Sign in';
+    }
+  }, {
+    key: 'defaultDisplayMethod',
+    get: function get() {
+      return 'getUserInfo';
     }
   }, {
     key: 'defaultTheme',
     get: function get() {
-      return this.theme || {};
+      return {};
     }
   }, {
     key: 'defaultLockConfig',
@@ -669,77 +566,27 @@ var Lock = exports.Lock = function (_Configurable) {
       };
     }
   }, {
-    key: 'auth0IdTokenKeyName',
+    key: 'authTokenKeyName',
     get: function get() {
-      return this.store.auth0IdTokenKeyName;
+      var name = this.store.authTokenKeyName;
+      if (!name) {
+        this.handleError('store missing authTokenKeyName', this.store);
+      }
+      return name;
     }
   }, {
-    key: 'gqlServerAuth',
+    key: 'auth0Token',
     get: function get() {
-      return this.createGraphQLServerAuth();
-    }
-  }, {
-    key: 'hasGqlServerAuth',
-    get: function get() {
-      return this._createGraphQLServerAuth;
-    }
-  }, {
-    key: 'shouldDoGraphQLServerSignin',
-    get: function get() {
-      return this.hasGqlServerAuth;
+      return this.store.getItem(this.authTokenKeyName);
+    },
+    set: function set(auth0Token) {
+      this.store.setItem(this.authTokenKeyName, auth0Token);
+      return this;
     }
   }]);
 
   return Lock;
 }(_tokenFoundation.Configurable);
-
-function createLock(config, opts) {
-  return new Lock(config, opts);
-}
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.setup = setup;
-function setup(config) {
-  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var createStore = opts.createStore,
-      createConnection = opts.createConnection,
-      createLock = opts.createLock;
-
-
-  var lock = void 0,
-      connection = void 0,
-      client = void 0;
-  if (createStore) {
-    var keyNames = config.keyNames || config.storage;
-    config.store = createStore(keyNames, opts);
-  }
-
-  if (createConnection) {
-    connection = createConnection(config, opts);
-    client = connector.client;
-  }
-  config.client = client;
-  config.connection;
-
-  if (createLock) {
-    lock = createLock(config, opts);
-  }
-
-  return {
-    lock: lock,
-    connection: connection,
-    client: client
-  };
-}
 
 /***/ }),
 /* 3 */
@@ -751,8 +598,492 @@ function setup(config) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.Notifiable = undefined;
 
-var _lock = __webpack_require__(1);
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _loggable = __webpack_require__(9);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Notifiable = exports.Notifiable = function (_Loggable) {
+  _inherits(Notifiable, _Loggable);
+
+  function Notifiable(name, opts) {
+    _classCallCheck(this, Notifiable);
+
+    var _this = _possibleConstructorReturn(this, (Notifiable.__proto__ || Object.getPrototypeOf(Notifiable)).call(this, name, opts));
+
+    _this.notifyLog = opts.notifyLog;
+    _this.topic = opts.topic || _this.defaultTopic;
+    _this.notifyError = _this.notifyFailure;
+    _this.observers = {};
+    return _this;
+  }
+
+  _createClass(Notifiable, [{
+    key: 'log',
+    value: function log(msg, data) {
+      if (this.notifyLog === false) return;
+      _get(Notifiable.prototype.__proto__ || Object.getPrototypeOf(Notifiable.prototype), 'log', this).call(this, msg, data);
+    }
+  }, {
+    key: 'notify',
+    value: function notify(event, data) {
+      var criteria = this._criteria(event, data);
+      this.publish(criteria, data);
+    }
+  }, {
+    key: '_criteria',
+    value: function _criteria(event, data) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      return Object.assign({}, {
+        topic: this.topic,
+        event: event,
+        data: data
+      }, opts);
+    }
+  }, {
+    key: 'notifySuccess',
+    value: function notifySuccess(event, data) {
+      var criteria = this._criteria(event, data, {
+        status: 'success'
+      });
+      this.publish(criteria, data);
+    }
+  }, {
+    key: 'notifyFailure',
+    value: function notifyFailure(event, data) {
+      var criteria = this._criteria(event, data, {
+        status: 'failure'
+      });
+      this.publish(criteria, data);
+    }
+  }, {
+    key: 'onCriteria',
+    value: function onCriteria(criteria, observer) {
+      this.log('onCriteria', criteria, observer);
+      var topic = criteria.topic,
+          event = criteria.event,
+          status = criteria.status;
+
+      topic = topic || this.topic;
+      this.observers[topic] = this.observers[topic] || {};
+      this.observers[topic][event] = this.observers[topic][event] || {};
+
+      var eventObservers = this.observers[topic][event];
+      if (status) {
+        eventObservers[status] = this.observers[topic][event][status] || [];
+        eventObservers[status] = eventObservers[status].concat(observer);
+      } else {
+        eventObservers['observers'] = eventObservers['observers'] || [];
+        eventObservers['observers'] = eventObservers['observers'].concat(observer);
+      }
+      return this;
+    }
+  }, {
+    key: 'onStatus',
+    value: function onStatus(event, status, observer) {
+      var criteria = void 0;
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        criteria = event;
+      } else {
+        criteria = {
+          event: event
+        };
+      }
+      criteria.status = status;
+      return this.onCriteria(criteria, observer);
+    }
+  }, {
+    key: 'onSuccess',
+    value: function onSuccess(criteria, observer) {
+      return this.onStatus(criteria, 'success', observer);
+    }
+  }, {
+    key: 'onFailure',
+    value: function onFailure(criteria, observer) {
+      return this.onStatus(criteria, 'failure', observer);
+    }
+  }, {
+    key: 'on',
+    value: function on(event, observer) {
+      this.log('on', event, observer);
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        var criteria = event;
+        return this.onCriteria(criteria, observer);
+      }
+      var slot = this.observers[event] || [];
+      this.observers[event] = slot.concat(observer);
+      return this;
+    }
+  }, {
+    key: 'onAll',
+    value: function onAll(events, observer) {
+      var _this2 = this;
+
+      if (Array.isArray(events)) {
+        events.map(function (event) {
+          return _this2.on(event, observer);
+        });
+        return this;
+      } else {
+        this.handleError('onAll: first argument must be a list (Array) of events to observe', eventNames);
+      }
+    }
+  }, {
+    key: 'publishCriteria',
+    value: function publishCriteria(criteria, data) {
+      this.log('publishCriteria', criteria, data);
+      if (typeof criteria === 'string') {
+        var _event = criteria;
+        return this.publish(_event, data);
+      }
+      var topic = criteria.topic,
+          event = criteria.event,
+          status = criteria.status;
+
+
+      this.observers = this.observers || {};
+      var observers = this.observers[topic] || {};
+      observers = observers[event] || {};
+
+      this.publishTo(observers['observers'], data, criteria);
+      this.publishTo(observers[status], data, criteria);
+    }
+  }, {
+    key: 'publishTo',
+    value: function publishTo(observers, data, criteria) {
+      if (Array.isArray(observers)) {
+        observers.map(function (observer) {
+          return observer(data);
+        });
+      } else {
+        this.log('no observers registered for', criteria);
+      }
+      return this;
+    }
+  }, {
+    key: 'publish',
+    value: function publish(event, data) {
+      this.log('publish', event, data);
+
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        var criteria = this._criteria(event, data);
+        this.publishCriteria(criteria, data);
+      }
+
+      this.observers = this.observers || {};
+      var observers = this.observers[event] || [];
+      if (observers) {
+        observers.map(function (observer) {
+          return observer(data);
+        });
+      } else {
+        this.log('no observers registered for', event);
+      }
+      return this;
+    }
+  }, {
+    key: 'defaultTopic',
+    get: function get() {
+      return 'default';
+    }
+  }]);
+
+  return Notifiable;
+}(_loggable.Loggable);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Store = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.createStore = createStore;
+
+var _notifiable = __webpack_require__(3);
+
+var _keynames = __webpack_require__(1);
+
+var _keynames2 = _interopRequireDefault(_keynames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function isObj(val) {
+  return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null;
+}
+
+function createStore(keyNames) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return new Store(keyNames, opts);
+}
+
+var Store = exports.Store = function (_Notifiable) {
+  _inherits(Store, _Notifiable);
+
+  function Store(keyNames) {
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Store);
+
+    var _this = _possibleConstructorReturn(this, (Store.__proto__ || Object.getPrototypeOf(Store)).call(this, 'Store', opts));
+
+    _this.configured = {};
+    _this.validated = {};
+    _this.keyNames = keyNames;
+    _this.opts = opts;
+    _this.log('create', {
+      keyNames: _this.keyNames,
+      opts: _this.opts
+    });
+    _this.configure();
+    _this.postConfigure();
+    return _this;
+  }
+
+  _createClass(Store, [{
+    key: 'configure',
+    value: function configure(force) {
+      if (this.configured.Store && !force) return;
+      this.configured.Store = false;
+      var keyNames = this.keyNames || {};
+      var opts = this.opts;
+      try {
+        this.keyNames = Object.assign({}, this.defaultKeyNames, keyNames.storage || keyNames);
+        this.configureKeyNames();
+
+        this.storage = opts.store || opts.keyStore || this.localStorage;
+        this.configured.Store = true;
+      } catch (err) {
+        this.handleError('Store.configure', {
+          opts: opts,
+          keyNames: keyNames,
+          errMsg: err.message,
+          cause: err
+        });
+      }
+    }
+  }, {
+    key: 'configureKeyNames',
+    value: function configureKeyNames(keyNames) {
+      keyNames = keyNames || this.keyNames;
+      if (!isObj(keyNames)) {
+        this.handleError('keyNames must be an Object', {
+          keyNames: keyNames,
+          defaultKeyNames: this.defaultKeyNames
+        });
+      }
+      // TODO: set in this.keys object instead
+      this.authTokenKeyName = keyNames.authTokenKeyName;
+      this.gqlServerTokenKeyName = keyNames.gqlServerTokenKeyName;
+      this.serverTokenKeyName = keyNames.serverTokenKeyName;
+    }
+  }, {
+    key: 'postConfigure',
+    value: function postConfigure() {
+      this.validateConfig();
+    }
+  }, {
+    key: 'validateConfig',
+    value: function validateConfig() {
+      this.validated.Store = false;
+      this.log('validateConfig');
+      this.validateAllKeyNames();
+      this.validated.Store = true;
+    }
+
+    // TODO: iterate and validate keys in store
+
+  }, {
+    key: 'validateAllKeyNames',
+    value: function validateAllKeyNames() {
+      this.validateKeyName('authTokenKeyName');
+      this.validateKeyName('gqlServerTokenKeyName', 'warn');
+      this.validateKeyName('serverTokenKeyName', 'warn');
+    }
+  }, {
+    key: 'validateKeyName',
+    value: function validateKeyName(keyName, method) {
+      if (!this[keyName]) {
+        this[method]('Store: key ' + keyName + ' not defined', {
+          keyNames: this.keyNames,
+          store: this
+        });
+      }
+    }
+  }, {
+    key: 'validateKeyNames',
+    value: function validateKeyNames() {
+      var _this2 = this;
+
+      for (var _len = arguments.length, names = Array(_len), _key = 0; _key < _len; _key++) {
+        names[_key] = arguments[_key];
+      }
+
+      names.map(function (name) {
+        return _this2.validateKeyName(name);
+      });
+    }
+  }, {
+    key: 'removeItem',
+    value: function removeItem(name) {
+      this.storage.removeItem(name);
+      this.publish('remove', {
+        name: name
+      });
+      return this;
+    }
+  }, {
+    key: 'getItem',
+    value: function getItem(name) {
+      return this.storage.getItem(name);
+    }
+  }, {
+    key: 'setItem',
+    value: function setItem(name, value) {
+      this.storage.setItem(name, value);
+      this.publish('set', {
+        name: name,
+        value: value
+      });
+      return this;
+    }
+
+    // TODO: iterate and remove keys in store
+
+  }, {
+    key: 'resetAll',
+    value: function resetAll() {
+      this.removeItem(this.authTokenKeyName);
+      this.removeItem(this.gqlServerTokenKeyName);
+      this.removeItem(this.serverTokenKeyName);
+
+      this.publish('reset');
+      return this;
+    }
+
+    // TODO: iterate and (reduce) return keys in store
+
+  }, {
+    key: 'getAll',
+    value: function getAll() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return {
+        authToken: this.getItem(this.authTokenKeyName),
+        gqlServerToken: this.getItem(this.gqlServerTokenKeyName),
+        serverToken: this.getItem(this.serverTokenKeyName)
+      };
+    }
+  }, {
+    key: 'store',
+    value: function store(keyName, value) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      if (this.keyNames.indexOf(keyName) < 0) {
+        throw Error('keyname mismatch for store: ' + keyName);
+      }
+
+      this.setItem(keyName, value);
+    }
+  }, {
+    key: 'defaultKeyNames',
+    get: function get() {
+      return _keynames2.default;
+    }
+  }, {
+    key: 'localStorage',
+    get: function get() {
+      try {
+        return window.localStorage;
+      } catch (err) {
+        this.handleError('missing global window Object to retrieve localStorage');
+      }
+    }
+  }]);
+
+  return Store;
+}(_notifiable.Notifiable);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.setup = setup;
+
+var _lock = __webpack_require__(2);
+
+var _tokenFoundation = __webpack_require__(0);
+
+function setup(config) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var createStore = opts.createStore,
+      createLock = opts.createLock;
+
+
+  createStore = createStore || _tokenFoundation.createStore;
+  createLock = createLock || _lock.createLock;
+
+  if (!createLock) {
+    throw Error('Missing createLock (function) option to create the Auth0 lock');
+  }
+
+  if (createStore) {
+    var keyNames = config.keyNames || config.storage;
+    config.store = createStore(keyNames, opts);
+  }
+
+  var lock = createLock(config, opts);
+  return {
+    lock: lock
+  };
+}
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lock = __webpack_require__(2);
 
 Object.defineProperty(exports, 'Lock', {
   enumerable: true,
@@ -782,7 +1113,7 @@ Object.defineProperty(exports, 'createStore', {
   }
 });
 
-var _setup = __webpack_require__(2);
+var _setup = __webpack_require__(5);
 
 Object.defineProperty(exports, 'setup', {
   enumerable: true,
@@ -792,7 +1123,326 @@ Object.defineProperty(exports, 'setup', {
 });
 
 /***/ }),
-/* 4 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Configurable = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _keynames = __webpack_require__(1);
+
+var _keynames2 = _interopRequireDefault(_keynames);
+
+var _notifiable = __webpack_require__(3);
+
+var _store = __webpack_require__(4);
+
+var _isType = __webpack_require__(8);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Configurable = exports.Configurable = function (_Notifiable) {
+  _inherits(Configurable, _Notifiable);
+
+  function Configurable() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Configurable);
+
+    var _this = _possibleConstructorReturn(this, (Configurable.__proto__ || Object.getPrototypeOf(Configurable)).call(this, 'Configurable', opts));
+
+    _this.configured = {};
+    _this.validated = {};
+
+    _this.validate(config);
+    _this.log('configuring with', {
+      config: config,
+      opts: opts
+    });
+    _this.opts = _this.opts || opts;
+    _this.config = config;
+    _this.configure();
+    _this.postConfig();
+    return _this;
+  }
+
+  _createClass(Configurable, [{
+    key: 'configure',
+    value: function configure() {
+      if (this.configured.Configurable) return;
+      this.log('Configurable: configure');
+      this.observers = {};
+      this.configureStorage();
+      this.configured.Configurable = true;
+      return this;
+    }
+  }, {
+    key: 'postConfig',
+    value: function postConfig() {
+      this.validateConfig();
+      this.retrieveTokens();
+      return this;
+    }
+  }, {
+    key: 'configureStorage',
+    value: function configureStorage() {
+      this.log('configureStorage');
+      var config = this.config;
+      var opts = this.opts;
+      var containers = [config, opts];
+      this.extractProperties(containers, 'storage', 'keyNames', 'store');
+      this.keyNames = this.keyNames || this.storage || _keynames2.default;
+      this.store = this.store || this.createStore(this.keyNames, this.opts);
+      return this;
+    }
+  }, {
+    key: 'validateConfig',
+    value: function validateConfig() {
+      var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      if (this.validated.Configurable && !force) return;
+      this.log('validateConfig', {
+        store: this.store,
+        keyNames: this.keyNames
+      });
+      if (_typeof(this.store) !== 'object') {
+        this.configError('missing store for holding auth tokens');
+      }
+
+      if (_typeof(this.keyNames) !== 'object') {
+        this.configError('missing keyNames object, used to indicate store token keys');
+      }
+      this.validated.Configurable = true;
+    }
+  }, {
+    key: 'retrieveTokens',
+    value: function retrieveTokens() {
+      this.log('retrieveTokens', {
+        store: this.store
+      });
+      if (!(0, _isType.isFun)(this.store.getAll)) {
+        this.error("Store is missing function getAll to retrieve tokens");
+      }
+      this.tokens = this.store.getAll() || {};
+      return this;
+    }
+  }, {
+    key: 'extractProperty',
+    value: function extractProperty(containers, name, selfie) {
+      this.log('extractProperty', name, {
+        self: selfie
+      });
+      if (!(0, _isType.isArray)(containers)) {
+        this.handleError('extractProperty: containes must be an Array', containers);
+      }
+
+      var container = containers.find(function (container) {
+        return (container || {})[name];
+      }) || {};
+      var value = container[name];
+      if (!value) {
+        this.warn('no value found for', name);
+      }
+      if (selfie && value) {
+        var displayValue = (0, _isType.isFun)(value) ? value.name : value;
+        this.log('extract: set', name, 'to', displayValue);
+        this[name] = value;
+      }
+      return value;
+    }
+  }, {
+    key: 'extractProps',
+    value: function extractProps(selfie, containers) {
+      var _this2 = this;
+
+      for (var _len = arguments.length, names = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+        names[_key - 2] = arguments[_key];
+      }
+
+      this.log('extractProperties', names);
+      return names.reduce(function (acc, name) {
+        var value = _this2.extractProperty(containers, name, selfie);
+        acc[name] = value;
+        return acc;
+      }, {});
+    }
+  }, {
+    key: 'extractProperties',
+    value: function extractProperties(containers) {
+      for (var _len2 = arguments.length, names = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        names[_key2 - 1] = arguments[_key2];
+      }
+
+      return this.extractProps.apply(this, [true, containers].concat(names));
+    }
+  }, {
+    key: 'configError',
+    value: function configError(msg) {
+      this.handleError(msg);
+    }
+  }, {
+    key: 'createStore',
+    value: function createStore(keyNames) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _opts = opts,
+          createStore = _opts.createStore;
+
+      keyNames = keyNames || this.keyNames;
+      opts = opts || this.opts;
+      this.log('createStore', {
+        keyNames: keyNames,
+        opts: opts
+      });
+
+      createStore = (0, _isType.isFun)(createStore) ? createStore : this.defaultCreateStore;
+      this.log('create with', {
+        createStore: createStore
+      });
+      return createStore(keyNames, opts);
+    }
+  }, {
+    key: 'defaultCreateStore',
+    value: function defaultCreateStore(keyNames, opts) {
+      return (0, _store.createStore)(keyNames, opts);
+    }
+  }, {
+    key: 'validate',
+    value: function validate(config) {
+      if (!(0, _isType.isObject)(config)) {
+        this.handleError('config must be an object', config);
+      }
+    }
+  }]);
+
+  return Configurable;
+}(_notifiable.Notifiable);
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.isFun = isFun;
+exports.isObject = isObject;
+exports.isArray = isArray;
+function isFun(fun) {
+  return typeof fun === 'function';
+}
+
+function isObject(obj) {
+  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+}
+
+function isArray(obj) {
+  return Array.isArray(obj);
+}
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Loggable = exports.Loggable = function () {
+  function Loggable(name) {
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Loggable);
+
+    this.opts = opts;
+    this.io = opts.io || console;
+    this.logging = opts.logging;
+    this.name = name || opts.name;
+  }
+
+  _createClass(Loggable, [{
+    key: 'handleError',
+    value: function handleError(err, data) {
+      this.error(err, data);
+      if (this.notify) {
+        this.notify('error', data);
+      }
+      throw err;
+    }
+  }, {
+    key: 'enableLog',
+    value: function enableLog() {
+      this.logging = true;
+      return this;
+    }
+  }, {
+    key: 'disableLog',
+    value: function disableLog() {
+      this.logging = false;
+      return this;
+    }
+  }, {
+    key: 'label',
+    value: function label(lv) {
+      lv = lv.toUpperCase();
+      return '[' + this.name + '] ' + lv + ':';
+    }
+  }, {
+    key: 'warn',
+    value: function warn(msg, data) {
+      if (this.logging) {
+        return this.io.log(this.label('warning'), msg, data);
+      }
+    }
+  }, {
+    key: 'log',
+    value: function log(msg, data) {
+      if (this.logging) {
+        return this.io.log(this.label('info'), msg, data);
+      }
+    }
+  }, {
+    key: 'error',
+    value: function error(msg, data) {
+      if (this.logging) {
+        return this.io.error(this.label('error'), msg, data);
+      }
+    }
+  }]);
+
+  return Loggable;
+}();
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -913,7 +1563,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 5 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -927,9 +1577,9 @@ function fromByteArray (uint8) {
 
 
 
-var base64 = __webpack_require__(4)
-var ieee754 = __webpack_require__(7)
-var isArray = __webpack_require__(8)
+var base64 = __webpack_require__(10)
+var ieee754 = __webpack_require__(13)
+var isArray = __webpack_require__(14)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -2707,10 +3357,10 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
 
 /***/ }),
-/* 6 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2859,10 +3509,10 @@ var deepExtend = module.exports = function (/*obj_1, [obj_2], [obj_N]*/) {
 	return target;
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).Buffer))
 
 /***/ }),
-/* 7 */
+/* 13 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -2952,7 +3602,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 8 */
+/* 14 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -2963,7 +3613,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 9 */
+/* 15 */
 /***/ (function(module, exports) {
 
 var g;
@@ -2987,34 +3637,6 @@ try {
 // easier to handle this case. if(!global) { ...}
 
 module.exports = g;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
 
 
 /***/ })

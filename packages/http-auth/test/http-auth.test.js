@@ -1,30 +1,27 @@
 import test from 'ava'
 import config from './config'
 import storage from './storage'
-
-import ApolloClient, {
-  createNetworkInterface
-} from 'apollo-client'
+import jQuery from 'jquery'
 
 import {
-  GraphQLAuth,
-  createGraphQLAuth
-} from '../src/gql-auth'
+  HttpAuth,
+  createHttpAuth
+} from '../src/http-auth'
 
 import {
-  createConnection
-} from '@tecla5/apollo-auth-conn'
+  createConnection,
+  HttpAuthConn,
+  FetchAuthConn,
+  AjaxAuthConn
+} from '@tecla5/http-auth-conn'
 
 import './mock-localstorage'
 
-const client = {
-  Client: ApolloClient,
-  createNetworkInterface
-}
+const client = jQuery
 
-test('GraphQLAuth: missing connection', t => {
+test('HttpAuth: missing connection', t => {
   try {
-    createGraphQLAuth(config, {
+    createHttpAuth(config, {
       logging: true,
       storage,
     })
@@ -33,9 +30,9 @@ test('GraphQLAuth: missing connection', t => {
   }
 })
 
-test('GraphQLAuth: with createConnection', t => {
+test('HttpAuth: with createConnection', t => {
   try {
-    let auth = createGraphQLAuth(config, {
+    let auth = createHttpAuth(config, {
       logging: true,
       storage,
       client,

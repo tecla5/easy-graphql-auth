@@ -9,7 +9,7 @@ export default {
     }
   },
   storage: {
-    // key to store feathers server auth Token
-    serverTokenKeyName: 'feathersAuthToken'
+    // key to store server auth Token
+    serverTokenKeyName: 'serverAuthToken'
   }
 }

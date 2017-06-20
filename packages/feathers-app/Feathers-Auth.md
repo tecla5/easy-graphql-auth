@@ -1,4 +1,4 @@
-# Feathers auth
+# Feathers Auth0 JWT token authentication
 
 Feathers auth using [feathers-authentication-client](https://github.com/feathersjs/feathers-authentication-client)
 

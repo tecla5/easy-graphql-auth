@@ -1,30 +1,26 @@
 import test from 'ava'
 import config from './config'
 import storage from './storage'
+import jQuery from 'jquery'
 
 import {
-  GraphQLAuth,
-  createGraphQLAuth
-} from '../src/gql-auth'
+  HttpAuth,
+  createHttpAuth
+} from '../src/http-auth'
+
+import {
+  createConnection,
+  HttpAuthConn,
+  FetchAuthConn,
+  AjaxAuthConn
+} from '@tecla5/http-auth-conn'
 
 import './mock-localstorage'
 
-import {
-  createConnection
-} from '@tecla5/apollo-auth-conn'
-
-import ApolloClient, {
-  createNetworkInterface
-} from 'apollo-client'
-
-const client = {
-  Client: ApolloClient,
-  createNetworkInterface,
-  createConnection
-}
+const client = jQuery
 
 test('Signin', async t => {
-  let auth = createGraphQLAuth(config, {
+  let auth = createHttpAuth(config, {
     logging: true,
     client,
     storage

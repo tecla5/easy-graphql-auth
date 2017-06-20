@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,19 +86,490 @@ return /******/ (function(modules) { // webpackBootstrap
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GraphQLConnection = undefined;
+exports.default = {
+  authTokenKeyName: 'auth0Token',
+  gqlServerTokenKeyName: 'gqlServerAuthToken', // for GraphQL servers
+  serverTokenKeyName: 'serverAuthToken' // for misc servers/storage systems
+};
+module.exports = exports['default'];
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Notifiable = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _tokenFoundation = __webpack_require__(2);
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _loggable = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Notifiable = exports.Notifiable = function (_Loggable) {
+  _inherits(Notifiable, _Loggable);
+
+  function Notifiable(name, opts) {
+    _classCallCheck(this, Notifiable);
+
+    var _this = _possibleConstructorReturn(this, (Notifiable.__proto__ || Object.getPrototypeOf(Notifiable)).call(this, name, opts));
+
+    _this.notifyLog = opts.notifyLog;
+    _this.topic = opts.topic || _this.defaultTopic;
+    _this.notifyError = _this.notifyFailure;
+    _this.observers = {};
+    return _this;
+  }
+
+  _createClass(Notifiable, [{
+    key: 'log',
+    value: function log(msg, data) {
+      if (this.notifyLog === false) return;
+      _get(Notifiable.prototype.__proto__ || Object.getPrototypeOf(Notifiable.prototype), 'log', this).call(this, msg, data);
+    }
+  }, {
+    key: 'notify',
+    value: function notify(event, data) {
+      var criteria = this._criteria(event, data);
+      this.publish(criteria, data);
+    }
+  }, {
+    key: '_criteria',
+    value: function _criteria(event, data) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      return Object.assign({}, {
+        topic: this.topic,
+        event: event,
+        data: data
+      }, opts);
+    }
+  }, {
+    key: 'notifySuccess',
+    value: function notifySuccess(event, data) {
+      var criteria = this._criteria(event, data, {
+        status: 'success'
+      });
+      this.publish(criteria, data);
+    }
+  }, {
+    key: 'notifyFailure',
+    value: function notifyFailure(event, data) {
+      var criteria = this._criteria(event, data, {
+        status: 'failure'
+      });
+      this.publish(criteria, data);
+    }
+  }, {
+    key: 'onCriteria',
+    value: function onCriteria(criteria, observer) {
+      this.log('onCriteria', criteria, observer);
+      var topic = criteria.topic,
+          event = criteria.event,
+          status = criteria.status;
+
+      topic = topic || this.topic;
+      this.observers[topic] = this.observers[topic] || {};
+      this.observers[topic][event] = this.observers[topic][event] || {};
+
+      var eventObservers = this.observers[topic][event];
+      if (status) {
+        eventObservers[status] = this.observers[topic][event][status] || [];
+        eventObservers[status] = eventObservers[status].concat(observer);
+      } else {
+        eventObservers['observers'] = eventObservers['observers'] || [];
+        eventObservers['observers'] = eventObservers['observers'].concat(observer);
+      }
+      return this;
+    }
+  }, {
+    key: 'onStatus',
+    value: function onStatus(event, status, observer) {
+      var criteria = void 0;
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        criteria = event;
+      } else {
+        criteria = {
+          event: event
+        };
+      }
+      criteria.status = status;
+      return this.onCriteria(criteria, observer);
+    }
+  }, {
+    key: 'onSuccess',
+    value: function onSuccess(criteria, observer) {
+      return this.onStatus(criteria, 'success', observer);
+    }
+  }, {
+    key: 'onFailure',
+    value: function onFailure(criteria, observer) {
+      return this.onStatus(criteria, 'failure', observer);
+    }
+  }, {
+    key: 'on',
+    value: function on(event, observer) {
+      this.log('on', event, observer);
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        var criteria = event;
+        return this.onCriteria(criteria, observer);
+      }
+      var slot = this.observers[event] || [];
+      this.observers[event] = slot.concat(observer);
+      return this;
+    }
+  }, {
+    key: 'onAll',
+    value: function onAll(events, observer) {
+      var _this2 = this;
+
+      if (Array.isArray(events)) {
+        events.map(function (event) {
+          return _this2.on(event, observer);
+        });
+        return this;
+      } else {
+        this.handleError('onAll: first argument must be a list (Array) of events to observe', eventNames);
+      }
+    }
+  }, {
+    key: 'publishCriteria',
+    value: function publishCriteria(criteria, data) {
+      this.log('publishCriteria', criteria, data);
+      if (typeof criteria === 'string') {
+        var _event = criteria;
+        return this.publish(_event, data);
+      }
+      var topic = criteria.topic,
+          event = criteria.event,
+          status = criteria.status;
+
+
+      this.observers = this.observers || {};
+      var observers = this.observers[topic] || {};
+      observers = observers[event] || {};
+
+      this.publishTo(observers['observers'], data, criteria);
+      this.publishTo(observers[status], data, criteria);
+    }
+  }, {
+    key: 'publishTo',
+    value: function publishTo(observers, data, criteria) {
+      if (Array.isArray(observers)) {
+        observers.map(function (observer) {
+          return observer(data);
+        });
+      } else {
+        this.log('no observers registered for', criteria);
+      }
+      return this;
+    }
+  }, {
+    key: 'publish',
+    value: function publish(event, data) {
+      this.log('publish', event, data);
+
+      if ((typeof event === 'undefined' ? 'undefined' : _typeof(event)) === 'object') {
+        var criteria = this._criteria(event, data);
+        this.publishCriteria(criteria, data);
+      }
+
+      this.observers = this.observers || {};
+      var observers = this.observers[event] || [];
+      if (observers) {
+        observers.map(function (observer) {
+          return observer(data);
+        });
+      } else {
+        this.log('no observers registered for', event);
+      }
+      return this;
+    }
+  }, {
+    key: 'defaultTopic',
+    get: function get() {
+      return 'default';
+    }
+  }]);
+
+  return Notifiable;
+}(_loggable.Loggable);
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Store = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.createStore = createStore;
+
+var _notifiable = __webpack_require__(1);
+
+var _keynames = __webpack_require__(0);
+
+var _keynames2 = _interopRequireDefault(_keynames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function isObj(val) {
+  return (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null;
+}
+
+function createStore(keyNames) {
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  return new Store(keyNames, opts);
+}
+
+var Store = exports.Store = function (_Notifiable) {
+  _inherits(Store, _Notifiable);
+
+  function Store(keyNames) {
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Store);
+
+    var _this = _possibleConstructorReturn(this, (Store.__proto__ || Object.getPrototypeOf(Store)).call(this, 'Store', opts));
+
+    _this.configured = {};
+    _this.validated = {};
+    _this.keyNames = keyNames;
+    _this.opts = opts;
+    _this.log('create', {
+      keyNames: _this.keyNames,
+      opts: _this.opts
+    });
+    _this.configure();
+    _this.postConfigure();
+    return _this;
+  }
+
+  _createClass(Store, [{
+    key: 'configure',
+    value: function configure(force) {
+      if (this.configured.Store && !force) return;
+      this.configured.Store = false;
+      var keyNames = this.keyNames || {};
+      var opts = this.opts;
+      try {
+        this.keyNames = Object.assign({}, this.defaultKeyNames, keyNames.storage || keyNames);
+        this.configureKeyNames();
+
+        this.storage = opts.store || opts.keyStore || this.localStorage;
+        this.configured.Store = true;
+      } catch (err) {
+        this.handleError('Store.configure', {
+          opts: opts,
+          keyNames: keyNames,
+          errMsg: err.message,
+          cause: err
+        });
+      }
+    }
+  }, {
+    key: 'configureKeyNames',
+    value: function configureKeyNames(keyNames) {
+      keyNames = keyNames || this.keyNames;
+      if (!isObj(keyNames)) {
+        this.handleError('keyNames must be an Object', {
+          keyNames: keyNames,
+          defaultKeyNames: this.defaultKeyNames
+        });
+      }
+      // TODO: set in this.keys object instead
+      this.authTokenKeyName = keyNames.authTokenKeyName;
+      this.gqlServerTokenKeyName = keyNames.gqlServerTokenKeyName;
+      this.serverTokenKeyName = keyNames.serverTokenKeyName;
+    }
+  }, {
+    key: 'postConfigure',
+    value: function postConfigure() {
+      this.validateConfig();
+    }
+  }, {
+    key: 'validateConfig',
+    value: function validateConfig() {
+      this.validated.Store = false;
+      this.log('validateConfig');
+      this.validateAllKeyNames();
+      this.validated.Store = true;
+    }
+
+    // TODO: iterate and validate keys in store
+
+  }, {
+    key: 'validateAllKeyNames',
+    value: function validateAllKeyNames() {
+      this.validateKeyName('authTokenKeyName');
+      this.validateKeyName('gqlServerTokenKeyName', 'warn');
+      this.validateKeyName('serverTokenKeyName', 'warn');
+    }
+  }, {
+    key: 'validateKeyName',
+    value: function validateKeyName(keyName, method) {
+      if (!this[keyName]) {
+        this[method]('Store: key ' + keyName + ' not defined', {
+          keyNames: this.keyNames,
+          store: this
+        });
+      }
+    }
+  }, {
+    key: 'validateKeyNames',
+    value: function validateKeyNames() {
+      var _this2 = this;
+
+      for (var _len = arguments.length, names = Array(_len), _key = 0; _key < _len; _key++) {
+        names[_key] = arguments[_key];
+      }
+
+      names.map(function (name) {
+        return _this2.validateKeyName(name);
+      });
+    }
+  }, {
+    key: 'removeItem',
+    value: function removeItem(name) {
+      this.storage.removeItem(name);
+      this.publish('remove', {
+        name: name
+      });
+      return this;
+    }
+  }, {
+    key: 'getItem',
+    value: function getItem(name) {
+      return this.storage.getItem(name);
+    }
+  }, {
+    key: 'setItem',
+    value: function setItem(name, value) {
+      this.storage.setItem(name, value);
+      this.publish('set', {
+        name: name,
+        value: value
+      });
+      return this;
+    }
+
+    // TODO: iterate and remove keys in store
+
+  }, {
+    key: 'resetAll',
+    value: function resetAll() {
+      this.removeItem(this.authTokenKeyName);
+      this.removeItem(this.gqlServerTokenKeyName);
+      this.removeItem(this.serverTokenKeyName);
+
+      this.publish('reset');
+      return this;
+    }
+
+    // TODO: iterate and (reduce) return keys in store
+
+  }, {
+    key: 'getAll',
+    value: function getAll() {
+      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return {
+        authToken: this.getItem(this.authTokenKeyName),
+        gqlServerToken: this.getItem(this.gqlServerTokenKeyName),
+        serverToken: this.getItem(this.serverTokenKeyName)
+      };
+    }
+  }, {
+    key: 'store',
+    value: function store(keyName, value) {
+      var opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+      if (this.keyNames.indexOf(keyName) < 0) {
+        throw Error('keyname mismatch for store: ' + keyName);
+      }
+
+      this.setItem(keyName, value);
+    }
+  }, {
+    key: 'defaultKeyNames',
+    get: function get() {
+      return _keynames2.default;
+    }
+  }, {
+    key: 'localStorage',
+    get: function get() {
+      try {
+        return window.localStorage;
+      } catch (err) {
+        this.handleError('missing global window Object to retrieve localStorage');
+      }
+    }
+  }]);
+
+  return Store;
+}(_notifiable.Notifiable);
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GraphQLConnection = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+exports.createConnection = createConnection;
+
+var _tokenFoundation = __webpack_require__(6);
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function createConnection(config, opts) {
+  return new GraphQLConnection(config, opts);
+}
 
 var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
   _inherits(GraphQLConnection, _Configurable);
@@ -113,30 +584,116 @@ var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
 
     _this.name = 'GraphQLConnection';
     _this.configure();
+    _this.postConfig();
     return _this;
   }
 
   _createClass(GraphQLConnection, [{
     key: 'configure',
     value: function configure() {
+      _get(GraphQLConnection.prototype.__proto__ || Object.getPrototypeOf(GraphQLConnection.prototype), 'configure', this).call(this);
+
+      if (this.configured.GraphQLConnection) return;
       var config = this.config;
 
       var gqlServer = config.gqlServer;
-      gqlServer.endpoint = gqlServer.endpoint || gqlServer.connection.uri;
+      if (!gqlServer) {
+        this.configError('missing gqlServer object in configuration');
+      }
 
-      this.config.gqlServer = gqlServer;
+      this.log('gqlServer config', {
+        gqlServer: gqlServer
+      });
+      gqlServer.endpoint = process.env.gqlServer_endpoint || gqlServer.endpoint || gqlServer.connection.uri;
+
+      this.config.gqlServer = gqlServer || {};
+      return this;
+    }
+  }, {
+    key: 'prepareQuery',
+    value: function prepareQuery(query) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      this.log('doQuery', {
+        query: query,
+        opts: opts
+      });
+      if (!this.client) {
+        this.handleError('doQuery: missing client');
+      }
+
+      if (!query) {
+        this.handleError('doQuery: query is not defined', query);
+      }
+
+      if (this.isGqlQuery(query)) {
+        query = this.toGqlQuery(query);
+      }
+      return query;
+    }
+  }, {
+    key: 'doQuery',
+    value: function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(query) {
+        var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.log('doQuery', {
+                  query: query,
+                  opts: opts
+                });
+                this.handleError('doQuery: must be implemented by subclass');
+
+              case 2:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function doQuery(_x4) {
+        return _ref.apply(this, arguments);
+      }
+
+      return doQuery;
+    }()
+  }, {
+    key: 'isGqlQuery',
+    value: function isGqlQuery(query) {
+      if ((typeof query === 'undefined' ? 'undefined' : _typeof(query)) !== 'object') return false;
+      // see: https://www.npmjs.com/package/graphql-tag
+      if (query.kind === 'Document') return true;
+      return false;
+    }
+  }, {
+    key: 'toGqlQuery',
+    value: function toGqlQuery(queryStr, opts) {
+      if (typeof query !== 'string') {
+        this.handleError('toGqlQuery: bad query', queryStr);
+      }
+      if (typeof this.gql !== 'function') {
+        this.log('Try: https://www.npmjs.com/package/graphql-tag');
+        this.error('Also see: https://www.npmjs.com/package/graphql');
+        this.handleError('missing gql function to convert query string to GraphQL query');
+      }
+      return this.gql(query, opts);
+    }
+  }, {
+    key: 'postConfig',
+    value: function postConfig() {
       this.validateConfig();
+      this.configured.GraphQLConnection = true;
     }
   }, {
     key: 'validateConfig',
-    value: function validateConfig() {
-      if (_typeof(this.store) !== 'object') {
-        this.configError('missing store for holding signinToken from GraphQL server');
-      }
-
-      if (_typeof(this.keyNames) !== 'object') {
-        this.configError('missing keyNames object, used to indicate store token keys');
-      }
+    value: function validateConfig(force) {
+      if (this.validated.GraphQLConnection && !force) return;
+      this.validated.GraphQLConnection = false;
+      _get(GraphQLConnection.prototype.__proto__ || Object.getPrototypeOf(GraphQLConnection.prototype), 'validateConfig', this).call(this, force);
+      this.validated.GraphQLConnection = true;
     }
   }, {
     key: 'setJwtToken',
@@ -155,7 +712,7 @@ var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
   }, {
     key: 'authTokenKeyName',
     get: function get() {
-      return this.keyNames.gqlServerTokenKeyName;
+      return process.env.gqlServer_tokenKeyName || this.keyNames.gqlServerTokenKeyName;
     }
   }, {
     key: 'authToken',
@@ -166,9 +723,10 @@ var GraphQLConnection = exports.GraphQLConnection = function (_Configurable) {
 
   return GraphQLConnection;
 }(_tokenFoundation.Configurable);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
-/* 1 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -178,7 +736,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _gqlConnection = __webpack_require__(0);
+var _gqlConnection = __webpack_require__(3);
 
 Object.defineProperty(exports, 'GraphQLConnection', {
   enumerable: true,
@@ -186,237 +744,564 @@ Object.defineProperty(exports, 'GraphQLConnection', {
     return _gqlConnection.GraphQLConnection;
   }
 });
+Object.defineProperty(exports, 'createConnection', {
+  enumerable: true,
+  get: function get() {
+    return _gqlConnection.createConnection;
+  }
+});
 
 /***/ }),
-/* 2 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Configurable = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-(function (b, c) {
-  'object' == ( false ? 'undefined' : _typeof(exports)) && 'object' == ( false ? 'undefined' : _typeof(module)) ? module.exports = c() :  true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (c),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : 'object' == (typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) ? exports.tokenFoundation = c() : b.tokenFoundation = c();
-})(undefined, function () {
-  return function (a) {
-    function b(d) {
-      if (c[d]) return c[d].exports;var e = c[d] = { i: d, l: !1, exports: {} };return a[d].call(e.exports, e, e.exports, b), e.l = !0, e.exports;
-    }var c = {};return b.m = a, b.c = c, b.i = function (d) {
-      return d;
-    }, b.d = function (d, e, f) {
-      b.o(d, e) || Object.defineProperty(d, e, { configurable: !1, enumerable: !0, get: f });
-    }, b.n = function (d) {
-      var e = d && d.__esModule ? function () {
-        return d['default'];
-      } : function () {
-        return d;
-      };return b.d(e, 'a', e), e;
-    }, b.o = function (d, e) {
-      return Object.prototype.hasOwnProperty.call(d, e);
-    }, b.p = '', b(b.s = 4);
-  }([function (a, b) {
-    'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 }), b.default = { auth0IdTokenKeyName: 'auth0Token', gqlServerTokenStorageKey: 'graphCoolToken' }, a.exports = b['default'];
-  }, function (a, b, c) {
-    'use strict';
-    function d(l, m) {
-      if (!(l instanceof m)) throw new TypeError('Cannot call a class as a function');
-    }function e(l, m) {
-      if (!l) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return m && ('object' == (typeof m === 'undefined' ? 'undefined' : _typeof(m)) || 'function' == typeof m) ? m : l;
-    }function f(l, m) {
-      if ('function' != typeof m && null !== m) throw new TypeError('Super expression must either be null or a function, not ' + (typeof m === 'undefined' ? 'undefined' : _typeof(m)));l.prototype = Object.create(m && m.prototype, { constructor: { value: l, enumerable: !1, writable: !0, configurable: !0 } }), m && (Object.setPrototypeOf ? Object.setPrototypeOf(l, m) : l.__proto__ = m);
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Store = void 0;var h = function () {
-      function l(m, n) {
-        for (var p, o = 0; o < n.length; o++) {
-          p = n[o], p.enumerable = p.enumerable || !1, p.configurable = !0, 'value' in p && (p.writable = !0), Object.defineProperty(m, p.key, p);
-        }
-      }return function (m, n, o) {
-        return n && l(m.prototype, n), o && l(m, o), m;
-      };
-    }();b.createStore = function (l) {
-      var m = 1 < arguments.length && arguments[1] !== void 0 ? arguments[1] : {};return new k(l, m);
-    };var j = c(2),
-        k = b.Store = function (l) {
-      function m(n) {
-        var o = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, m);var p = e(this, (m.__proto__ || Object.getPrototypeOf(m)).call(this, 'Store', o));return p.log('create', { keyNames: n, opts: o }), p.keyNames = n.storage || n, p.storage = o.storage || o.keyStore || window.localStorage, p.authTokenKeyName = p.keyNames.authTokenKeyName, p.gqlServerTokenKeyName = p.keyNames.gqlServerTokenKeyName, p;
-      }return f(m, l), h(m, [{ key: 'removeItem', value: function value(o) {
-          this.storage.removeItem(o);
-        } }, { key: 'getItem', value: function value(o) {
-          return this.storage.getItem(o);
-        } }, { key: 'setItem', value: function value(o, p) {
-          this.storage.setItem(o, p);
-        } }, { key: 'validateKeyNames', value: function value() {
-          for (var o = this, p = arguments.length, q = Array(p), r = 0; r < p; r++) {
-            q[r] = arguments[r];
-          }q.map(function (s) {
-            return o.validateKeyName(s);
-          });
-        } }, { key: 'validateKeyName', value: function value(o) {
-          return 'string' != typeof this.keyNames[o] && this.error('keyNames missing ' + o), this;
-        } }, { key: 'error', value: function value(o) {
-          console.error(o);
-        } }, { key: 'resetAll', value: function value() {
-          this.removeItem(this.authTokenKeyName), this.removeItem(this.gqlServerTokenKeyName);
-        } }, { key: 'getAll', value: function value() {
-          0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {};return { authToken: this.getItem(this.authTokenKeyName), gqlServerToken: this.getItem(this.gqlServerTokenKeyName) };
-        } }, { key: 'store', value: function value(o, p) {
-          2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : {};if (0 > this.keyNames.indexOf(o)) throw Error('keyname mismatch for store: ' + o);this.setItem(o, p);
-        } }]), m;
-    }(j.Loggable);
-  }, function (a, b) {
-    'use strict';
-    function d(g, h) {
-      if (!(g instanceof h)) throw new TypeError('Cannot call a class as a function');
-    }Object.defineProperty(b, '__esModule', { value: !0 });var e = function () {
-      function g(h, j) {
-        for (var l, k = 0; k < j.length; k++) {
-          l = j[k], l.enumerable = l.enumerable || !1, l.configurable = !0, 'value' in l && (l.writable = !0), Object.defineProperty(h, l.key, l);
-        }
-      }return function (h, j, k) {
-        return j && g(h.prototype, j), k && g(h, k), h;
-      };
-    }(),
-        f = b.Loggable = function () {
-      function g(h) {
-        var j = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};d(this, g), this.opts = j, this.io = j.io || console, this.logging = j.logging, this.name = h || j.name;
-      }return e(g, [{ key: 'enableLog', value: function value() {
-          return this.logging = !0, this;
-        } }, { key: 'disableLog', value: function value() {
-          return this.logging = !1, this;
-        } }, { key: 'log', value: function value() {
-          if (this.logging) {
-            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
-              l[m] = arguments[m];
-            }(j = this.io).log.apply(j, [this.name].concat(l));
-          }
-        } }, { key: 'error', value: function value() {
-          if (this.logging) {
-            for (var j, k = arguments.length, l = Array(k), m = 0; m < k; m++) {
-              l[m] = arguments[m];
-            }(j = this.io).error.apply(j, [this.name].concat(l));
-          }
-        } }]), g;
-    }();
-  }, function (a, b, c) {
-    'use strict';
-    function e(q, r) {
-      if (!(q instanceof r)) throw new TypeError('Cannot call a class as a function');
-    }function f(q, r) {
-      if (!q) throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');return r && ('object' == (typeof r === 'undefined' ? 'undefined' : _typeof(r)) || 'function' == typeof r) ? r : q;
-    }function g(q, r) {
-      if ('function' != typeof r && null !== r) throw new TypeError('Super expression must either be null or a function, not ' + (typeof r === 'undefined' ? 'undefined' : _typeof(r)));q.prototype = Object.create(r && r.prototype, { constructor: { value: q, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(q, r) : q.__proto__ = r);
-    }function h(q) {
-      return 'function' == typeof q;
-    }Object.defineProperty(b, '__esModule', { value: !0 }), b.Configurable = void 0;var j = 'function' == typeof Symbol && 'symbol' == _typeof(Symbol.iterator) ? function (q) {
-      return typeof q === 'undefined' ? 'undefined' : _typeof(q);
-    } : function (q) {
-      return q && 'function' == typeof Symbol && q.constructor === Symbol && q !== Symbol.prototype ? 'symbol' : typeof q === 'undefined' ? 'undefined' : _typeof(q);
-    },
-        k = function () {
-      function q(r, s) {
-        for (var u, t = 0; t < s.length; t++) {
-          u = s[t], u.enumerable = u.enumerable || !1, u.configurable = !0, 'value' in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
-        }
-      }return function (r, s, t) {
-        return s && q(r.prototype, s), t && q(r, t), r;
-      };
-    }(),
-        l = c(0),
-        m = function (q) {
-      return q && q.__esModule ? q : { default: q };
-    }(l),
-        n = c(2),
-        o = c(1),
-        p = b.Configurable = function (q) {
-      function r() {
-        var s = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {},
-            t = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {};e(this, r);var u = f(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, 'Configurable', t));return u.validate(s), u.log('configuring with', { config: s, opts: t }), u.opts = u.opts || t, u.config = s, u.configure(), u;
-      }return g(r, q), k(r, [{ key: 'configure', value: function value() {
-          return this.log('configure'), this.observers = {}, this.configureStorage(), this.validateConfig(), this.retrieveTokens(), this;
-        } }, { key: 'configureStorage', value: function value() {
-          var t = this.config,
-              u = this.opts;return this.log('configureStorage'), this.extractProperties([t, u], 'storage', 'keyNames', 'store'), this.keyNames = this.keyNames || this.storage || m.default, this.store = this.store || this.createStore(), this;
-        } }, { key: 'validateConfig', value: function value() {
-          this.store || this.configError('Missing store. Was not configured!');
-        } }, { key: 'retrieveTokens', value: function value() {
-          this.log('retrieveTokens', { store: this.store }), h(this.store.getAll) || this.error('Store is missing function getAll to retrieve tokens'), this.tokens = this.store.getAll() || {};
-        } }, { key: 'extractProperty', value: function value(t, u, v) {
-          var w = t.find(function (y) {
-            return (y || {})[u];
-          }) || {},
-              x = w[u];return v && x && (this[u] = x), x;
-        } }, { key: 'extractProperties', value: function value(t) {
-          for (var u = this, v = arguments.length, w = Array(1 < v ? v - 1 : 0), x = 1; x < v; x++) {
-            w[x - 1] = arguments[x];
-          }return w.reduce(function (y, z) {
-            var A = u.extractProperty(t, z, !0);return y[z] = A, y;
-          }, {});
-        } }, { key: 'configError', value: function value(t) {
-          throw this.error(t), Error(t);
-        } }, { key: 'on', value: function value(t, u) {
-          this.log('on', t, u);var v = this.observers[t] || [];return this.observers[t] = v.concat(u), this;
-        } }, { key: 'publish', value: function value(t, u) {
-          this.log('publish', t, u);var v = this.observers[t] || [];return v ? v.map(function (w) {
-            return w(u);
-          }) : this.log('no observers registered for', t), this;
-        } }, { key: 'handleError', value: function value(t) {
-          throw this.error(t), t;
-        } }, { key: 'createStore', value: function value(t) {
-          var u = 1 < arguments.length && void 0 !== arguments[1] ? arguments[1] : {},
-              v = u,
-              s = v.createStore;return t = t || this.keyNames, u = u || this.opts, this.log('createStore', { keyNames: t, opts: u }), s = h(s) ? s : this.defaultCreateStore, this.log('create with', { createStore: s }), s(t, u);
-        } }, { key: 'defaultCreateStore', value: function value(t, u) {
-          return new o.Store(t, u);
-        } }, { key: 'validate', value: function value(t) {
-          if ('object' !== ('undefined' == typeof t ? 'undefined' : j(t))) throw Error('config must be an object');
-        } }]), r;
-    }(n.Loggable);
-  }, function (a, b, c) {
-    'use strict';
-    Object.defineProperty(b, '__esModule', { value: !0 });var d = c(3);Object.defineProperty(b, 'Configurable', { enumerable: !0, get: function get() {
-        return d.Configurable;
-      } });var e = c(0);Object.defineProperty(b, 'keyNames', { enumerable: !0, get: function get() {
-        return e.keyNames;
-      } });var f = c(1);Object.defineProperty(b, 'Store', { enumerable: !0, get: function get() {
-        return f.Store;
-      } }), Object.defineProperty(b, 'createStore', { enumerable: !0, get: function get() {
-        return f.createStore;
-      } });
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _keynames = __webpack_require__(0);
+
+var _keynames2 = _interopRequireDefault(_keynames);
+
+var _notifiable = __webpack_require__(1);
+
+var _store = __webpack_require__(2);
+
+var _isType = __webpack_require__(7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Configurable = exports.Configurable = function (_Notifiable) {
+  _inherits(Configurable, _Notifiable);
+
+  function Configurable() {
+    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Configurable);
+
+    var _this = _possibleConstructorReturn(this, (Configurable.__proto__ || Object.getPrototypeOf(Configurable)).call(this, 'Configurable', opts));
+
+    _this.configured = {};
+    _this.validated = {};
+
+    _this.validate(config);
+    _this.log('configuring with', {
+      config: config,
+      opts: opts
+    });
+    _this.opts = _this.opts || opts;
+    _this.config = config;
+    _this.configure();
+    _this.postConfig();
+    return _this;
+  }
+
+  _createClass(Configurable, [{
+    key: 'configure',
+    value: function configure() {
+      if (this.configured.Configurable) return;
+      this.log('Configurable: configure');
+      this.observers = {};
+      this.configureStorage();
+      this.configured.Configurable = true;
+      return this;
+    }
+  }, {
+    key: 'postConfig',
+    value: function postConfig() {
+      this.validateConfig();
+      this.retrieveTokens();
+      return this;
+    }
+  }, {
+    key: 'configureStorage',
+    value: function configureStorage() {
+      this.log('configureStorage');
+      var config = this.config;
+      var opts = this.opts;
+      var containers = [config, opts];
+      this.extractProperties(containers, 'storage', 'keyNames', 'store');
+      this.keyNames = this.keyNames || this.storage || _keynames2.default;
+      this.store = this.store || this.createStore(this.keyNames, this.opts);
+      return this;
+    }
+  }, {
+    key: 'validateConfig',
+    value: function validateConfig() {
+      var force = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+      if (this.validated.Configurable && !force) return;
+      this.log('validateConfig', {
+        store: this.store,
+        keyNames: this.keyNames
+      });
+      if (_typeof(this.store) !== 'object') {
+        this.configError('missing store for holding auth tokens');
+      }
+
+      if (_typeof(this.keyNames) !== 'object') {
+        this.configError('missing keyNames object, used to indicate store token keys');
+      }
+      this.validated.Configurable = true;
+    }
+  }, {
+    key: 'retrieveTokens',
+    value: function retrieveTokens() {
+      this.log('retrieveTokens', {
+        store: this.store
+      });
+      if (!(0, _isType.isFun)(this.store.getAll)) {
+        this.error("Store is missing function getAll to retrieve tokens");
+      }
+      this.tokens = this.store.getAll() || {};
+      return this;
+    }
+  }, {
+    key: 'extractProperty',
+    value: function extractProperty(containers, name, selfie) {
+      this.log('extractProperty', name, {
+        self: selfie
+      });
+      if (!(0, _isType.isArray)(containers)) {
+        this.handleError('extractProperty: containes must be an Array', containers);
+      }
+
+      var container = containers.find(function (container) {
+        return (container || {})[name];
+      }) || {};
+      var value = container[name];
+      if (!value) {
+        this.warn('no value found for', name);
+      }
+      if (selfie && value) {
+        var displayValue = (0, _isType.isFun)(value) ? value.name : value;
+        this.log('extract: set', name, 'to', displayValue);
+        this[name] = value;
+      }
+      return value;
+    }
+  }, {
+    key: 'extractProps',
+    value: function extractProps(selfie, containers) {
+      var _this2 = this;
+
+      for (var _len = arguments.length, names = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+        names[_key - 2] = arguments[_key];
+      }
+
+      this.log('extractProperties', names);
+      return names.reduce(function (acc, name) {
+        var value = _this2.extractProperty(containers, name, selfie);
+        acc[name] = value;
+        return acc;
+      }, {});
+    }
+  }, {
+    key: 'extractProperties',
+    value: function extractProperties(containers) {
+      for (var _len2 = arguments.length, names = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        names[_key2 - 1] = arguments[_key2];
+      }
+
+      return this.extractProps.apply(this, [true, containers].concat(names));
+    }
+  }, {
+    key: 'configError',
+    value: function configError(msg) {
+      this.handleError(msg);
+    }
+  }, {
+    key: 'createStore',
+    value: function createStore(keyNames) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var _opts = opts,
+          createStore = _opts.createStore;
+
+      keyNames = keyNames || this.keyNames;
+      opts = opts || this.opts;
+      this.log('createStore', {
+        keyNames: keyNames,
+        opts: opts
+      });
+
+      createStore = (0, _isType.isFun)(createStore) ? createStore : this.defaultCreateStore;
+      this.log('create with', {
+        createStore: createStore
+      });
+      return createStore(keyNames, opts);
+    }
+  }, {
+    key: 'defaultCreateStore',
+    value: function defaultCreateStore(keyNames, opts) {
+      return (0, _store.createStore)(keyNames, opts);
+    }
+  }, {
+    key: 'validate',
+    value: function validate(config) {
+      if (!(0, _isType.isObject)(config)) {
+        this.handleError('config must be an object', config);
+      }
+    }
   }]);
-});
-//# sourceMappingURL=bundle.prod.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)(module)))
+
+  return Configurable;
+}(_notifiable.Notifiable);
 
 /***/ }),
-/* 3 */
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _configurable = __webpack_require__(5);
+
+Object.defineProperty(exports, 'Configurable', {
+  enumerable: true,
+  get: function get() {
+    return _configurable.Configurable;
+  }
+});
+
+var _keynames = __webpack_require__(0);
+
+Object.defineProperty(exports, 'keyNames', {
+  enumerable: true,
+  get: function get() {
+    return _keynames.keyNames;
+  }
+});
+
+var _store = __webpack_require__(2);
+
+Object.defineProperty(exports, 'Store', {
+  enumerable: true,
+  get: function get() {
+    return _store.Store;
+  }
+});
+Object.defineProperty(exports, 'createStore', {
+  enumerable: true,
+  get: function get() {
+    return _store.createStore;
+  }
+});
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.isFun = isFun;
+exports.isObject = isObject;
+exports.isArray = isArray;
+function isFun(fun) {
+  return typeof fun === 'function';
+}
+
+function isObject(obj) {
+  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object';
+}
+
+function isArray(obj) {
+  return Array.isArray(obj);
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Loggable = exports.Loggable = function () {
+  function Loggable(name) {
+    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, Loggable);
+
+    this.opts = opts;
+    this.io = opts.io || console;
+    this.logging = opts.logging;
+    this.name = name || opts.name;
+  }
+
+  _createClass(Loggable, [{
+    key: 'handleError',
+    value: function handleError(err, data) {
+      this.error(err, data);
+      if (this.notify) {
+        this.notify('error', data);
+      }
+      throw err;
+    }
+  }, {
+    key: 'enableLog',
+    value: function enableLog() {
+      this.logging = true;
+      return this;
+    }
+  }, {
+    key: 'disableLog',
+    value: function disableLog() {
+      this.logging = false;
+      return this;
+    }
+  }, {
+    key: 'label',
+    value: function label(lv) {
+      lv = lv.toUpperCase();
+      return '[' + this.name + '] ' + lv + ':';
+    }
+  }, {
+    key: 'warn',
+    value: function warn(msg, data) {
+      if (this.logging) {
+        return this.io.log(this.label('warning'), msg, data);
+      }
+    }
+  }, {
+    key: 'log',
+    value: function log(msg, data) {
+      if (this.logging) {
+        return this.io.log(this.label('info'), msg, data);
+      }
+    }
+  }, {
+    key: 'error',
+    value: function error(msg, data) {
+      if (this.logging) {
+        return this.io.error(this.label('error'), msg, data);
+      }
+    }
+  }]);
+
+  return Loggable;
+}();
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
 };
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
 
 
 /***/ })

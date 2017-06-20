@@ -2,7 +2,7 @@ export {
   HttpAuthConn,
   createConnection
 }
-from './http-conn'
+from './http-auth-conn'
 
 export {
   FetchAuthConn,
