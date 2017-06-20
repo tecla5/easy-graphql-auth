@@ -15,9 +15,9 @@ export class ApolloAuthConnection extends GraphQLConnection {
     this.postConfig()
   }
 
-  configure() {
-    super.configure()
-    if (this.configured.ApolloConn) return
+  configure(force) {
+    super.configure(force)
+    if (this.configured.ApolloConn && !force) return
     let config = this.config
     let opts = this.opts
     this.log('configure', {

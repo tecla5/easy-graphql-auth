@@ -6,7 +6,7 @@ GraphQL client connection settings and token store configuration.
 
 ## Install
 
-`npm i -S @tecla5/easy-gql-auth`
+`npm i -S @tecla5/gql-conn`
 
 ## Dependencies
 
