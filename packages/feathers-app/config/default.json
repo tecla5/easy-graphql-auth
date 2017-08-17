@@ -5,5 +5,36 @@
   "paginate": {
     "default": 10,
     "max": 50
-  }
+  },
+  "authentication": {
+    "secret": "280fdf29349dd2573d79e73dd35e82b53fbc5395600f0a8c06c0861e1aa7ca8cc110ea6d255cb1e9491faf43d0f5979c5372f8680764ec867c2326feb6ef5744348a26938cc0921640c6fc4f42d1427d4dffe74a62859c6b23cf9c3f9e07d872d16487b592af4d26351f59232b73dfd0e3d1c6f43908c0e0e0b224807a3e23e51a2f028b6a6c5acd9c1c5b0c0368a27e0d34968df986eaf25a1835d1c95e9d6ccc50cc2bdd36a17a8fbfc2535874429d58a0618cffce3ac3663b90009ba2c25b564408d8d30548704054841ba40b7c1c22ee958261bb5f50987e98ac1bfaea3c6c5c32c707fbeb7cf283522900c46e36292a9b9d5b334ea4766bf94c4e44f782",
+    "strategies": [
+      "jwt"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "type": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "auth0": {
+      "clientID": "your auth0 client id",
+      "clientSecret": "your auth0 client secret",
+      "successRedirect": "/",
+      "domain": "mydomain.auth0.com"
+    },
+    "cookie": {
+      "enabled": true,
+      "name": "feathers-jwt",
+      "httpOnly": false,
+      "secure": false
+    }
+  },
+  "nedb": "../data"
 }
