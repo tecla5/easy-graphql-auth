@@ -7,7 +7,7 @@ export class Notifiable extends Loggable {
     super(name, opts)
     this.notifyLog = opts.notifyLog
     this.topic = opts.topic || this.defaultTopic
-    this.notifyError = this.notifyFailure
+    this.notifyError = this.notifyFailure.bind(this)
     this.observers = {}
   }
 

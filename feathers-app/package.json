@@ -1,6 +1,6 @@
 {
   "name": "feathers-app",
-  "description": "Demo auth0 app",
+  "description": "Auth0 feathers app demo",
   "version": "0.0.0",
   "homepage": "",
   "main": "src",
@@ -29,22 +29,22 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "compression": "^1.6.2",
-    "cors": "^2.8.3",
-    "feathers": "^2.1.3",
+    "compression": "^1.7.0",
+    "cors": "^2.8.4",
+    "feathers": "^2.1.7",
     "feathers-configuration": "^0.4.1",
-    "feathers-errors": "^2.8.1",
-    "feathers-hooks": "^2.0.1",
-    "feathers-hooks-common": "^3.5.3",
-    "feathers-rest": "^1.7.3",
+    "feathers-errors": "^2.9.1",
+    "feathers-hooks": "^2.0.2",
+    "feathers-hooks-common": "^3.7.1",
+    "feathers-rest": "^1.8.0",
     "feathers-socketio": "^2.0.0",
-    "helmet": "^3.6.1",
+    "helmet": "^3.8.1",
     "serve-favicon": "^2.4.3",
     "winston": "^2.3.1"
   },
   "devDependencies": {
-    "eslint": "^4.0.0",
-    "mocha": "^3.4.2",
+    "eslint": "^4.4.1",
+    "mocha": "^3.5.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   }
