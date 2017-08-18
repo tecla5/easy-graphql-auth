@@ -96,30 +96,13 @@ Create an authentication entry in `config/default.json`
   },
 ```
 
-Setup the app to communicate with the Auth0 provider. Open the `default.json` configuration file.
-
-The generator added a key (`authentication.secret`) to the config for the provider you selected.
-
-To enable localstorage support, we need to add a [custom-extractor-function](https://github.com/themikenicholson/passport-jwt#writing-a-custom-extractor-function)
-to load from localstorage if not found in request.
-
-```js
-var localstorageExtractor = function(req) {
-    var token = null;
-    if (localstorage)
-    {
-        token = localstorage.get('jwt');
-    }
-    return token;
-};
-```
-
-Register the `localstorageExtractor` extractor via `fromExtractors([array of extractor functions])`, which creates a new extractor using an array of extractors provided.
-Each extractor is attempted in order until one returns a token.
+Setup the app to communicate with the Auth0 provider. Open the `default.json` configuration file. The generator added a key (`authentication.secret`) to the config for the provider you selected.
 
 See this [jwt authentication guide](https://jonathanmh.com/express-passport-json-web-token-jwt-authentication-beginners/) for more details on how to configure to suit your needs.
 
-On the frontend we need to use the Auth0 lock hook (as usual) to save token to localstorage key `jwt` or similar so that our custom localstorage passport extractor will be able to pick it up
+## Feathers client config
+
+On the client side (front end) we need to use a Auth0 lock hook to save the auth jwt token to localstorage using key `jwt` or similar.
 
 ```js
   storage: { // localstorage
@@ -129,39 +112,14 @@ On the frontend we need to use the Auth0 lock hook (as usual) to save token to l
 
 For full control and to avoid having multiple app configurations, extend or replace `Configurable` from `token-foundation` module and customize `configureStorage()` method to configure the localstorage using a custom (simpler?) approach.
 
-```json
-"authentication": {
-    "secret": "cc71e4f9...",
-    "strategies": [
-      "jwt"
-    ],
-    "path": "/authentication",
-    "service": "users",
-    "jwt": {
-      // ...
-    },
-    "auth0": {
-      "clientID": "auth0 client id", // Replace this with your app's Client ID
-      "clientSecret": "auth0 client secret", // Replace this with your app's Client Secret
-      "successRedirect": "/signin"
-    },
-   // custom localstorage config to store/retrieve Auth0 jwt token
-    "localstorage": {
-      "authTokenKeyName": "jwt"
-    }
-  }
-}
-```
-
-## Feathers client config
-
 Configure [Auth0 lock](https://auth0.com/docs/libraries/lock/v10) using `easy-auth0-lock` module and integrate it with the [feathers client app](https://github.com/feathersjs/feathers-client) as follows.
 
 ```js
 const config = {
   // should match server-side key defined in localstorage.authTokenKeyName (see config file above)
-  authTokenKeyName: 'jwt'
-
+  storage: {
+    authTokenKeyName: 'jwt'
+  }
   // more lock config options ...
 }
 const lock = createLock(config, opts)
