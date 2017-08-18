@@ -89,7 +89,7 @@ export class Configurable extends Notifiable {
       self: selfie
     })
     if (!isArray(containers)) {
-      this.handleError('extractProperty: containes must be an Array', containers)
+      this.handleError('extractProperty: containers must be an Array', containers)
     }
 
     let container = containers.find(container => (container || {})[name]) || {}
