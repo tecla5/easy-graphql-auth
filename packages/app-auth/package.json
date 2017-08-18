@@ -1,5 +1,5 @@
 {
-  "name": "@tecla5/app-auth0",
+  "name": "@tecla5/app-auth",
   "version": "0.1.0",
   "description": "Foundation for adding Auth0 to a web app",
   "main": "src/index.js",

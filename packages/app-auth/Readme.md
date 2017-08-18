@@ -1,6 +1,6 @@
 # Foundation for Application Auth with Auth0
 
-Import `app-auth` module and use `AppAuth` class with `createLock`.
+Import `app-auth` module and use `AppAuth` to wrap the use of `lock` (from `easy-auth0-lock` module) in your client app.
 
 ## Strategy
 
@@ -14,12 +14,53 @@ Import `app-auth` module and use `AppAuth` class with `createLock`.
 
 Register your app with Auth0 authentication service.
 Step 2, 3 and 4 is handled by Auth0 lock dialog.
-Step 5, 6 and 7 can be handled by the `HttpAuthConn` class.
-Step 7 is best handled by using localstorage instead of a cookie.
+Step 5, 6 and 7 can be handled by subclassing the `HttpAuthConn` (or `Configurable`)
+Step 7 is best handled by using `localstorage` instead of a `cookie`.
 
-## Usage
+## Feathers server configuration
 
-TODO
+[Feathers generator](https://github.com/feathersjs/generator-feathers) now has an option for [Auth0](auth0.com/) using [OAuth](https://oauth.net/).
+
+If you follow the [Basic OAuth Guide](https://docs.feathersjs.com/guides/auth/recipe.oauth-basic.html), replacing `GitHub` with `Auth0`, you should be able to get it to work.
+
+### Create Feathers app via CLI
+
+```bash
+npm install -g feathers-cli@latest
+feathers generate app
+```
+
+### Add authentication
+
+Run the `authentication` generator
+
+```bash
+feathers generate authentication
+```
+
+Select `Auth0` as authentication provider
+
+```bash
+? What authentication providers do you want to use? Other PassportJS strategies not in this list can still be configured manually. Auth0
+```
+
+Select additional config options
+
+```bash
+? What is the name of the user (entity) service? users
+? What kind of service is it? NeDB
+? What is the database connection string? nedb://../data
+    force config/default.json
+   create src/authentication.js
+    force src/app.js
+   create src/services/users/users.service.js
+    force src/services/index.js
+   create src/models/users.model.js
+   create src/services/users/users.hooks.js
+   create src/services/users/users.filters.js
+   create test/services/users.test.js
+   ...
+```
 
 Create an authentication entry in `config/default.json`
 
@@ -73,11 +114,12 @@ var localstorageExtractor = function(req) {
 };
 ```
 
-Then register via `fromExtractors([array of extractor functions])`, which creates a new extractor using an array of extractors provided. Each extractor is attempted in order until one returns a token.
+Register the `localstorageExtractor` extractor via `fromExtractors([array of extractor functions])`, which creates a new extractor using an array of extractors provided.
+Each extractor is attempted in order until one returns a token.
 
 See this [jwt authentication guide](https://jonathanmh.com/express-passport-json-web-token-jwt-authentication-beginners/) for more details on how to configure to suit your needs.
 
-On the frontend we need to use the Auth0 lock hook (as usual) to save token to localstorage key `jwt` or similar so that our custom localstorage passport extractor will be able to pick it up. In other words set the `authTokenKeyName` of the config file and use the same key in the extractor.
+On the frontend we need to use the Auth0 lock hook (as usual) to save token to localstorage key `jwt` or similar so that our custom localstorage passport extractor will be able to pick it up
 
 ```js
   storage: { // localstorage
@@ -85,55 +127,69 @@ On the frontend we need to use the Auth0 lock hook (as usual) to save token to l
   }
 ```
 
-For full control and to avoid having multiple app configuration files, extend or replace `Configurable` from `token-foundation` module, to use the feathers configuration (such as from `config/default.json`) and then customize the `configureStorage()` method to configure the localstorage as needed.
+For full control and to avoid having multiple app configurations, extend or replace `Configurable` from `token-foundation` module and customize `configureStorage()` method to configure the localstorage using a custom (simpler?) approach.
 
-## Setup
-
-[Feathers generator](https://github.com/feathersjs/generator-feathers) now has an option for [Auth0](auth0.com/) using [OAuth](https://oauth.net/). If you follow the [Basic OAuth Guide](https://docs.feathersjs.com/guides/auth/recipe.oauth-basic.html), replacing `GitHub` with `Auth0`, you should be able to get it to work.
-
-### Create Feathers app via CLI
-
-```bash
-npm install -g feathers-cli@latest
-feathers generate app
+```json
+"authentication": {
+    "secret": "cc71e4f9...",
+    "strategies": [
+      "jwt"
+    ],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      // ...
+    },
+    "auth0": {
+      "clientID": "auth0 client id", // Replace this with your app's Client ID
+      "clientSecret": "auth0 client secret", // Replace this with your app's Client Secret
+      "successRedirect": "/signin"
+    },
+   // custom localstorage config to store/retrieve Auth0 jwt token
+    "localstorage": {
+      "authTokenKeyName": "jwt"
+    }
+  }
+}
 ```
 
-### Add authentication
+## Feathers client config
 
-Run the `authentication` generator
+Configure [Auth0 lock](https://auth0.com/docs/libraries/lock/v10) using `easy-auth0-lock` module and integrate it with the [feathers client app](https://github.com/feathersjs/feathers-client) as follows.
 
-```bash
-feathers generate authentication
-```
+```js
+const config = {
+  // should match server-side key defined in localstorage.authTokenKeyName (see config file above)
+  authTokenKeyName: 'jwt'
 
-Select `Auth0` as authentication provider
+  // more lock config options ...
+}
+const lock = createLock(config, opts)
+lock.onSuccess('signin', (data) => {
+  let {
+    auth0Token,
+    profile
+  } = data
 
-```bash
-? What authentication providers do you want to use? Other PassportJS strategies not in this list can still be configured manually. Auth0
-```
+  // requires feathers client app
+  // create user session on server using token
+  let status = await feathers.service('sessions').create(data)
 
-Select additional config options
-
-```bash
-? What is the name of the user (entity) service? users
-? What kind of service is it? NeDB
-? What is the database connection string? nedb://../data
-    force config/default.json
-   create src/authentication.js
-    force src/app.js
-   create src/services/users/users.service.js
-    force src/services/index.js
-   create src/models/users.model.js
-   create src/services/users/users.hooks.js
-   create src/services/users/users.filters.js
-   create test/services/users.test.js
-   ...
+  // alternatively create user directly (with session)
+  // let user = await feathers.service('users').create(data)
+  console.log('signedIn', {
+    data
+  })
+})
 ```
 
 ## Example
 
-Used by `feather-app` demo
+See the `feather-app` demo included (partly implements pattern described here)
+Please help complete this example!
 
 ## License
 
 MIT
+
+Tecla 5, Kristian Mandrup

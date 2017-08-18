@@ -1,0 +1,7 @@
+.vscode
+node_modules
+*.log
+src
+test
+webpack.config.js
+try.js
