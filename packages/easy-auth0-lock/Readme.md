@@ -228,7 +228,7 @@ lock.prototype.createProfileReceivedCb = function() {
 - `logo` - logo image (url to a `.png` file or similar)
 - `title` - title under logo
 
-### GraphQL queries
+### user
 
 - `createUser`
 - `signinUser`
@@ -246,13 +246,22 @@ lock.prototype.createProfileReceivedCb = function() {
 - `logout()`
 - `resetTokens()`
 
+### Login
+
+- `attemptLogin()`
+- `attemptStorageLogin()`
+
 ### Lock events
 
 - `subscribeAuthenticated()`
 - `onAuthenticated(authResult)`
+- `onHashParsed()`
+
+### Profile
+
+- `receiveProfile(auth0Token, authResult)`
 - `createProfileReceivedCb(authResult)`
 - `handleProfile({authResult, profile})`
-- `onHashParsed()`
 
 ### End of flow hooks
 
@@ -299,7 +308,7 @@ You can also add custom pub/sub events using `on` and `publish`
 
 ### Extract data
 
-`extractSignedInUserToken(signinResult)`
+`extractAuth0config(authResult)`
 
 ## Custom lock
 

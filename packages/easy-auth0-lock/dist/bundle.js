@@ -224,11 +224,16 @@ var Lock = exports.Lock = function (_Configurable) {
 
     _this.configure();
     _this.postConfig();
-    _this.onHashParsed();
+    _this.attemptLogin();
     return _this;
   }
 
   _createClass(Lock, [{
+    key: 'attemptLogin',
+    value: function attemptLogin() {
+      this.onHashParsed() || this.attemptStorageLogin();
+    }
+  }, {
     key: 'configure',
     value: function configure(force) {
       if (this.configured.Lock && !force) return;
@@ -274,6 +279,16 @@ var Lock = exports.Lock = function (_Configurable) {
       }
       this.lock = this.createLockUi(this.auth0Config, this.opts //.bind(this)
       );
+    }
+  }, {
+    key: 'attemptStorageLogin',
+    value: function attemptStorageLogin() {
+      this.auth0Token ? this.receiveProfile(this.auth0Token) : this.noTokenInStorage();
+    }
+  }, {
+    key: 'noTokenInStorage',
+    value: function noTokenInStorage() {
+      this.log('no token found in local storage');
     }
   }, {
     key: 'postConfig',
@@ -329,7 +344,7 @@ var Lock = exports.Lock = function (_Configurable) {
     value: function onHashParsed() {
       var _this2 = this;
 
-      if (this.hashWasParsed) return;
+      if (this.hashWasParsed) return false;
       this.lock.on('hash_parsed', function (authResult) {
         _this2.hashWasParsed = true;
         _this2.log('hash parsed', {
@@ -344,8 +359,11 @@ var Lock = exports.Lock = function (_Configurable) {
             authResult: authResult
           });
           if (authResult.idToken) {
-            _this2.auth0Token = authResult.idToken;
-            _this2.log('success', authResult);
+            _this2.auth0IDToken = authResult.idToken;
+            _this2.log('success', {
+              authResult: authResult,
+              auth0IDToken: auth0IDToken
+            });
           } else {
             _this2.error('authResult missing idToken');
           }
@@ -367,6 +385,7 @@ var Lock = exports.Lock = function (_Configurable) {
     value: function loggedOut() {
       this.log('logged out');
       this.notifySuccess('logout', true);
+      this.notifySuccess('signout', true);
       return this;
     }
   }, {
@@ -473,7 +492,7 @@ var Lock = exports.Lock = function (_Configurable) {
                 return this.serverSignin(data);
 
               case 6:
-                this.signedInOk(data);
+                this.signedIn(data);
                 _context.next = 13;
                 break;
 
@@ -508,7 +527,7 @@ var Lock = exports.Lock = function (_Configurable) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                this.log('serverSignin', data);
+                this.log('serverSignin: not implemented', data);
 
               case 1:
               case 'end':
@@ -534,10 +553,11 @@ var Lock = exports.Lock = function (_Configurable) {
       this.handleSigninError(data);
     }
   }, {
-    key: 'signedInOk',
-    value: function signedInOk(data) {
-      this.log('signedInOk', data);
+    key: 'signedIn',
+    value: function signedIn(data) {
+      this.log('signedIn', data);
       this.notifySuccess('signin', data);
+      this.notifySuccess('login', data);
     }
   }, {
     key: 'handleSigninError',

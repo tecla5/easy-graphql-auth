@@ -183,7 +183,11 @@ See lock [events](https://github.com/auth0/lock#onevent-callback) and [Auth0Lock
   })
 ```
 
-You can look into `receiveProfile(auth0Token, authResult)` in the `Lock` class of the `easy-auth0-lock` package, which handles this part of the flow.
+You can look into `receiveProfile(auth0Token, authResult)` in the `Lock` class of the `easy-auth0-lock` package, which handles this part of the flow. The method `attemptStorageLogin()` will try to use the `token` in localstorage if present to trigger a normal login flow, short-circuiting the lock dialog entirely (will be called if token not found via `hash_parsed` in URL. You can enhance `attemptStorageLogin()` to use a cached profile (stored in localstorage as in above code example) as well.
+
+Use `this.signedIn()` to notify a successful signin/login (such as to update DOM and client state accordingly).
+
+You can use the `AppAuth` class from `app-auth` package for most of the plumbing required on the client.
 
 ## Example
 

@@ -47,7 +47,11 @@ export class Lock extends Configurable {
     super(config, opts)
     this.configure()
     this.postConfig()
-    this.onHashParsed()
+    this.attemptLogin()
+  }
+
+  attemptLogin() {
+    this.onHashParsed() || this.attemptStorageLogin()
   }
 
   configure(force) {
@@ -97,6 +101,14 @@ export class Lock extends Configurable {
       this.configError('missing Auth0 configuration')
     }
     this.lock = this.createLockUi(this.auth0Config, this.opts) //.bind(this)
+  }
+
+  attemptStorageLogin() {
+    this.auth0Token ? this.receiveProfile(this.auth0Token) : this.noTokenInStorage()
+  }
+
+  noTokenInStorage() {
+    this.log('no token found in local storage')
   }
 
   postConfig() {
@@ -174,7 +186,7 @@ export class Lock extends Configurable {
   }
 
   onHashParsed() {
-    if (this.hashWasParsed) return
+    if (this.hashWasParsed) return false
     this.lock.on('hash_parsed', (authResult) => {
       this.hashWasParsed = true
       this.log('hash parsed', {
@@ -189,8 +201,11 @@ export class Lock extends Configurable {
           authResult
         });
         if (authResult.idToken) {
-          this.auth0Token = authResult.idToken
-          this.log('success', authResult);
+          this.auth0IDToken = authResult.idToken
+          this.log('success', {
+            authResult,
+            auth0IDToken
+          });
         } else {
           this.error('authResult missing idToken')
         }
@@ -210,6 +225,7 @@ export class Lock extends Configurable {
   loggedOut() {
     this.log('logged out');
     this.notifySuccess('logout', true)
+    this.notifySuccess('signout', true)
     return this
   }
 
@@ -293,7 +309,7 @@ export class Lock extends Configurable {
     this.setAuth0Token(auth0Token)
     try {
       await this.serverSignin(data)
-      this.signedInOk(data)
+      this.signedIn(data)
     } catch (err) {
       let errArgs = Object.assign(data, {
         err
@@ -303,7 +319,7 @@ export class Lock extends Configurable {
   }
 
   async serverSignin(data) {
-    this.log('serverSignin', data)
+    this.log('serverSignin: not implemented', data)
   }
 
   signedInFailure(data) {
@@ -315,9 +331,10 @@ export class Lock extends Configurable {
     this.handleSigninError(data)
   }
 
-  signedInOk(data) {
-    this.log('signedInOk', data)
+  signedIn(data) {
+    this.log('signedIn', data)
     this.notifySuccess('signin', data)
+    this.notifySuccess('login', data)
   }
 
   handleSigninError(err) {

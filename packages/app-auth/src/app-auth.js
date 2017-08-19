@@ -23,8 +23,9 @@ export class AppAuth {
         .logout()
     })
 
-    lock.on('signedIn', this.loggedIn)
-    lock.on('loggedOut', this.loggedOut)
+    // alternative equialen (alias) events: login, logout
+    lock.on('signin', this.loggedIn)
+    lock.on('signout', this.loggedOut)
   }
 
   loggedOut() {
@@ -34,7 +35,7 @@ export class AppAuth {
     this.selector.logout.show()
   }
 
-  signedIn({
+  loggedIn({
     profile
   }) {
     this.selector.logout.hide()
