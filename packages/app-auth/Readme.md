@@ -42,15 +42,10 @@ selectors: {
 Using defaults and native document ready, part of `appAuth`.
 
 ```js
-const {
-  configureAppAuth,
-  onDocReady
-} = appAuth
-
-configureAppAuth({
-  onDocReady
-})
+appAuth.configureAppAuth()
 ```
+
+Using customised `AppAuth` class via `createAppAuth` factory
 
 ```js
 class MyAppAuth extends AppAuth {
@@ -62,7 +57,6 @@ function createAppAuth(config) {
 }
 
 configureAppAuth({
-  createAppAuth,
-  onDocReady
+  createAppAuth
 })
 ```

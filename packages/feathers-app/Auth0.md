@@ -195,6 +195,10 @@ Use `this.signedIn()` to notify a successful signin/login (such as to update DOM
 
 You can use the `AppAuth` class from `app-auth` package for most of the plumbing required on the client.
 
+```js
+appAuth.configureAppAuth()
+```
+
 ## Example
 
 See the `feather-app` demo included (partly implements pattern described here)

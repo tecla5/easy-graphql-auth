@@ -74,7 +74,8 @@ const defaults = {
   },
   createAppAuth(config) {
     return new AppAuth(config)
-  }
+  },
+  onReady: $ ? $(document).ready : docReady
 }
 
 export function configureAppAuth({
@@ -84,12 +85,13 @@ export function configureAppAuth({
   selectElement
 }) {
   createAppAuth = createAppAuth || defaults.createAppAuth
-  selectElement = selectElement || $ || document.querySelector
-  ready = ready || $(document).ready
-  ready(() => {
-    createAppAuth({
-      selectElement,
-      selectors
+  selectElement = selectElement || defaults.onReady
+
+  ready = ready ||
+    ready(() => {
+      createAppAuth({
+        selectElement,
+        selectors
+      })
     })
-  })
 }
