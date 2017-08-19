@@ -8,6 +8,12 @@
   <script src="https://cdn.auth0.com/js/lock/10.x.y/lock.min.js"></script>
   <script type="text/javascript" src="app.js"></script>
   <link rel="stylesheet" href="app.css"></link>
+  <style>
+    .hide {
+      display: none
+    }
+
+  </style>
 </head>
 
 <body>
@@ -21,6 +27,14 @@
       <li>Passport</li>
       <li>localstorage</li>
     </ul>
+    <div id="app">
+      <h3 id="welcome" class="hide"></h3>
+      <div id="session">
+        <button id="login">Login</button>
+        <button id="logout" class="hide">Logout</button>
+      </div>
+      <div id="status"></div>
+    </div>
     <footer>
       <p class="center-text">For more information on Feathers see <a href="https://docs.feathersjs.com" title="Feathers Documentation" target="blank">docs.feathersjs.com</a>.</p>
     </footer>
