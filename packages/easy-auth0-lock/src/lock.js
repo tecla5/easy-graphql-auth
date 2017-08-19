@@ -41,7 +41,7 @@ export class Lock extends Configurable {
   //   lock,
   //   createLockUi,
   //   createGraphQLServerAuth,
-  //   displayMethod
+  //   retrieveProfileMethod
   // }
   constructor(config = {}, opts = {}) {
     super(config, opts)
@@ -59,7 +59,7 @@ export class Lock extends Configurable {
     const containers = [config, opts, opts.lock]
     this.extractProperties(containers, 'Auth0Lock', 'createLockUi')
 
-    this.displayMethod = this.config.displayMethod || this.defaultDisplayMethod
+    this.retrieveProfileMethod = this.config.retrieveProfileMethod || this.defaultRetrieveProfileMethod
 
     let {
       theme,
@@ -105,7 +105,7 @@ export class Lock extends Configurable {
     return this
   }
 
-  get defaultDisplayMethod() {
+  get defaultRetrieveProfileMethod() {
     return 'getUserInfo'
   }
 
@@ -268,7 +268,11 @@ export class Lock extends Configurable {
   onAuthenticated(authResult) {
     this.log('onAuthenticated', authResult)
     let auth0Token = this.extractAuthToken(authResult)
-    this.lock[this.displayMethod](auth0Token, this.createProfileReceivedCb(authResult).bind(this))
+    this.receiveProfile(auth0Token, authResult)
+  }
+
+  receiveProfile(auth0Token, authResult) {
+    this.lock[this.retrieveProfileMethod](auth0Token, this.createProfileReceivedCb(authResult).bind(this))
   }
 
   createProfileReceivedCb(authResult) {

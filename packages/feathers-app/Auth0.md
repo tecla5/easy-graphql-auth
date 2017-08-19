@@ -2,6 +2,14 @@
 
 Demo app showcasing how to configure a full client/server Feathers app with Auth0 authentication provider, using localstorage to store/retrieve JWT token.
 
+Note: Ideally this demo app should be using the `app-auth` package (see `/packages`) which contain generic setup code suitable for most client apps.
+
+## Status
+
+_Work In Progress_
+
+Please help out to make this a good feathers auth0 demo app.
+
 ## Strategy
 
 - (1) You register your application with the OAuth Provider. This includes giving the provider a callback URL (more on this later). The provider will give you an app identifier and an app secret. The secret is basically a special password for your app.
@@ -62,7 +70,7 @@ Select additional config options
    ...
 ```
 
-Create an authentication entry in `config/default.json`
+Create (or ensure you have) an `authentication` entry in `config/default.json`
 
 ```js
 "authentication": {
@@ -96,17 +104,15 @@ Create an authentication entry in `config/default.json`
   },
 ```
 
-Setup the app to communicate with the Auth0 provider. Open the `default.json` configuration file. The generator added a key (`authentication.secret`) to the config for the provider you selected.
-
 See this [jwt authentication guide](https://jonathanmh.com/express-passport-json-web-token-jwt-authentication-beginners/) for more details on how to configure to suit your needs.
 
 ## Feathers client config
 
-On the client side (front end) we need to use a Auth0 lock hook to save the auth jwt token to localstorage using key `jwt` or similar.
+On the client side (front end) we need to use a Auth0 lock success hook to save the auth jwt token (received from Auth0) to `localstorage` using a key such as `jwt`, `authToken`, `accessToken` or whatever you prefer.
 
 ```js
   storage: { // localstorage
-    authTokenKeyName: 'authToken', // key to store auth0IdToken
+    authTokenKeyName: 'accessToken', // key to store auth0IdToken
   }
 ```
 
@@ -114,16 +120,28 @@ For full control and to avoid having multiple app configurations, extend or repl
 
 Configure [Auth0 lock](https://auth0.com/docs/libraries/lock/v10) using `easy-auth0-lock` module and integrate it with the [feathers client app](https://github.com/feathersjs/feathers-client) as follows.
 
+First we create and configure the auth0 lock wrapper, using `createLock` factory method, passing a `config` object and additional options such as enabling logging.
+
 ```js
 const config = {
   // should match server-side key defined in localstorage.authTokenKeyName (see config file above)
   storage: {
-    authTokenKeyName: 'jwt'
+    authTokenKeyName: 'accessToken'
   }
   // more lock config options ...
 }
+const opts = {}
 const lock = createLock(config, opts)
-lock.onSuccess('signin', (data) => {
+lock
+  .enableLog()
+```
+
+We can enable logging on the lock wrapper using `enableLog`, useful during development for debugging.
+
+Then we create a signin method which should perform the signin with the server app, using the JWT access token received from Auth0.
+
+```js
+function serverSignin(data) => {
   let {
     auth0Token,
     profile
@@ -133,13 +151,39 @@ lock.onSuccess('signin', (data) => {
   // create user session on server using token
   let status = await feathers.service('sessions').create(data)
 
-  // alternatively create user directly (with session)
+  // create user (with session) if user doesn't yet exist
   // let user = await feathers.service('users').create(data)
   console.log('signedIn', {
     data
   })
-})
+}
+
+lock
+  .subscribeAuthenticated()
+  .onSuccess('signin', serverSignin)
 ```
+
+We subscribe to the authenticated callback of the Auth0 lock and call `serverSignin` in case `signin` with Auth0 is successful.
+
+The key to understanding the Auth0 lock wrapper, is that `onHashParsed()` will show the lock dialog (ie. for signin/signup) only if the token is not already found in the url.
+
+See lock [events](https://github.com/auth0/lock#onevent-callback) and [Auth0Lock instance](https://github.com/auth0/lock#new-auth0lockclientid-domain-options)for more details.
+
+```js
+  lock.getUserInfo(authResult.accessToken, function(error, profile) {
+    if (error) {
+      // handle error and return;
+      handleErr(err);
+      return;
+    }
+    localStorage.setItem("accessToken", authResult.accessToken);
+    // optionally store/cache profile as well
+    localStorage.setItem("profile", JSON.stringify(profile));
+    // update DOM
+  })
+```
+
+You can look into `receiveProfile(auth0Token, authResult)` in the `Lock` class of the `easy-auth0-lock` package, which handles this part of the flow.
 
 ## Example
 

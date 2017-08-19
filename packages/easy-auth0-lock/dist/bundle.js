@@ -212,7 +212,7 @@ var Lock = exports.Lock = function (_Configurable) {
   //   lock,
   //   createLockUi,
   //   createGraphQLServerAuth,
-  //   displayMethod
+  //   retrieveProfileMethod
   // }
   function Lock() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -239,7 +239,7 @@ var Lock = exports.Lock = function (_Configurable) {
       var containers = [config, opts, opts.lock];
       this.extractProperties(containers, 'Auth0Lock', 'createLockUi');
 
-      this.displayMethod = this.config.displayMethod || this.defaultDisplayMethod;
+      this.retrieveProfileMethod = this.config.retrieveProfileMethod || this.defaultRetrieveProfileMethod;
 
       var _extractProps = this.extractProps(false, containers, 'theme', 'logo', 'title', 'dict'),
           theme = _extractProps.theme,
@@ -436,7 +436,12 @@ var Lock = exports.Lock = function (_Configurable) {
     value: function onAuthenticated(authResult) {
       this.log('onAuthenticated', authResult);
       var auth0Token = this.extractAuthToken(authResult);
-      this.lock[this.displayMethod](auth0Token, this.createProfileReceivedCb(authResult).bind(this));
+      this.receiveProfile(auth0Token, authResult);
+    }
+  }, {
+    key: 'receiveProfile',
+    value: function receiveProfile(auth0Token, authResult) {
+      this.lock[this.retrieveProfileMethod](auth0Token, this.createProfileReceivedCb(authResult).bind(this));
     }
   }, {
     key: 'createProfileReceivedCb',
@@ -547,7 +552,7 @@ var Lock = exports.Lock = function (_Configurable) {
       return 'Sign in';
     }
   }, {
-    key: 'defaultDisplayMethod',
+    key: 'defaultRetrieveProfileMethod',
     get: function get() {
       return 'getUserInfo';
     }
@@ -624,7 +629,7 @@ var Notifiable = exports.Notifiable = function (_Loggable) {
 
     _this.notifyLog = opts.notifyLog;
     _this.topic = opts.topic || _this.defaultTopic;
-    _this.notifyError = _this.notifyFailure;
+    _this.notifyError = _this.notifyFailure.bind(_this);
     _this.observers = {};
     return _this;
   }
@@ -1249,7 +1254,7 @@ var Configurable = exports.Configurable = function (_Notifiable) {
         self: selfie
       });
       if (!(0, _isType.isArray)(containers)) {
-        this.handleError('extractProperty: containes must be an Array', containers);
+        this.handleError('extractProperty: containers must be an Array', containers);
       }
 
       var container = containers.find(function (container) {

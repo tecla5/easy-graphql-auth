@@ -207,8 +207,8 @@ lock.prototype.createProfileReceivedCb = function() {
 
   // showLock display/behavior configuration
   lockConfig,
-  // display method override
-  displayMethod
+  // retrieve profile method override
+  retrieveProfileMethod
   // custom factory method
   createLockUi,
 

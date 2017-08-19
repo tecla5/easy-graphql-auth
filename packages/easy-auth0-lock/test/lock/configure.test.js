@@ -9,8 +9,8 @@ import test from 'ava'
 
 //   // showLock display/behavior configuration
 //   lockConfig,
-//   // display method override
-//   displayMethod
+//   // retrieveProfileMethod override
+//   retrieveProfileMethod
 //   // custom factory method
 //   createLockUi,
 
