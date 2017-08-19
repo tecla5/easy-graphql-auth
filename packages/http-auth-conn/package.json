@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "nyc ava",
+    "lerna:update": "npm run lerna:clean && npm run lerna:bootstrap",
+    "lerna:bootstrap": "lerna bootstrap --scope @tecla5/http-auth-conn",
+    "lerna:clean": "rm -f package.json.lock 2> /dev/null && echo y | lerna clean --scope @tecla5/http-auth-conn",
     "build:app": "webpack --progress --colors --env=app",
     "build:prod": "webpack --progress --colors --env=prod",
     "build:dev": "webpack --progress --colors --env=dev"

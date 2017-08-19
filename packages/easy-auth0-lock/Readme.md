@@ -271,9 +271,16 @@ lock.prototype.createProfileReceivedCb = function() {
 
 ### Publish/subscribe hooks
 
-- `on('signedInFailure', function)` on signin failure call observer function (w object)
-- `on('signedIn', function)` on signin success call observer function (w object)
-- `on('loggedOut', function)` on logout call observer function
+Success
+
+- `sign:in` on sign in success
+- `sign:out` on sign out call observer function
+- `storage:token:found` - auth token found in local storage
+- `storage:token:saved` - auth token saved in local storage
+
+Failure
+
+- `sign:in` on sign in failure
 
 ### Custom events
 

@@ -1,12 +1,11 @@
 import {
+  onDocReady,
+  configureAppAuth,
   AppAuth
 } from './app-auth'
 
-import {
-  createLock
-} from './lock'
-
 export default {
   AppAuth,
-  createLock
+  configureAppAuth,
+  onDocReady
 }

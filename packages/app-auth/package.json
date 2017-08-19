@@ -8,6 +8,9 @@
   },
   "scripts": {
     "test": "nyc ava",
+    "lerna:update": "npm run lerna:clean && npm run lerna:bootstrap",
+    "lerna:bootstrap": "lerna bootstrap --scope @tecla5/app-auth",
+    "lerna:clean": "rm -f package.json.lock 2> /dev/null && echo y | lerna clean --scope @tecla5/app-auth",
     "test:dist": "ava test/dist.test.js",
     "build:prod": "webpack --progress --colors --display-error-details --env=prod",
     "build:dev": "webpack --progress --colors --display-error-details --env=dev"
@@ -23,9 +26,7 @@
   },
   "author": "Kristian Mandrup",
   "license": "MIT",
-  "dependencies": {
-    "deep-extend": "^0.5.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "ava": "^0.19.1",
     "babel-cli": "^6.24.0",

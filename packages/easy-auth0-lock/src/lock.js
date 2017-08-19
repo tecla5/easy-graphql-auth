@@ -177,11 +177,16 @@ export class Lock extends Configurable {
   }
 
   get auth0Token() {
-    return this.store.getItem(this.authTokenKeyName)
+    let authToken = this.store.getItem(this.authTokenKeyName)
+    if (authToken) {
+      this.notifySuccess('storage:token:found', authToken)
+    }
+    return authToken
   }
 
-  set auth0Token(auth0Token) {
-    this.store.setItem(this.authTokenKeyName, auth0Token);
+  set auth0Token(authToken) {
+    this.store.setItem(this.authTokenKeyName, authToken);
+    this.notifySuccess('storage:token:stored', authToken)
     return this
   }
 
@@ -333,12 +338,11 @@ export class Lock extends Configurable {
 
   signedIn(data) {
     this.log('signedIn', data)
-    this.notifySuccess('signin', data)
-    this.notifySuccess('login', data)
+    this.notifySuccess('sign:in', data)
   }
 
   handleSigninError(err) {
-    this.notifyFailure('signin', err)
+    this.notifyFailure('sign:in', err)
     // this.handleError(err)
   }
 }
