@@ -556,13 +556,12 @@ var Lock = exports.Lock = function (_Configurable) {
     key: 'signedIn',
     value: function signedIn(data) {
       this.log('signedIn', data);
-      this.notifySuccess('signin', data);
-      this.notifySuccess('login', data);
+      this.notifySuccess('sign:in', data);
     }
   }, {
     key: 'handleSigninError',
     value: function handleSigninError(err) {
-      this.notifyFailure('signin', err
+      this.notifyFailure('sign:in', err
       // this.handleError(err)
       );
     }
@@ -602,10 +601,15 @@ var Lock = exports.Lock = function (_Configurable) {
   }, {
     key: 'auth0Token',
     get: function get() {
-      return this.store.getItem(this.authTokenKeyName);
+      var authToken = this.store.getItem(this.authTokenKeyName);
+      if (authToken) {
+        this.notifySuccess('storage:token:found', authToken);
+      }
+      return authToken;
     },
-    set: function set(auth0Token) {
-      this.store.setItem(this.authTokenKeyName, auth0Token);
+    set: function set(authToken) {
+      this.store.setItem(this.authTokenKeyName, authToken);
+      this.notifySuccess('storage:token:stored', authToken);
       return this;
     }
   }]);

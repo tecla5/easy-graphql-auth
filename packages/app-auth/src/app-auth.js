@@ -13,14 +13,17 @@ export function onDocReady(fn) {
 
 
 export class AppAuth {
-  constructor({
+  constructor(lock, {
     login,
     logout,
     welcome,
     selectors
   }) {
-    selectors = selectors || defaults.selectors
+    if (!lock) {
+      throw new Error('You must pass a lock instance as the first argument to the (AppAuth) constructor')
+    }
 
+    selectors = selectors || defaults.selectors
     login = login || selectElement(selectors.login)
     logout = logout || selectElement(selectors.logout)
     welcome = welcome || selectElement(selectors.welcome)
@@ -78,18 +81,22 @@ const defaults = {
   onReady: $ ? $(document).ready : docReady
 }
 
-export function configureAppAuth({
+export function configureAppAuth(lock, {
   ready,
   createAppAuth,
   selectors,
   selectElement
 }) {
+
+  if (!lock) {
+    throw new Error('You must pass a lock instance as the first argument to configureAppAuth')
+  }
   createAppAuth = createAppAuth || defaults.createAppAuth
   selectElement = selectElement || defaults.onReady
 
   ready = ready ||
     ready(() => {
-      createAppAuth({
+      createAppAuth(lock, {
         selectElement,
         selectors
       })

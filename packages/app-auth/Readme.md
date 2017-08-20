@@ -11,12 +11,23 @@ You can sublclass `AppAuth` and then pass in your own `createAppAuth` factory me
 
 ## Usage
 
-By default assumes jQuery-like API is available for document ready. It will also try `$` to select DOM elements and fall back to using `document.querySelector` if `$` is not defined. You can pass your own `ready` and `selectElement` functions.
+By default assumes jQuery-like API is available for document ready. It will also try `$` to select DOM elements and fall back to using `document.querySelector`, if `$` is not defined. You can pass your own `ready` and `selectElement` functions to override defaults.
+
+You must pass a `lock` instance (from `easy-auth0-lock` package) as the first (required) argument.
+
+Using all defaults
 
 ```js
-configureAppAuth(selectors, {
+configureAppAuth(lock)
+```
+
+With configuration
+
+```js
+configureAppAuth(lock, {
   ready,
-  selectElement
+  selectElement,
+  selectors
 })
 ```
 
@@ -29,6 +40,8 @@ configureAppAuth(selectors, {
 
 You can pass a selectors object that point to the app elements used to trigger `login`, `logout` and `welcome` (display message or profile info when logged in)
 
+Default DOM element selectors
+
 ```js
 selectors: {
   login: '#login',
@@ -39,10 +52,10 @@ selectors: {
 
 ### Example use
 
-Using defaults and native document ready, part of `appAuth`.
+Using defaults and native document ready (part of `appAuth`).
 
 ```js
-appAuth.configureAppAuth()
+appAuth.configureAppAuth(lock)
 ```
 
 Using customised `AppAuth` class via `createAppAuth` factory
@@ -56,7 +69,7 @@ function createAppAuth(config) {
   return new MyAppAuth(config)
 }
 
-configureAppAuth({
+configureAppAuth(lock, {
   createAppAuth
 })
 ```
