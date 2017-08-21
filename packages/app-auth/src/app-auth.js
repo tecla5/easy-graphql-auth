@@ -136,8 +136,8 @@ const defaults = {
     logout: '#logout',
     welcome: '#welcome'
   },
-  createAppAuth(config) {
-    return new AppAuth(config)
+  createAppAuth(lock, config = {}) {
+    return new AppAuth(lock, config)
   },
   onReady: $ ? $(document).ready : onDocReady
 }

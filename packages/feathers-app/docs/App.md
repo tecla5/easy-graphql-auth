@@ -1,3 +1,8 @@
+# Feathers Auth0 app
+
+A typical initial Feathers page could look something like this.
+
+```js
 function onDocReady(fn) {
   // Sanity check
   if (typeof fn !== 'function') return;
@@ -87,3 +92,4 @@ function loadApp() {
     createAppAuth
   })
 }
+```

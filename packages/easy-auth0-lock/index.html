@@ -30,14 +30,15 @@
       lock
         .enableLog()
         .subscribeAuthenticated()
-        .on('signedIn', function (res) {
+        .on('sign:in', function (res) {
           console.log('logged in', res)
         })
 
       $('#login').click(function () {
         lock.showLock()
       })
-      logout: $('#logout').click(function () {
+
+      $('#logout').click(function () {
         lock.logout()
       })
     })

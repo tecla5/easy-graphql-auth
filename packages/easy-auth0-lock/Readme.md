@@ -10,6 +10,8 @@ Retrieves user profile info and auth token from Auth provider
 
 Stores auth token in store (default: `localStorage`)
 
+See `docs/App.md` for details on how to write an App using this libary.
+
 ## Install
 
 `npm i -S @tecla5/easy-auth0-lock`

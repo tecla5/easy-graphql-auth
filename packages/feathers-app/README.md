@@ -2,6 +2,8 @@
 
 > Auth0 feathers app demo
 
+See the `/docs` folder for documentation on how to write a Feathers client/server web app with Auth0 authentication.
+
 ## About
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
