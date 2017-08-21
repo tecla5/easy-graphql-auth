@@ -32,9 +32,13 @@ export class AppAuth {
     let {
       elements,
       selectors,
-      selectElement
+      selectElement,
+      onSignedIn,
+      onSignedOut,
+      ctx
     } = config
 
+    this.ctx = ctx || this
     this.lock = lock
     this.config = config
     elements = elements || {}
@@ -43,17 +47,20 @@ export class AppAuth {
     logout = elements.logout || selectElement(selectors.logout)
     welcome = elements.welcome || selectElement(selectors.welcome)
 
+    onSignedIn = onSignedIn || this.onSignedIn
+    onSignedOut = onSignedOut || this.onSignedOut
+
     this.element = {
       login,
       logout,
       welcome
     }
 
-    this.onClick(this.element.login, this.onClickLogin.bind(this))
-    this.onClick(element.logout, this.onClickLogout.bind(this))
+    this.onClick(this.element.login, this.onClickLogin.bind(this.ctx))
+    this.onClick(element.logout, this.onClickLogout.bind(this.ctx))
 
-    lock.onSuccess('sign:in', this.onSignedIn.bind(this))
-    lock.onSuccess('sign:out', this.onSignedOut.bind(this))
+    lock.onSuccess('sign:in', onSignedIn.bind(this.ctx))
+    lock.onSuccess('sign:out', onSignedOut.bind(this.ctx))
   }
 
   onClick(element, cb) {

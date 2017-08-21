@@ -1,27 +1,23 @@
 <template>
   <div id="app">
     <div class="banner">
-      <img src="https://vuejs.org/images/logo.png"
-           width="100"
-           alt="vue"
-           class="logo" />
+      <img src="https://vuejs.org/images/logo.png" width="100" alt="vue" class="logo" />
       <h1>Welcome {{ profile.name }} to Vue.js</h1>
       <div id="session">
-        <button id="login"
-                @click="doLogin">Login</button>
-        <button id="logout"
-                class="hide"
-                @click="doLogout">Logout</button>
+        <button id="login" @click="doLogin">Login</button>
+        <button id="logout" class="hide" @click="doLogout">Logout</button>
       </div>
       <div class="status">{{ isLoggedIn }}</div>
     </div>
     <div class="bottom">
       <p>
-        To get started, edit <code>./src/components/App.vue</code> and save to reload.
+        To get started, edit
+        <code>./src/components/App.vue</code> and save to reload.
         <br/>
         <span :class="$style.fade">
-                                              Checkout <code>./README.md</code> for more usages.
-                                            </span>
+          Checkout
+          <code>./README.md</code> for more usages.
+        </span>
       </p>
     </div>
   </div>
@@ -62,8 +58,8 @@ export default {
     }
   },
   created: function () {
-    lock.on('signedIn', this.loggedIn)
-    lock.on('loggedOut', this.loggedOut)
+    lock.on('sign:in', this.loggedIn.bind(this))
+    lock.on('sign:out', this.loggedOut.bind(this))
   }
 }
 </script>

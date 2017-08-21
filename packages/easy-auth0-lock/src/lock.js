@@ -19,7 +19,7 @@ export function createLock(config, opts) {
 export class Lock extends Configurable {
   // storage: { // localstorage
   //   auth0IdToken: 'xxx', // key to store auth0IdToken
-  //   graphcoolToken: 'xxx' // key to store graphcoolToken
+  //   serverAuthToken: 'xxx' // key to store graphcoolToken
   // },
   // auth0: { // from auth0 client app settings
   //   domain: 'xxx', // Your auth0 domain

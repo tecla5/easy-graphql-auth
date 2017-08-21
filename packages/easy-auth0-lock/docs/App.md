@@ -72,3 +72,76 @@ Finally we add jQuery click handlers for login to trigger display of the auth0 l
   </script>
 </body>
 ```
+
+## Using AppAuth
+
+Using `AppAuth` and no jQuery
+
+```js
+function onDocReady(fn) {
+  // Sanity check
+  if (typeof fn !== 'function') return;
+
+  // If document is already loaded, run method
+  if (document.readyState === 'complete') {
+    return fn();
+  }
+
+  // The document has finished loading and the document has been parsed but sub-resources such as images, stylesheets and frames are still loading. The state indicates that the DOMContentLoaded event has been fired.
+  document.addEventListener('interactive', fn, false);
+}
+
+onDocReady(loadApp);
+
+function loadApp() {
+  const config = {
+    // should match server-side key defined in localstorage.authTokenKeyName (see config file above)
+    storage: {
+      authTokenKeyName: 'auth0Token' // default key name, otherwise pass customized keyNames object (see token-foundation package)
+    }
+    // more lock config options ...
+  };
+
+  // TODO: customize createStore?
+  let {
+    setup,
+    createStore,
+    createLock
+  } = easyAuth0Lock
+
+  const {
+    AppAuth,
+    configureAppAuth
+  } = appAuth
+
+  function createUserAndSession(data) {
+    // create user + session on server using token + profile
+  }
+
+  class FeathersAppAuth extends AppAuth {
+    onSignedIn(data) {
+      let {
+        auth0Token,
+        profile
+      } = data
+      createUserAndSession(data)
+    }
+  }
+
+  function createAppAuth(lock, config = {}) {
+    return new FeathersAppAuth(lock, config)
+  }
+
+  const {
+    lock
+  } = setup(config, {
+    Auth0Lock,
+    createStore,
+    createLock
+  })
+
+  configureAppAuth(lock, {
+    createAppAuth
+  })
+}
+```

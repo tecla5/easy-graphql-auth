@@ -46,9 +46,16 @@ This project consists of the following modules:
 
 And the following demo apps:
 
+- `feathers-app`
 - `jquery-app`
 - `react-app`
 - `vue-app`
+
+Quick client app auth config:
+
+- `app-auth`
+
+Each of the apps demonstrate how to configure using both `AppAuth` from the `app-auth` package and custom config directly using the APIs of relevant packages such as `easy-auth0-lock` etc.
 
 ### Base config/token functionality
 
