@@ -105,14 +105,23 @@ function onDocReady(fn) {
 
   // The document has finished loading and the document has been parsed but sub-resources such as images, stylesheets and frames are still loading. The state indicates that the DOMContentLoaded event has been fired.
   document.addEventListener('interactive', fn, false);
-};
+}
+
+function isFunction(fun) {
+  return fun && typeof fun === 'function';
+}
+
+function bindEvent(element, type, handler) {
+  if (element.addEventListener) {
+    element.addEventListener(type, handler, false);
+  } else {
+    element.attachEvent('on' + type, handler);
+  }
+}
 
 var AppAuth = exports.AppAuth = function () {
-  function AppAuth(lock, _ref) {
-    var login = _ref.login,
-        logout = _ref.logout,
-        welcome = _ref.welcome,
-        selectors = _ref.selectors;
+  function AppAuth(lock) {
+    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, AppAuth);
 
@@ -120,50 +129,116 @@ var AppAuth = exports.AppAuth = function () {
       throw new Error('You must pass a lock instance as the first argument to the (AppAuth) constructor');
     }
 
-    selectors = selectors || defaults.selectors;
-    login = login || selectElement(selectors.login);
-    logout = logout || selectElement(selectors.logout);
-    welcome = welcome || selectElement(selectors.welcome);
+    var elements = config.elements,
+        selectors = config.selectors,
+        selectElement = config.selectElement;
 
-    this.selector = {
+
+    this.lock = lock;
+    this.config = config;
+    elements = elements || {};
+    selectors = selectors || defaults.selectors;
+    login = elements.login || selectElement(selectors.login);
+    logout = elements.logout || selectElement(selectors.logout);
+    welcome = elements.welcome || selectElement(selectors.welcome);
+
+    this.element = {
       login: login,
       logout: logout,
       welcome: welcome
     };
 
-    this.selector.login.click(function () {
-      lock.showLock().subscribeAuthenticated();
-    });
+    this.onClick(this.element.login, this.onClickLogin.bind(this));
+    this.onClick(element.logout, this.onClickLogout.bind(this));
 
-    this.selector.logout.click(function () {
-      lock.logout();
-    });
-
-    lock.onSuccess('sign:in', this.signedIn);
-    lock.onSuccess('sign:out', this.signedOut);
+    lock.onSuccess('sign:in', this.onSignedIn.bind(this));
+    lock.onSuccess('sign:out', this.onSignedOut.bind(this));
   }
 
   _createClass(AppAuth, [{
-    key: 'signedOut',
-    value: function signedOut() {
-      this.selector.welcome.hide();
-      this.selector.login.hide();
-      this.selector.logout.show();
+    key: 'onClick',
+    value: function onClick(element, cb) {
+      this.isFunction(element.click) ? element.click(cb) : bindEvent(element, 'click', cb);
     }
   }, {
-    key: 'signedIn',
-    value: function signedIn(_ref2) {
-      var profile = _ref2.profile;
+    key: 'onClickLogin',
+    value: function onClickLogin() {
+      this.lock.showLock().subscribeAuthenticated();
+    }
+  }, {
+    key: 'onClickLogout',
+    value: function onClickLogout() {
+      this.lock.logout();
+    }
+  }, {
+    key: 'hide',
+    value: function hide(element) {
+      isFunction(element.hide) ? element.hide() : element.classList.add('hide');
+    }
+  }, {
+    key: 'show',
+    value: function show(element) {
+      isFunction(element.show) ? element.show() : element.classList.remove('hide');
+    }
+  }, {
+    key: 'onSignedOut',
+    value: function onSignedOut() {
+      this.hideWelcome();
+      this.hideLogout();
+      this.displayLogin();
+    }
+  }, {
+    key: 'onSignedIn',
+    value: function onSignedIn(_ref) {
+      var profile = _ref.profile;
 
-      this.selector.logout.hide();
-      this.selector.login.show();
-      this.welcome();
+      this.hideLogin();
+      this.displayLogout();
+      this.displayWelcome(profile);
     }
   }, {
-    key: 'welcome',
-    value: function welcome() {
-      // this.selector.welcome.text(`Welcome ${profile.name}, you have now been signed in :)`)
-      this.selector.welcome.show();
+    key: 'hideWelcome',
+    value: function hideWelcome() {
+      this.hide(this.element.welcome);
+    }
+  }, {
+    key: 'hideLogin',
+    value: function hideLogin() {
+      this.hide(this.element.login);
+    }
+  }, {
+    key: 'hideLogout',
+    value: function hideLogout() {
+      this.hide(this.element.logout);
+    }
+  }, {
+    key: 'displayLogin',
+    value: function displayLogin() {
+      this.show(this.element.login);
+    }
+  }, {
+    key: 'displayLogout',
+    value: function displayLogout() {
+      this.show(this.element.logout);
+    }
+  }, {
+    key: 'displayWelcome',
+    value: function displayWelcome(profile) {
+      var welcome = this.element.welcome;
+      displayWelcomeMsg(profile);
+      this.show(welcome);
+    }
+  }, {
+    key: 'welcomeMsg',
+    value: function welcomeMsg(profile) {
+      return 'Welcome ' + profile.name;
+    }
+  }, {
+    key: 'displayWelcomeMsg',
+    value: function displayWelcomeMsg(profile) {
+      var welcome = this.element.welcome;
+      var msg = this.welcomeMsg(profile);
+      isFunction(welcome.text) ? welcome.text(msg) : welcome.textContent = msg;
     }
   }]);
 
@@ -180,23 +255,24 @@ var defaults = {
     return new AppAuth(config);
   },
 
-  onReady: $ ? $(document).ready : docReady
+  onReady: $ ? $(document).ready : onDocReady
 };
 
-function configureAppAuth(lock, _ref3) {
-  var ready = _ref3.ready,
-      createAppAuth = _ref3.createAppAuth,
-      selectors = _ref3.selectors,
-      selectElement = _ref3.selectElement;
+function configureAppAuth(lock, _ref2) {
+  var onReady = _ref2.onReady,
+      createAppAuth = _ref2.createAppAuth,
+      selectors = _ref2.selectors,
+      selectElement = _ref2.selectElement;
 
 
   if (!lock) {
     throw new Error('You must pass a lock instance as the first argument to configureAppAuth');
   }
   createAppAuth = createAppAuth || defaults.createAppAuth;
-  selectElement = selectElement || defaults.onReady;
+  selectElement = selectElement || defaults.selectElement;
+  onReady = onReady || defaults.onReady;
 
-  ready = ready || ready(function () {
+  return onReady(function () {
     createAppAuth(lock, {
       selectElement: selectElement,
       selectors: selectors

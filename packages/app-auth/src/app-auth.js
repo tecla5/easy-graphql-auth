@@ -9,63 +9,124 @@ export function onDocReady(fn) {
 
   // The document has finished loading and the document has been parsed but sub-resources such as images, stylesheets and frames are still loading. The state indicates that the DOMContentLoaded event has been fired.
   document.addEventListener('interactive', fn, false);
-};
+}
 
+function isFunction(fun) {
+  return fun && typeof fun === 'function'
+}
+
+function bindEvent(element, type, handler) {
+  if (element.addEventListener) {
+    element.addEventListener(type, handler, false);
+  } else {
+    element.attachEvent('on' + type, handler);
+  }
+}
 
 export class AppAuth {
-  constructor(lock, {
-    login,
-    logout,
-    welcome,
-    selectors
-  }) {
+  constructor(lock, config = {}) {
     if (!lock) {
       throw new Error('You must pass a lock instance as the first argument to the (AppAuth) constructor')
     }
 
-    selectors = selectors || defaults.selectors
-    login = login || selectElement(selectors.login)
-    logout = logout || selectElement(selectors.logout)
-    welcome = welcome || selectElement(selectors.welcome)
+    let {
+      elements,
+      selectors,
+      selectElement
+    } = config
 
-    this.selector = {
+    this.lock = lock
+    this.config = config
+    elements = elements || {}
+    selectors = selectors || defaults.selectors
+    login = elements.login || selectElement(selectors.login)
+    logout = elements.logout || selectElement(selectors.logout)
+    welcome = elements.welcome || selectElement(selectors.welcome)
+
+    this.element = {
       login,
       logout,
       welcome
     }
 
-    this.selector.login.click(() => {
-      lock
-        .showLock()
-        .subscribeAuthenticated()
-    })
+    this.onClick(this.element.login, this.onClickLogin.bind(this))
+    this.onClick(element.logout, this.onClickLogout.bind(this))
 
-    this.selector.logout.click(() => {
-      lock
-        .logout()
-    })
-
-    lock.onSuccess('sign:in', this.signedIn)
-    lock.onSuccess('sign:out', this.signedOut)
+    lock.onSuccess('sign:in', this.onSignedIn.bind(this))
+    lock.onSuccess('sign:out', this.onSignedOut.bind(this))
   }
 
-  signedOut() {
-    this.selector.welcome.hide()
-    this.selector.login.hide()
-    this.selector.logout.show()
+  onClick(element, cb) {
+    this.isFunction(element.click) ? element.click(cb) : bindEvent(element, 'click', cb)
   }
 
-  signedIn({
+  onClickLogin() {
+    this.lock
+      .showLock()
+      .subscribeAuthenticated()
+  }
+
+  onClickLogout() {
+    this.lock
+      .logout()
+  }
+
+  hide(element) {
+    isFunction(element.hide) ? element.hide() : element.classList.add('hide')
+  }
+
+  show(element) {
+    isFunction(element.show) ? element.show() : element.classList.remove('hide')
+  }
+
+  onSignedOut() {
+    this.hideWelcome()
+    this.hideLogout()
+    this.displayLogin()
+  }
+
+  onSignedIn({
     profile
   }) {
-    this.selector.logout.hide()
-    this.selector.login.show()
-    this.welcome()
+    this.hideLogin()
+    this.displayLogout()
+    this.displayWelcome(profile)
   }
 
-  welcome() {
-    // this.selector.welcome.text(`Welcome ${profile.name}, you have now been signed in :)`)
-    this.selector.welcome.show()
+  hideWelcome() {
+    this.hide(this.element.welcome)
+  }
+
+  hideLogin() {
+    this.hide(this.element.login)
+  }
+
+  hideLogout() {
+    this.hide(this.element.logout)
+  }
+
+  displayLogin() {
+    this.show(this.element.login)
+  }
+
+  displayLogout() {
+    this.show(this.element.logout)
+  }
+
+  displayWelcome(profile) {
+    let welcome = this.element.welcome
+    displayWelcomeMsg(profile)
+    this.show(welcome)
+  }
+
+  welcomeMsg(profile) {
+    return `Welcome ${profile.name}`
+  }
+
+  displayWelcomeMsg(profile) {
+    let welcome = this.element.welcome
+    let msg = this.welcomeMsg(profile)
+    isFunction(welcome.text) ? welcome.text(msg) : welcome.textContent = msg
   }
 }
 
@@ -78,11 +139,11 @@ const defaults = {
   createAppAuth(config) {
     return new AppAuth(config)
   },
-  onReady: $ ? $(document).ready : docReady
+  onReady: $ ? $(document).ready : onDocReady
 }
 
 export function configureAppAuth(lock, {
-  ready,
+  onReady,
   createAppAuth,
   selectors,
   selectElement
@@ -92,13 +153,13 @@ export function configureAppAuth(lock, {
     throw new Error('You must pass a lock instance as the first argument to configureAppAuth')
   }
   createAppAuth = createAppAuth || defaults.createAppAuth
-  selectElement = selectElement || defaults.onReady
+  selectElement = selectElement || defaults.selectElement
+  onReady = onReady || defaults.onReady
 
-  ready = ready ||
-    ready(() => {
-      createAppAuth(lock, {
-        selectElement,
-        selectors
-      })
+  return onReady(() => {
+    createAppAuth(lock, {
+      selectElement,
+      selectors
     })
+  })
 }

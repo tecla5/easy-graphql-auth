@@ -11,7 +11,7 @@ You can sublclass `AppAuth` and then pass in your own `createAppAuth` factory me
 
 ## Usage
 
-By default assumes jQuery-like API is available for document ready. It will also try `$` to select DOM elements and fall back to using `document.querySelector`, if `$` is not defined. You can pass your own `ready` and `selectElement` functions to override defaults.
+`AppAuth` will try using `$` (if defined) to select DOM elements but fall back to using native `document.querySelector`. You can pass your own `ready` and `selectElement` functions to override defaults. To hide and show elements,
 
 You must pass a `lock` instance (from `easy-auth0-lock` package) as the first (required) argument.
 
@@ -24,15 +24,18 @@ configureAppAuth(lock)
 With configuration
 
 ```js
-configureAppAuth(lock, {
-  ready,
+const config = {
+  onReady,
   selectElement,
+  // elements, // pre-selected
   selectors
-})
+}
+configureAppAuth(lock, config)
 ```
 
 ### Defaults
 
+- `onReady` - jquery `$(document).ready` or native equivalent
 - `createAppAuth` - factory method to create `AppAuth` instance
 - `selectors` - see _Selectors_ section
 
@@ -50,9 +53,37 @@ selectors: {
 }
 ```
 
+You can also pass any of the (pre-selected) DOM elements directly in an `elements` object.
+`AppAuth` will use an element from `elements` and fall back to using `selectors`.
+
+### Methods
+
+The following methods make good candidates for customization needs.
+
+Events:
+
+- `onClick(element, cb)` - setup click event handler
+- `onClickLogin()`
+- `onClickLogout()`
+- `signedIn({profile})` - react to successful Auth0 signin event
+- `signedOut()` - react to signout event
+
+Display:
+
+- `show(element)` - show an element
+- `hide(element)` - hide an element
+- `hideLogin()`
+- `hideLogout()`
+- `hideWelcome()`
+- `displayLogin()`
+- `displayLogout()`
+- `displayWelcome(profile)`
+- `displayWelcomeMsg(profile)`
+- `welcomeMsg(profile)` default: `Welcome ${profile.name}`
+
 ### Example use
 
-Using defaults and native document ready (part of `appAuth`).
+Using all defaults
 
 ```js
 appAuth.configureAppAuth(lock)
